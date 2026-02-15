@@ -1,0 +1,70 @@
+name: Daily Auto Recap and Deploy
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    # 北京时间 21:00 = UTC 时间 13:00
+    - cron: '0 13 * * 1-5'
+  workflow_dispatch: # 允许手动点击按钮触发
+
+permissions:
+  contents: write  # 需要写入权限来提交生成的 md 文件
+  pages: write
+  id-token: write
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      # --- 第一阶段：运行 Python 抓取数据 ---
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install akshare pandas tabulate
+
+      - name: Run Stock Script
+        run: python fetch_data_and_report.py # ！！！请确保脚本名正确
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 更新复盘数据 $(date)" && git push)
+
+      # --- 第二阶段：构建 Hugo 网页 ---
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3 # 建议升级到 v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
