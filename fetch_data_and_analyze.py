@@ -4,6 +4,15 @@ from datetime import datetime, timedelta
 import os
 import time
 import pytz
+from google import genai
+
+import warnings
+
+
+# 忽略特定的 DeprecationWarning
+# warnings.filterwarnings("ignore", category=UserWarning, module="py_mini_racer")
+# 忽略所有警告
+warnings.filterwarnings("ignore")
 
 
 def load_local_csv(file_path=""):
@@ -537,15 +546,8 @@ def get_watchlist(top_amount_stocks_df,
 
     return watchlist1_df, watchlist2_df
 
-def create_hugo_post(
-        index_df, up_count, down_count,
-        zt_pool_df, dt_pool_df, zb_pool_df,
-        top_amount_stocks_df,
-        concept_summary_df, concept_cons_topn,
-        lhb_df,
-        watchlist1_df, watchlist2_df,
-        save_dir='content/posts'):
-    """生成符合瑞士时区且防 Hugo 屏蔽的文章"""
+def create_hugo_post(market_summary, ai_analysis, save_dir='content/posts'):
+    """生成 Hugo 博客的 Markdown 内容"""
     # 确保目录存在
     os.makedirs(save_dir, exist_ok=True)
     
@@ -569,6 +571,46 @@ tags: ["每日复盘", "重点个股", "行业板块", "市场分析"]
 categories: ["每日更新"]
 showToc: true
 draft: false
+---
+
+## 📈 A股市场概览
+
+{market_summary}
+
+---
+
+## 🤖 AI 深度分析与洞察
+
+{ai_analysis}
+
+---
+*注：
+1. 数据来源：AKShare。
+2. 本文由AI辅助生成，旨在提供市场洞察和数据分析，非投资建议。
+3. 声明：投资有风险，入市需谨慎。本文内容仅供参考，不构成任何投资建议或推荐。请根据自身情况做出独立判断。*
+"""
+    
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(content)
+    print(f"成功生成报告: {filename}")
+    print(f"文章发布时间设为: {formatted_date}")
+
+def create_content(
+        index_df, up_count, down_count,
+        zt_pool_df, dt_pool_df, zb_pool_df,
+        top_amount_stocks_df,
+        concept_summary_df, concept_cons_topn,
+        lhb_df,
+        watchlist1_df, watchlist2_df,
+        date="20260213",
+        save_dir='data'
+    ):
+    """生成市场汇总的 Markdown 内容"""
+    
+    file_path = f"{save_dir}/market_summary_{date}.md"
+
+    content = f"""---
+date: A股全市场复盘 {date} 
 ---
 
 
@@ -643,53 +685,45 @@ draft: false
 {watchlist2_df.to_markdown(index=False)}
 
 ---
-*注：
-1. 数据来源：AKShare。
-2. 本文由AI辅助生成，旨在提供市场洞察和数据分析，非投资建议。
-3. 声明：投资有风险，入市需谨慎。本文内容仅供参考，不构成任何投资建议或推荐。请根据自身情况做出独立判断。*
+
 """
     
-    with open(filename, "w", encoding="utf-8") as f:
+    with open(file_path, "w", encoding="utf-8") as f:
         f.write(content)
-    print(f"成功生成报告: {filename}")
-    print(f"文章发布时间设为: {formatted_date}")
+    print(f"成功生成市场数据汇总报告: {file_path}")
+    print('-' * 30)
+    print(content)
+    print('-' * 30)
 
-def fetch_and_save():
+    return content
+
+def fetch_and_save(date='20260213', save_dir='data'):
     """主函数：获取数据并保存"""
-    latest_date = get_latest_date()
-    # latest_date = datetime.now().strftime("%Y%m%d")
-    if latest_date is None:
-        print("❌ 无法确定最新数据日期，脚本终止。")
-        exit(1)
-    os.makedirs("data", exist_ok=True)
-    save_dir = f"data/{latest_date}"
-    os.makedirs(save_dir, exist_ok=True)
-
     # 获取大盘数据并保存
-    index_df = stock_summary(date=latest_date, save_dir=save_dir)
+    index_df = stock_summary(date=date, save_dir=save_dir)
 
     # 获取涨停数据并保存
-    zt_pool_df, dt_pool_df, zb_pool_df = stock_zt_dt_pool(date=latest_date, save_dir=save_dir)
+    zt_pool_df, dt_pool_df, zb_pool_df = stock_zt_dt_pool(date=date, save_dir=save_dir)
     # TODO: 连板数据分析
 
     # 获取所有股票数据并保存
-    all_stocks_df, up_count, down_count, flat_count = fetch_all_stock_data(date=latest_date, save_dir=save_dir, max_retries=3)
+    all_stocks_df, up_count, down_count, flat_count = fetch_all_stock_data(date=date, save_dir=save_dir, max_retries=3)
 
     # 成交量前二十的个股名称、成交额、涨幅、以及所属板块或者概念
-    top_amount_stocks_df = get_top_amount_stocks(all_stocks_df, top_n=20, date=latest_date, save_dir=save_dir)
+    top_amount_stocks_df = get_top_amount_stocks(all_stocks_df, top_n=20, date=date, save_dir=save_dir)
 
     # 涨幅前五板块中涨停个股、连板高度（几天几板、首板后涨幅）
     # # 同花顺-同花顺行业一览表
     # industry_summary_df = get_industry_summary(date=latest_date, save_dir=save_dir)
     
     # 东方财富-概念板块 实时行情数据
-    concept_summary_df = get_concept_summary(date=latest_date, save_dir=save_dir)
+    concept_summary_df = get_concept_summary(date=date, save_dir=save_dir)
 
     # 概念板块成分股数据
-    concept_cons, concept_cons_topn = get_concept_cons(concept_summary_df, date=latest_date, save_dir=save_dir)
+    concept_cons, concept_cons_topn = get_concept_cons(concept_summary_df, date=date, save_dir=save_dir)
 
     # 龙虎榜
-    lhb_df = get_lhb_data(date=latest_date, save_dir=save_dir)
+    lhb_df = get_lhb_data(date=date, save_dir=save_dir)
 
     # 重点个股信息
     watchlist1_df, watchlist2_df = get_watchlist(
@@ -699,7 +733,7 @@ def fetch_and_save():
                                                     dt_pool_df,
                                                     lhb_df,
                                                     concept_cons,
-                                                    date=latest_date,
+                                                    date=date,
                                                     save_dir=save_dir
                                                 )
 
@@ -709,8 +743,8 @@ def fetch_and_save():
 
     # TODO: 分析报告
 
-    # 生成Hugo规格的 Markdown 报告
-    create_hugo_post(
+    # 生成content以供AI分析和生成文章
+    market_summary = create_content(
         index_df=index_df,
         zt_pool_df=zt_pool_df,
         dt_pool_df=dt_pool_df,
@@ -723,12 +757,85 @@ def fetch_and_save():
         lhb_df=lhb_df,
         watchlist1_df=watchlist1_df,
         watchlist2_df=watchlist2_df,
-        save_dir='content/posts'
+        date=latest_date,
+        save_dir=save_dir
     )
 
-    return True
+    return market_summary
+
+def analyze_market_with_ai(market_summary, date='20260213', save_dir='data'):
+    prompt = f"""
+        角色设定：你是一位拥有 20 年经验的 A 股资深策略分析师，擅长从成交量能、板块轮动和连板梯队中洞察市场情绪。
+
+        任务描述：请基于下方提供的【当日复盘数据】，进行多维度复盘：
+
+        1. 🚩 市场情绪诊断
+        - 结合涨跌比、涨跌停对比、炸板率及全市场成交额，定义当前市场阶段（如：放量普涨、缩量整理、高位分歧、冰点重启等）。
+        - 评价当前赚钱效应与亏钱效应的分布情况。
+
+        2. 💰 核心主线与资金流向
+        - 分析【成交额前二十】和【行业涨幅榜】，识别出目前资金主要锁定的“热点板块”和“大容错板块”。
+        - 判断市场风格：是偏向“题材炒作”还是“权重护盘”？
+
+        3. 🪜 连板梯度与空间博弈
+        - 识别【涨停池】中的最高板（空间板）及其带动的属性。
+        - 重点解读【炸板池】中的个股信号：是高位减速、还是分歧后的良性分歧？
+
+        4. ⚡ 重点异动个股分析
+        - 请从【重点个股 Watchlist】中挑选 2-3 只最具代表性的个股（如大成交涨停、高低位切换的典型），推测其背后的逻辑（资产注入、政策利好、超跌反弹还是技术突破）。
+
+        5. 🧭 次日交易策略建议
+        - 给出明日关注的观察点：哪些板块具备“反包”潜力？哪些高位品种需防范“补跌”？
+        - 明确操作基调（如：积极参与、逢高止盈、或者多看少动）。
+
+        ---
+        **📊 当日复盘数据内容如下**:
+        {market_summary}
+
+        要求：专业、客观、语言简练，避免模棱两可。输出格式使用 Markdown 标题和列表，增强可读性。
+    """
     
+    # 初始化 Gemini
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    MODEL_NAME = 'gemini-2.5-flash'
+
+    client = genai.Client(api_key=GEMINI_API_KEY)
+    response = client.models.generate_content(
+        model=MODEL_NAME,
+        contents=prompt
+    )
+
+    # save AI analysis result to file
+    file_path = f"{save_dir}/ai_analysis_{date}.md"
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(response.text)
+    print(f"AI 分析结果已保存至: {file_path}")
+
+    print("-" * 30)
+    print("AI 分析结果:")
+    print(response.text)
+    print("-" * 30)
+
+    return response.text
+
+def prepare_date_and_directory():
+    """准备最新日期和数据目录"""
+    latest_date = get_latest_date()
+    # latest_date = datetime.now().strftime("%Y%m%d")
+    if latest_date is None:
+        print("❌ 无法确定最新数据日期，脚本终止。")
+        exit(1)
+    os.makedirs("data", exist_ok=True)
+    save_dir = f"data/{latest_date}"
+    os.makedirs(save_dir, exist_ok=True)
+
+    return latest_date, save_dir
 
 if __name__ == "__main__":
-    fetch_and_save()
+    latest_date, save_dir = prepare_date_and_directory()
+    market_summary = fetch_and_save(date=latest_date, save_dir=save_dir)
+    print("市场数据汇总已生成，正在进行AI分析...")
+    ai_analysis = analyze_market_with_ai(market_summary, date=latest_date, save_dir=save_dir)
+    print("AI分析完成，正在生成Hugo博客内容...")
+    create_hugo_post(market_summary, ai_analysis, save_dir='content/posts')
                                                                                                                     
