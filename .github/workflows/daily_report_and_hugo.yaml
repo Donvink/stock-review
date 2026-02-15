@@ -31,10 +31,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install akshare pandas tabulate
+          pip install akshare pandas tabulate google-genai
 
       - name: Run Stock Script
-        run: python fetch_data_and_report.py # ！！！请确保脚本名正确
+        env:
+            GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} # 映射环境变量
+        run: python fetch_data_and_analyze.py # ！！！请确保脚本名正确
 
       - name: Commit changes
         run: |
