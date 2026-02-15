@@ -1,0 +1,30 @@
+# baseURL = 'https://example.org/'
+# languageCode = 'en-us'
+# title = 'My New Hugo Site'
+# theme = 'PaperMod'
+
+baseURL = 'https://yourdomain.com/'
+languageCode = 'zh-cn'
+title = 'AI 股市导航'
+theme = "PaperMod"
+
+[params]
+    defaultTheme = "auto"
+    # 在首页显示文章全文摘要，方便快速浏览资讯
+    showFullContents = false 
+    displayFullLangName = true
+    mainSections = ["posts"]
+    
+    [params.homeInfoParams]
+        Title = "📈 每日股市 AI 分析"
+        Content = "利用 AI 技术自动抓取并分析全球市场资讯。由 Linux 自动化驱动。"
+
+    [params.assets]
+        disableHLJS = false # 开启代码高亮（如果你要展示分析代码）
+
+    # 导航栏配置
+    [[menu.main]]
+        identifier = "posts"
+        name = "资讯档案"
+        url = "/posts/"
+        weight = 10

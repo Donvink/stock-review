@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on AI 股市导航</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on AI 股市导航</description>
+    <generator>Hugo -- 0.146.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Feb 2026 10:50:23 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>每日更新</title>
+      <link>http://localhost:1313/categories/%E6%AF%8F%E6%97%A5%E6%9B%B4%E6%96%B0/</link>
+      <pubDate>Sun, 15 Feb 2026 10:50:23 +0100</pubDate>
+      <guid>http://localhost:1313/categories/%E6%AF%8F%E6%97%A5%E6%9B%B4%E6%96%B0/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
