@@ -3,7 +3,7 @@
 # title = 'My New Hugo Site'
 # theme = 'PaperMod'
 
-baseURL = 'https://yourdomain.com/'
+baseURL = 'https://donvink.github.io/stock-review/'
 languageCode = 'zh-cn'
 title = 'AI 股市导航'
 theme = "PaperMod"

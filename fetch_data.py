@@ -16,6 +16,18 @@ def load_local_csv(file_path=""):
         # print(f"⚠️ 本地文件不存在: {file_path}")
         return None
 
+def transfer_value(value):
+    """将数值转换为亿元或万元的字符串表示"""
+    if pd.isna(value):
+        return value
+    num = float(value)
+    if num >= 1e8:
+        return f"{num / 1e8:.2f} 亿"
+    elif num >= 1e4:
+        return f"{num / 1e4:.2f} 万"
+    else:
+        return f"{num:.2f}"
+
 def stock_summary(date="20260213", save_dir='data'):
     """获取大盘数据"""
     file_path = f"{save_dir}/index_{date}.csv"
@@ -60,7 +72,7 @@ def stock_summary(date="20260213", save_dir='data'):
     result = pd.concat([result, pd.DataFrame([summary_row])], ignore_index=True)
 
     # 7. 格式化输出：将成交额转为“亿元”更直观
-    result['成交额(亿元)'] = (result['成交额'] / 1e8).round(2)
+    result['成交额(亿元)'] = result['成交额'].apply(transfer_value)
     result.insert(0, '序号', range(1, len(result) + 1))
     result.to_csv(file_path, index=False, encoding="utf-8-sig")
     
@@ -68,6 +80,31 @@ def stock_summary(date="20260213", save_dir='data'):
     print(result[['序号', '代码', '名称', '最新价', '涨跌幅', '成交额(亿元)']])
     print("-" * 30)
     return result
+
+def reorder_columns(df, priority_cols):
+    """将 DataFrame 的列按照优先级重新排序"""
+    df = df.drop(columns=['序号', 'index', 'level_0'], errors='ignore')
+    existing_priority = [c for c in priority_cols if c in df.columns]
+    other_cols = [c for c in df.columns if c not in existing_priority]
+    new_column_order = existing_priority + other_cols
+    df_reorder = df[existing_priority + other_cols].copy()
+    df_reorder.insert(0, '序号', range(1, len(df_reorder) + 1))
+    return df_reorder
+
+def rename_zt_cal_value(df):
+    """将 '涨停统计' 和 '连板数' 列中的特定值替换为新值"""
+    if '涨停统计' in df.columns:
+        for index, row in df.iterrows():
+            ori_value = row['涨停统计']
+            cal_day = ori_value.split('/')[0] if isinstance(ori_value, str) else ori_value
+            continue_day = ori_value.split('/')[1] if isinstance(ori_value, str) else ori_value
+            if cal_day == '1':
+                df.loc[index, '涨停统计'] = "首板"
+            else:
+                df.loc[index, '涨停统计'] = f"{cal_day}天{continue_day}板" if pd.notna(ori_value) else ori_value
+    # if '连板数' in df.columns:
+    #     df['连板数'] = df['连板数'].replace(1, '首板')
+    return df
 
 def stock_zt_dt_pool(date="20260213", save_dir='data'):
     """获取涨停/跌停个股数据"""
@@ -87,7 +124,31 @@ def stock_zt_dt_pool(date="20260213", save_dir='data'):
             time.sleep(0.5) # 避免请求过快被封
             zb_pool_df = ak.stock_zt_pool_zbgc_em(date=date)
             time.sleep(0.5) # 避免请求过快被封
+
+            zt_pool_df.sort_values(by='连板数', ascending=False, inplace=True)
             
+            zt_pool_df['成交额'] = zt_pool_df['成交额'].apply(transfer_value)
+            zt_pool_df['流通市值'] = zt_pool_df['流通市值'].apply(transfer_value)
+            zt_pool_df['总市值'] = zt_pool_df['总市值'].apply(transfer_value)
+            
+            dt_pool_df['成交额'] = dt_pool_df['成交额'].apply(transfer_value)
+            dt_pool_df['流通市值'] = dt_pool_df['流通市值'].apply(transfer_value)
+            dt_pool_df['总市值'] = dt_pool_df['总市值'].apply(transfer_value)
+
+            zb_pool_df['成交额'] = zb_pool_df['成交额'].apply(transfer_value)
+            zb_pool_df['流通市值'] = zb_pool_df['流通市值'].apply(transfer_value)
+            zb_pool_df['总市值'] = zb_pool_df['总市值'].apply(transfer_value)
+
+            # '涨停统计' '连板数' 值重命名
+            rename_zt_cal_value(zt_pool_df)
+            rename_zt_cal_value(zb_pool_df)
+
+            priority_cols = ['名称', '代码', '连板数', '涨停统计']
+            # 重排zt_pool_df列
+            zt_pool_df = reorder_columns(zt_pool_df, priority_cols)
+            # 重排zb_pool_df列
+            zb_pool_df = reorder_columns(zb_pool_df, priority_cols)
+
             zt_pool_df.to_csv(zt_file_path, index=False, encoding="utf-8-sig")
             # print(f"✅ 成功获取涨停板数据，保存至: {zt_file_path}")
             dt_pool_df.to_csv(dt_file_path, index=False, encoding="utf-8-sig")
@@ -226,7 +287,7 @@ def get_top_amount_stocks(df, top_n=20, date="20260213", save_dir='data'):
             top_stocks_df = df.sort_values(by='成交额', ascending=False).head(top_n).copy()
 
             top_stocks_df.reset_index(drop=True, inplace=True)
-            top_stocks_df['成交额(亿元)'] = (top_stocks_df['成交额'] / 1e8).round(2)
+            top_stocks_df['成交额(亿元)'] = top_stocks_df['成交额'].apply(transfer_value)
             # top_stocks_df['竞价涨幅(%)'] = ((top_stocks_df['今开'] - top_stocks_df['昨收']) / top_stocks_df['昨收'] * 100).round(2)
             # top_stocks_df['实体涨幅(%)'] = ((top_stocks_df['最新价'] - top_stocks_df['今开']) / top_stocks_df['今开'] * 100).round(2)
 
@@ -283,6 +344,7 @@ def get_concept_summary(date="20260213", save_dir='data', top_n=5):
     if concept_summary_df is None:
         try:
             concept_summary_df = ak.stock_board_concept_name_em()
+            concept_summary_df['总市值'] = concept_summary_df['总市值'].apply(transfer_value)
             # print(concept_summary_df)
         except Exception as e:
             print(f"⚠️ 获取概念板块数据失败: {e}")
@@ -321,6 +383,7 @@ def get_concept_cons(df, date="20260213", save_dir='data', top_n=15):
                 concept_cons_df = ak.stock_board_concept_cons_em(symbol=row['板块名称'])
                 # 取前top_n个成分股数据
                 concept_cons_df.sort_values(by='涨跌幅', ascending=False, inplace=True)
+                concept_cons_df['成交额'] = concept_cons_df['成交额'].apply(transfer_value)
                 concept_cons_df['所属板块'] = row['板块名称']
                 all_concept_cons.append(concept_cons_df)
                 concept_cons_df = concept_cons_df.head(top_n).copy()
@@ -432,16 +495,10 @@ def get_watchlist(top_amount_stocks_df,
     zt_temp = zt_pool_df.copy()
     if not zt_temp.empty:
         zt_temp['当前状态'] = '涨停'
-        zt_temp['成交额'] = zt_temp['成交额'] / 1e8 # 转换为亿元
-        zt_temp['流通市值'] = zt_temp['流通市值'] / 1e8
-        zt_temp['总市值'] = zt_temp['总市值'] / 1e8
     
     zb_temp = zb_pool_df.copy()
     if not zb_temp.empty:
         zb_temp['当前状态'] = '炸板'
-        zb_temp['成交额'] = zb_temp['成交额'] / 1e8 # 转换为亿元
-        zb_temp['流通市值'] = zb_temp['流通市值'] / 1e8
-        zb_temp['总市值'] = zb_temp['总市值'] / 1e8
     
     # 合并两个池子 
     combined_limit_df = pd.concat([zt_temp, zb_temp], ignore_index=True, sort=False)
@@ -517,7 +574,7 @@ draft: false
 
 ### 📊 市场核心快照
 - **上证指数**: {index_df.iloc[0]['最新价']} ({index_df.iloc[0]['涨跌幅']}%)
-- **全市场成交总额**: {index_df.iloc[0]['成交额(亿元)']:.2f} 亿
+- **全市场成交总额**: {index_df.iloc[0]['成交额(亿元)']}
 - **涨跌比**: {up_count} / {down_count}
 - **涨停/跌停/炸板数**: {len(zt_pool_df)} / {len(dt_pool_df)} / {len(zb_pool_df)}
 
@@ -536,23 +593,23 @@ draft: false
 
 - **各板块板块涨幅靠前个股**（按涨幅排序）
 
--- 板块1. {concept_cons_topn[0]['所属板块'].iloc[0]} --
+- 板块1. {concept_cons_topn[0]['所属板块'].iloc[0]}
 
 {concept_cons_topn[0].to_markdown(index=False)}
 
--- 板块2. {concept_cons_topn[1]['所属板块'].iloc[0]} --
+- 板块2. {concept_cons_topn[1]['所属板块'].iloc[0]}
 
 {concept_cons_topn[1].to_markdown(index=False)}
 
--- 板块3. {concept_cons_topn[2]['所属板块'].iloc[0]} --
+- 板块3. {concept_cons_topn[2]['所属板块'].iloc[0]}
 
 {concept_cons_topn[2].to_markdown(index=False)}
 
--- 板块4. {concept_cons_topn[3]['所属板块'].iloc[0]} --
+- 板块4. {concept_cons_topn[3]['所属板块'].iloc[0]}
 
 {concept_cons_topn[3].to_markdown(index=False)}
 
--- 板块5. {concept_cons_topn[4]['所属板块'].iloc[0]} --
+- 板块5. {concept_cons_topn[4]['所属板块'].iloc[0]}
 
 {concept_cons_topn[4].to_markdown(index=False)}
 
@@ -560,11 +617,11 @@ draft: false
 
 ### 💥 涨停/炸板个股
 
--- 涨停池 --
+- 涨停池
 
 {zt_pool_df.to_markdown(index=False)}
 
--- 炸板池 --
+- 炸板池
 
 {zb_pool_df.to_markdown(index=False)}
 
