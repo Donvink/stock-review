@@ -9,6 +9,7 @@ title = 'AI 股市导航'
 theme = "PaperMod"
 
 [params]
+    author = "LeoZhong"
     defaultTheme = "auto"
     # 在首页显示文章全文摘要，方便快速浏览资讯
     showFullContents = false 
