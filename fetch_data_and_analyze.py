@@ -638,29 +638,29 @@ date: A股全市场复盘 {date}
 ### 🏆 行业板块分析
 - **前五概念板块**（按涨幅排序）
 
-{concept_summary_df.to_markdown(index=False)}
+{concept_summary_df.to_markdown(index=False) if concept_summary_df is not None else "暂无概念板块数据"}
 
 - **各板块板块涨幅靠前个股**（按涨幅排序）
 
-- 板块1. {concept_cons_topn[0]['所属板块'].iloc[0]}
+- 板块1. {concept_cons_topn[0]['所属板块'].iloc[0] if concept_cons_topn is not None else "暂无数据"}
 
-{concept_cons_topn[0].to_markdown(index=False)}
+{concept_cons_topn[0].to_markdown(index=False) if concept_cons_topn is not None else "暂无数据"}
 
-- 板块2. {concept_cons_topn[1]['所属板块'].iloc[0]}
+- 板块2. {concept_cons_topn[1]['所属板块'].iloc[0] if concept_cons_topn is not None else "暂无数据"}
 
-{concept_cons_topn[1].to_markdown(index=False)}
+{concept_cons_topn[1].to_markdown(index=False) if concept_cons_topn is not None else "暂无数据"}
 
-- 板块3. {concept_cons_topn[2]['所属板块'].iloc[0]}
+- 板块3. {concept_cons_topn[2]['所属板块'].iloc[0] if concept_cons_topn is not None else "暂无数据"}
 
-{concept_cons_topn[2].to_markdown(index=False)}
+{concept_cons_topn[2].to_markdown(index=False) if concept_cons_topn is not None else "暂无数据"}
 
-- 板块4. {concept_cons_topn[3]['所属板块'].iloc[0]}
+- 板块4. {concept_cons_topn[3]['所属板块'].iloc[0] if concept_cons_topn is not None else "暂无数据"}
 
-{concept_cons_topn[3].to_markdown(index=False)}
+{concept_cons_topn[3].to_markdown(index=False) if concept_cons_topn is not None else "暂无数据"}
 
-- 板块5. {concept_cons_topn[4]['所属板块'].iloc[0]}
+- 板块5. {concept_cons_topn[4]['所属板块'].iloc[0] if concept_cons_topn is not None else "暂无数据"}
 
-{concept_cons_topn[4].to_markdown(index=False)}
+{concept_cons_topn[4].to_markdown(index=False) if concept_cons_topn is not None else "暂无数据"}
 
 ---
 
