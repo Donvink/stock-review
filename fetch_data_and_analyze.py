@@ -226,6 +226,9 @@ def fetch_all_stock_data(date='20260213', save_dir='data', max_retries=3):
 def get_latest_date(max_try=20):
     """获取最新可用数据的日期"""
     today = datetime.now().strftime("%Y%m%d")
+    if max_try <= 0:
+        return today
+
     try:
         zt_pool_df = ak.stock_lhb_detail_daily_sina(date=today)
         return today
@@ -372,6 +375,10 @@ def get_concept_summary(date="20260213", save_dir='data', top_n=5):
 
 def get_concept_cons(df, date="20260213", save_dir='data', top_n=15):
     """获取概念板块成分股信息"""
+    if df is None or df.empty:
+        print("⚠️ 概念板块数据为空，无法获取成分股信息。")
+        return None, None
+
     all_concept_cons = [] # 用于存储所有概念板块成分股数据
     all_concept_cons_topn = [] # 用于存储所有概念板块成分股数据
 
@@ -403,7 +410,7 @@ def get_concept_cons(df, date="20260213", save_dir='data', top_n=15):
                 time.sleep(0.5) # 避免请求过快被封
         except Exception as e:
             print(f"⚠️ 获取概念板块成分股数据失败: {e}")
-            return None
+            return None, None
     
     print("-" * 30)
     all_concept_cons_df = pd.concat(all_concept_cons_topn, ignore_index=True)
@@ -472,11 +479,11 @@ def get_watchlist(top_amount_stocks_df,
     # --- 1. 建立前五板块的成员名称库 ---
     # 合并前五个板块的所有成分股，仅提取名称用于匹配
     top_5_member_names = set()
-    for df in concept_cons[:5]:
-        if not df.empty:
-            name_col = '名称' if '名称' in df.columns else '股票名称'
-            top_5_member_names.update(df[name_col].tolist())
-
+    if concept_cons is not None:
+        for df in concept_cons[:5]:
+            if not df.empty:
+                name_col = '名称' if '名称' in df.columns else '股票名称'
+                top_5_member_names.update(df[name_col].tolist())
     # --- 2. 准备其他异动池名称 ---
     zt_names = set(zt_pool_df['名称']) if not zt_pool_df.empty else set()
     zb_names = set(zb_pool_df['名称']) if not zb_pool_df.empty else set()
@@ -819,9 +826,9 @@ def analyze_market_with_ai(market_summary, date='20260213', save_dir='data'):
 
     return response.text
 
-def prepare_date_and_directory():
+def prepare_date_and_directory(backtrack_days=20):
     """准备最新日期和数据目录"""
-    latest_date = get_latest_date()
+    latest_date = get_latest_date(backtrack_days)
     # latest_date = datetime.now().strftime("%Y%m%d")
     if latest_date is None:
         print("❌ 无法确定最新数据日期，脚本终止。")
@@ -833,7 +840,7 @@ def prepare_date_and_directory():
     return latest_date, save_dir
 
 if __name__ == "__main__":
-    latest_date, save_dir = prepare_date_and_directory()
+    latest_date, save_dir = prepare_date_and_directory(0)
     market_summary = fetch_and_save(date=latest_date, save_dir=save_dir)
     print("市场数据汇总已生成，正在进行AI分析...")
     ai_analysis = analyze_market_with_ai(market_summary, date=latest_date, save_dir=save_dir)
