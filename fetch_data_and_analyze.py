@@ -489,8 +489,11 @@ def get_watchlist(top_amount_stocks_df,
     zb_names = set(zb_pool_df['名称']) if not zb_pool_df.empty else set()
     dt_names = set(dt_pool_df['名称']) if not dt_pool_df.empty else set()
     
-    lhb_col = '名称' if '名称' in lhb_df.columns else '股票名称'
-    lhb_names = set(lhb_df[lhb_col]) if not lhb_df.empty else set()
+    if lhb_df is not None and not lhb_df.empty:
+        lhb_col = '名称' if '名称' in lhb_df.columns else '股票名称'
+        lhb_names = set(lhb_df[lhb_col])
+    else:
+        lhb_names = set()
 
     # --- 3. 构造 watchlist1 ---
     # 条件：在 top_amount_stocks_df 中，且满足 (涨/跌/炸/龙/前五板块成员) 任意一个
@@ -678,7 +681,7 @@ date: A股全市场复盘 {date}
 
 ### 🚀 龙虎榜
 
-{lhb_df.to_markdown(index=False)}
+{lhb_df.to_markdown(index=False) if lhb_df is not None else "暂无龙虎榜数据"}
 
 ---
 
