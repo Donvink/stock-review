@@ -620,7 +620,7 @@ def create_content(
     file_path = f"{save_dir}/market_summary_{date}.md"
 
     content = f"""---
-date: A股全市场复盘 {date} 
+A股全市场复盘 {date} 
 ---
 
 
