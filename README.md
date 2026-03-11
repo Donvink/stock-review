@@ -77,8 +77,8 @@ pip install akshare pandas tabulate google-genai
 For security, never hardcode your keys. Use a `.env` file locally or configure **GitHub Secrets**:
 
 * `GEMINI_API_KEY`: Your Google AI API key.
-* `WECHAT_APPID`: Your WeChat Official Account AppID.
-* `WECHAT_SECRET`: Your WeChat Official Account AppSecret.
+* `WECHAT_APP_ID`: Your WeChat Official Account AppID.
+* `WECHAT_APP_SECRET`: Your WeChat Official Account AppSecret.
 
 ### 4. Execution
 
