@@ -1,14 +1,13 @@
-"""博客发布模块"""
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 import pytz
 
-from skills.stock_review.utils.logger import get_logger
-from skills.stock_review.config.settings import Settings
+from utils.logger import get_logger
+from config import Settings
 
 class BlogPoster:
-    """Hugo博客发布器"""
+    """Hugo Blog Poster"""
     
     def __init__(self, config: Settings):
         self.config = config
@@ -16,26 +15,28 @@ class BlogPoster:
     
     def create_post(self, market_summary: str, ai_analysis: Optional[str], date: str) -> Path:
         """
-        创建Hugo博客文章
+        Create a Hugo blog post with market summary and AI analysis
         
         Args:
-            market_summary: 市场汇总Markdown
-            ai_analysis: AI分析Markdown
-            date: 日期
+            market_summary: market summary Markdown
+            ai_analysis: AI analysis Markdown
+            date: date
             
         Returns:
-            文章路径
+            post path
         """
-        # 处理时区
-        swiss_tz = pytz.timezone('Europe/Zurich')
-        safe_now = datetime.now(swiss_tz) - timedelta(minutes=10)
-        
+        # use local timezone
+        now = datetime.now().astimezone()
+        safe_now = now - timedelta(minutes=10)
+
         date_filename = safe_now.strftime("%Y-%m-%d")
         formatted_date = safe_now.strftime("%Y-%m-%dT%H:%M:%S%z")
-        
-        # 插入冒号到时区偏移
-        if len(formatted_date) > 5:
+
+        # RFC3339 format requires a colon in the timezone offset, e.g. +08:00 instead of +0800
+        if len(formatted_date) > 5 and formatted_date[-5:-4] not in '+-':
             formatted_date = formatted_date[:-2] + ':' + formatted_date[-2:]
+
+        # print(f"time: {formatted_date}")
         
         filename = self.config.content_dir / f"stock-analysis-{date_filename}.md"
         display_title = f"A股全市场复盘：{date_filename} 深度解析及AI洞察"

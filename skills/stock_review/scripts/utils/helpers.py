@@ -1,5 +1,3 @@
-"""通用工具函数模块"""
-
 import pandas as pd
 import numpy as np
 from pathlib import Path

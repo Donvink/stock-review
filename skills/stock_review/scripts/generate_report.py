@@ -1,14 +1,13 @@
-"""报告生成模块"""
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional
 import pandas as pd
 
-from skills.stock_review.utils.logger import get_logger
-from skills.stock_review.config.settings import Settings
+from utils.logger import get_logger
+from config import Settings
 
 class ReportGenerator:
-    """报告生成器"""
+    """Report Generator for Stock Review"""
     
     def __init__(self, config: Settings):
         self.config = config
@@ -16,14 +15,26 @@ class ReportGenerator:
     
     def create_market_summary(self, market_data: Dict, date: str) -> str:
         """
-        创建市场数据汇总Markdown
+        Create market summary Markdown report
         
         Args:
-            market_data: 市场数据字典
-            date: 日期
+            market_data: market data dictionary, can include:
+                - index: DataFrame of market indices
+                - zt: DataFrame of 涨停个股
+                - dt: DataFrame of 跌停个股
+                - zb: DataFrame of 炸板个股
+                - up_count: number of 上涨个股
+                - down_count: number of 下跌个股
+                - top_amount: DataFrame of 成交额前二十个股
+                - concept: DataFrame of 概念板块
+                - concept_cons: list of DataFrame of 板块成分股
+                - lhb: DataFrame of 龙虎榜
+                - watchlist1: DataFrame of 大额异动池
+                - watchlist2: DataFrame of 风口涨停池
+            date: report date in YYYYMMDD format
             
         Returns:
-            Markdown格式的市场汇总
+           conclusion of market summary in Markdown format
         """
         save_dir = self.config.data_dir / date
         file_path = save_dir / f"market_summary_{date}.md"
@@ -45,68 +56,92 @@ class ReportGenerator:
         w1_df = market_data.get('watchlist1', pd.DataFrame())
         w2_df = market_data.get('watchlist2', pd.DataFrame())
         
-        # 构建内容
+        # create report content
         content = []
         content.append(f"# A股全市场复盘 {date}\n")
         
-        # 市场快照
-        if not index_df.empty:
-            content.append("## 📊 市场核心快照")
-            content.append(f"- **上证指数**: {index_df.iloc[0]['最新价']:.2f} ({index_df.iloc[0]['涨跌幅']:.2f}%)")
-            if len(index_df) > 2:
-                content.append(f"- **全市场成交总额**: {index_df.iloc[2]['成交额(亿元)']}")
-            content.append(f"- **涨跌比**: {up_count} / {down_count}")
-            content.append(f"- **涨停/跌停/炸板数**: {len(zt_df)} / {len(dt_df)} / {len(zb_df)}\n")
+        # market snapshot
+        if index_df is not None:
+            if not index_df.empty:
+                content.append("## 📊 市场核心快照")
+                content.append(f"- **上证指数**: {index_df.iloc[0]['最新价']:.2f} ({index_df.iloc[0]['涨跌幅']:.2f}%)")
+                if len(index_df) > 2:
+                    content.append(f"- **全市场成交总额**: {index_df.iloc[2]['成交额(亿元)']}")
+                content.append(f"- **涨跌比**: {up_count} / {down_count}")
+                content.append(f"- **涨停/跌停/炸板数**: {len(zt_df)} / {len(dt_df)} / {len(zb_df)}\n")
+        else:
+            content.append("## 📊 市场核心快照\n暂无数据\n")
         
-        # 成交额前二十
-        if not top_amount.empty:
-            content.append("## 🔍 成交额前二十个股")
-            content.append(self._df_to_markdown(top_amount))
+        # top amount stocks
+        if top_amount is not None:
+            if not top_amount.empty:
+                content.append("## 🔍 成交额前二十个股")
+                content.append(self._df_to_markdown(top_amount))
+        else:
+            content.append("## 🔍 成交额前二十个股\n暂无数据\n")
         
-        # 概念板块
-        if not concept.empty:
-            content.append("## 🏆 概念板块分析")
-            content.append("**前五概念板块**（按涨幅排序）")
-            content.append(self._df_to_markdown(concept))
+        # concept analysis
+        if concept is not None:
+            if not concept.empty:
+                content.append("## 🏆 概念板块分析")
+                content.append("**前五概念板块**（按涨幅排序）")
+                content.append(self._df_to_markdown(concept))
+        else:
+            content.append("## 🏆 概念板块分析\n暂无数据\n")
         
-        # 板块成分股
-        if concept_cons:
+        # concept constituents
+        if concept_cons is not None and len(concept_cons) > 0:
             content.append("### 各板块涨幅靠前个股")
             for i, cons_df in enumerate(concept_cons[:5]):
                 if not cons_df.empty:
                     board_name = cons_df['所属板块'].iloc[0] if '所属板块' in cons_df.columns else f"板块{i+1}"
                     content.append(f"**{board_name}**")
                     content.append(self._df_to_markdown(cons_df))
+        else:
+            content.append("### 各板块涨幅靠前个股\n暂无数据\n")
         
-        # 涨停炸板
-        if not zt_df.empty:
-            content.append("## 💥 涨停个股")
-            content.append(self._df_to_markdown(zt_df))
+        # limit up/down stocks
+        if zt_df is not None:
+            if not zt_df.empty:
+                content.append("## 💥 涨停个股")
+                content.append(self._df_to_markdown(zt_df))
+        else:
+            content.append("## 💥 涨停个股\n暂无数据\n")
         
-        if not zb_df.empty:
-            content.append("## 💔 炸板个股")
-            content.append(self._df_to_markdown(zb_df))
+        if zb_df is not None:
+            if not zb_df.empty:
+                content.append("## 💔 炸板个股")
+                content.append(self._df_to_markdown(zb_df))
+        else:
+            content.append("## 💔 炸板个股\n暂无数据\n")
         
         # 龙虎榜
-        if not lhb_df.empty:
-            content.append("## 🚀 龙虎榜")
-            content.append(self._df_to_markdown(lhb_df))
+        if lhb_df is not None:
+            if not lhb_df.empty:
+                content.append("## 🚀 龙虎榜")
+                content.append(self._df_to_markdown(lhb_df))
+        else:
+            content.append("## 🚀 龙虎榜\n暂无数据\n")
         
         # Watchlist
-        if not w1_df.empty:
-            content.append("## ⭐ 重点个股 Watchlist")
-            content.append("### 大额异动池")
-            content.append(self._df_to_markdown(w1_df))
+        if w1_df is not None:
+            if not w1_df.empty:
+                content.append("## ⭐ 重点个股 Watchlist")
+                content.append("### 大额异动池")
+                content.append(self._df_to_markdown(w1_df))
         
-        if not w2_df.empty:
-            content.append("### 风口涨停池")
-            content.append(self._df_to_markdown(w2_df))
+        if w2_df is not None:
+            if not w2_df.empty:
+                content.append("### 风口涨停池")
+                content.append(self._df_to_markdown(w2_df))
+        else:
+            content.append("### 风口涨停池\n暂无数据\n")
         
         content.append("\n---\n*数据来源：AKShare*")
         
         full_content = "\n\n".join(content)
         
-        # 保存
+        # save report
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(full_content)
         
@@ -115,18 +150,22 @@ class ReportGenerator:
     
     def generate_all(self, market_data: Dict, market_summary: str, ai_analysis: Optional[str], date: str) -> Dict[str, Path]:
         """
-        生成所有报告
+        Generate all reports and save to files
         
         Returns:
-            报告路径字典
+            dictionary of report paths, e.g.:
+            {
+                'market_summary': Path('data/20260101/market_summary_20260101.md'),
+                'ai_analysis': Path('data/20260101/ai_analysis_20260101.md')
+            }
         """
         save_dir = self.config.data_dir / date
         reports = {}
         
-        # 市场汇总已生成
+        # market summary report has been generated
         reports['market_summary'] = save_dir / f"market_summary_{date}.md"
         
-        # AI分析
+        # AI analysis report
         if ai_analysis:
             ai_path = save_dir / f"ai_analysis_{date}.md"
             with open(ai_path, 'w', encoding='utf-8') as f:
@@ -136,11 +175,13 @@ class ReportGenerator:
         return reports
     
     def _df_to_markdown(self, df: pd.DataFrame) -> str:
-        """DataFrame转Markdown表格"""
+        """
+        DataFrame to Markdown table, with some formatting for better display in reports
+        """
         if df.empty:
             return "暂无数据"
         
-        # 限制列宽
+        # limit column width for better display in Markdown
         display_df = df.copy()
         for col in display_df.columns:
             if display_df[col].dtype == 'object':

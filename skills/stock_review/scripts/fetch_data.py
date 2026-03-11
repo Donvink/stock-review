@@ -61,28 +61,28 @@ class DataFetcher:
                 self.logger.info(f"Using cached data for {date}")
                 return cached_data
         
-        # 获取新数据
+        # get data
         data = {}
         
-        # 1. 指数数据
+        # 1. index data
         data['index'] = self._fetch_index(date, save_dir)
         
-        # 2. 涨停跌停数据
+        # 2. limit up/down and special treatment stocks
         data['zt'], data['dt'], data['zb'] = self._fetch_zt_dt(date, save_dir)
         
-        # 3. 全市场数据
+        # 3. all stocks data and summary statistics
         data['all_stocks'], data['up_count'], data['down_count'], _ = self._fetch_all_stocks(date, save_dir)
         
-        # 4. 成交额前20
+        # 4. top amount stocks
         data['top_amount'] = self._fetch_top_amount(data['all_stocks'], date, save_dir)
         
-        # 5. 概念板块
+        # 5. concept板块
         data['concept'] = self._fetch_concept(date, save_dir)
         
-        # 6. 概念成分股
+        # 6. concept cons, only for top 5 concepts
         data['concept_cons'] = self._fetch_concept_cons(data['concept'], date, save_dir)
         
-        # 7. 龙虎榜
+        # 7. lhb data
         data['lhb'] = self._fetch_lhb(date, save_dir)
         
         # 8. Watchlist
@@ -92,10 +92,10 @@ class DataFetcher:
         return data
     
     def _load_cached_data(self, date: str, save_dir: Path) -> Optional[Dict]:
-        """加载缓存数据"""
-        # 这里可以检查关键文件是否存在
+        """Load cached data if all key files exist, otherwise return None"""
         required_files = [
             f"index_{date}.csv",
+            f"A_stock_{date}.csv",
             f"zt_pool_{date}.csv",
             f"top_amount_stocks_{date}.csv"
         ]
@@ -104,11 +104,10 @@ class DataFetcher:
             if not (save_dir / file).exists():
                 return None
         
-        # 简单返回一个标记，表示有缓存
         return {'cached': True, 'date': date}
     
     def _fetch_index(self, date: str, save_dir: Path) -> pd.DataFrame:
-        """获取指数数据"""
+        """Get index data"""
         file_path = save_dir / f"index_{date}.csv"
         
         if file_path.exists():
@@ -119,11 +118,11 @@ class DataFetcher:
             target_indices = ["sh000001", "sz399001"]
             result = index_df[index_df['代码'].isin(target_indices)].copy()
             
-            # 处理成交额
+            # calculate total amount for the two indices
             result['成交额'] = pd.to_numeric(result['成交额'])
             total_amount = result['成交额'].sum()
             
-            # 添加汇总行
+            # add summary row
             summary_row = {
                 '代码': 'Total',
                 '名称': '沪深总成交额',
@@ -144,7 +143,7 @@ class DataFetcher:
             return pd.DataFrame()
     
     def _fetch_zt_dt(self, date: str, save_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        """获取涨停跌停数据"""
+        """Get limit up/down and special treatment stocks"""
         zt_path = save_dir / f"zt_pool_{date}.csv"
         dt_path = save_dir / f"dt_pool_{date}.csv"
         zb_path = save_dir / f"zb_pool_{date}.csv"
@@ -163,7 +162,7 @@ class DataFetcher:
             time.sleep(self.config.request_delay)
             zb_df = ak.stock_zt_pool_zbgc_em(date=date)
             
-            # 处理数据
+            # format values
             for df in [zt_df, dt_df, zb_df]:
                 if '成交额' in df.columns:
                     df['成交额'] = df['成交额'].apply(self._format_value)
@@ -172,7 +171,7 @@ class DataFetcher:
                 if '总市值' in df.columns:
                     df['总市值'] = df['总市值'].apply(self._format_value)
             
-            # 保存
+            # save
             zt_df.to_csv(zt_path, index=False, encoding="utf-8-sig")
             dt_df.to_csv(dt_path, index=False, encoding="utf-8-sig")
             zb_df.to_csv(zb_path, index=False, encoding="utf-8-sig")
@@ -184,7 +183,7 @@ class DataFetcher:
             return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
     
     def _fetch_all_stocks(self, date: str, save_dir: Path, max_retries: int = 3) -> Tuple[pd.DataFrame, int, int, int]:
-        """获取全市场股票数据"""
+        """Get all stocks data and calculate summary statistics (up/down/flat count)"""
         file_path = save_dir / f"A_stock_{date}.csv"
         
         if file_path.exists():
@@ -209,7 +208,7 @@ class DataFetcher:
             if not success:
                 return pd.DataFrame(), 0, 0, 0
         
-        # 计算涨跌数
+        # calculate up/down/flat count
         df['涨跌'] = df['涨跌幅'].apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
         up_count = df[df['涨跌'] == 1].shape[0]
         down_count = df[df['涨跌'] == -1].shape[0]
@@ -218,7 +217,7 @@ class DataFetcher:
         return df, up_count, down_count, flat_count
     
     def _fetch_top_amount(self, all_stocks_df: pd.DataFrame, date: str, save_dir: Path) -> pd.DataFrame:
-        """获取成交额前20"""
+        """Get top 20 stocks by amount"""
         file_path = save_dir / f"top_amount_stocks_{date}.csv"
         
         if file_path.exists():
@@ -238,7 +237,7 @@ class DataFetcher:
             return pd.DataFrame()
     
     def _fetch_concept(self, date: str, save_dir: Path, top_n: int = 5) -> pd.DataFrame:
-        """获取概念板块"""
+        """Get concept data"""
         file_path = save_dir / f"concept_summary_{date}.csv"
         
         if file_path.exists():
@@ -257,7 +256,7 @@ class DataFetcher:
             return pd.DataFrame()
     
     def _fetch_concept_cons(self, concept_df: pd.DataFrame, date: str, save_dir: Path) -> list:
-        """获取概念成分股"""
+        """Get concept cons data for top concepts"""
         if concept_df.empty:
             return []
         
@@ -287,7 +286,7 @@ class DataFetcher:
         return cons_list
     
     def _fetch_lhb(self, date: str, save_dir: Path) -> pd.DataFrame:
-        """获取龙虎榜数据"""
+        """Get LHB data"""
         file_path = save_dir / f"lhb_{date}.csv"
         
         if file_path.exists():
@@ -296,7 +295,7 @@ class DataFetcher:
         try:
             lhb_df = ak.stock_lhb_detail_daily_sina(date=date)
             
-            # 过滤ST股
+            # filter ST stocks
             col_name = '名称' if '名称' in lhb_df.columns else '股票名称'
             lhb_df = lhb_df[~lhb_df[col_name].str.contains('ST', case=False, na=False)].copy()
             lhb_df.drop_duplicates(subset=[col_name], inplace=True)
@@ -311,7 +310,7 @@ class DataFetcher:
             return pd.DataFrame()
     
     def _create_watchlist(self, data: Dict, date: str, save_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """创建Watchlist"""
+        """Create watchlist"""
         file_path1 = save_dir / f"watchlist1_{date}.csv"
         file_path2 = save_dir / f"watchlist2_{date}.csv"
         
@@ -328,14 +327,14 @@ class DataFetcher:
         if top_amount.empty:
             return pd.DataFrame(), pd.DataFrame()
         
-        # 前五板块成员
+        # Top 5 concept members
         top_members = set()
         for df in concept_cons[:5]:
             if not df.empty:
                 name_col = '名称' if '名称' in df.columns else '股票名称'
                 top_members.update(df[name_col].tolist())
         
-        # 异动池名称
+        # names in zt/dt/zb/lhb and top concept members
         zt_names = set(zt_df['名称']) if not zt_df.empty else set()
         zb_names = set(zb_df['名称']) if not zb_df.empty else set()
         dt_names = set(dt_df['名称']) if not dt_df.empty else set()
@@ -360,14 +359,14 @@ class DataFetcher:
         else:
             w2_df = pd.DataFrame()
         
-        # 保存
+        # save
         w1_df.to_csv(file_path1, index=False, encoding="utf-8-sig")
         w2_df.to_csv(file_path2, index=False, encoding="utf-8-sig")
         
         return w1_df, w2_df
     
     def _format_value(self, value) -> str:
-        """格式化数值为亿元/万元"""
+        """Format value to string with unit"""
         if pd.isna(value):
             return value
         try:

@@ -1,15 +1,14 @@
-"""微信公众号发布模块"""
 import requests
 import json
 from typing import Optional, Dict
 from pathlib import Path
 import markdown
 
-from skills.stock_review.utils.logger import get_logger
-from skills.stock_review.config.settings import Settings
+from utils.logger import get_logger
+from config import Settings
 
 class WeChatPoster:
-    """微信公众号发布器"""
+    """WeChat Official Account Poster"""
     
     def __init__(self, config: Settings):
         self.config = config
@@ -19,30 +18,30 @@ class WeChatPoster:
     
     def create_draft(self, market_summary: str, ai_analysis: Optional[str], date: str) -> Optional[str]:
         """
-        创建微信公众号草稿
+        Create a WeChat Official Account draft
         
         Args:
-            market_summary: 市场汇总Markdown
-            ai_analysis: AI分析Markdown
-            date: 日期
+            market_summary: market summary Markdown
+            ai_analysis: AI analysis Markdown
+            date: date
             
         Returns:
-            草稿ID
+            draft ID
         """
         if not self.config.has_wechat:
             self.logger.warning("WeChat credentials not configured")
             return None
         
         try:
-            # 获取access token
+            # get access token
             token = self._get_access_token()
             if not token:
                 return None
             
-            # 构建文章内容
+            # create content
             content = self._build_content(market_summary, ai_analysis, date)
             
-            # 上传草稿
+            # create draft
             url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={token}"
             
             data = {
@@ -72,7 +71,7 @@ class WeChatPoster:
             return None
     
     def _get_access_token(self) -> Optional[str]:
-        """获取微信access token"""
+        """Get access token"""
         url = f"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={self.config.wechat_app_id}&secret={self.config.wechat_app_secret}"
         
         try:
@@ -89,8 +88,8 @@ class WeChatPoster:
             return None
     
     def _build_content(self, market_summary: str, ai_analysis: Optional[str], date: str) -> str:
-        """构建微信文章HTML内容"""
-        # 转换Markdown为HTML
+        """Build WeChat article HTML content"""
+        # Convert Markdown to HTML
         md = markdown.Markdown(extensions=['extra', 'toc'])
         
         content_html = md.convert(market_summary)
@@ -99,7 +98,7 @@ class WeChatPoster:
             ai_html = md.convert(ai_analysis)
             content_html += f"<h2>🤖 AI深度分析与洞察</h2>{ai_html}"
         
-        # 添加样式
+        # add some basic styling for better display in WeChat articles
         style = """
         <style>
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 100%; margin: 0 auto; padding: 15px; }
@@ -119,6 +118,6 @@ class WeChatPoster:
         return full_content
     
     def _get_thumb_media_id(self) -> str:
-        """获取封面图片media_id"""
-        # 这里可以返回固定的封面图ID
+        """Get cover image media_id"""
+        # This can return a fixed cover image ID
         return ""
