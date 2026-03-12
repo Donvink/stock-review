@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install akshare pandas tabulate google-genai
+          pip install -r requirements.txt
 
       - name: Run Stock Script
         env:
