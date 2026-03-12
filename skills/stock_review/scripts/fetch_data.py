@@ -21,6 +21,9 @@ class DataFetcher:
     def get_latest_date(self) -> str:
         """Get latest available data date"""
         today = datetime.now().strftime("%Y%m%d")
+
+        if self.config.backtrack_days <= 0:
+            return today
         
         try:
             # Try to fetch data for today
@@ -57,7 +60,7 @@ class DataFetcher:
         # check cache
         if not force_refresh:
             cached_data = self._load_cached_data(date, save_dir)
-            if cached_data:
+            if cached_data is not None:
                 self.logger.info(f"Using cached data for {date}")
                 return cached_data
         
@@ -97,6 +100,9 @@ class DataFetcher:
             f"index_{date}.csv",
             f"A_stock_{date}.csv",
             f"zt_pool_{date}.csv",
+            f"dt_pool_{date}.csv",
+            f"zb_pool_{date}.csv",
+            f"lhb_{date}.csv",
             f"top_amount_stocks_{date}.csv"
         ]
         
@@ -300,7 +306,10 @@ class DataFetcher:
             lhb_df = lhb_df[~lhb_df[col_name].str.contains('ST', case=False, na=False)].copy()
             lhb_df.drop_duplicates(subset=[col_name], inplace=True)
             lhb_df.reset_index(drop=True, inplace=True)
-            lhb_df.insert(0, '序号', range(1, len(lhb_df) + 1))
+            if '序号' not in lhb_df.columns:
+                lhb_df.insert(0, '序号', range(1, len(lhb_df) + 1))
+            else:
+                self.logger.debug("'序号' column already exists, skipping insertion")
             
             lhb_df.to_csv(file_path, index=False, encoding="utf-8-sig")
             return lhb_df

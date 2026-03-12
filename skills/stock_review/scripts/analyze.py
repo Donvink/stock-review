@@ -35,7 +35,7 @@ class MarketAnalyzer:
         
         try:
             response = self.client.models.generate_content(
-                model=self.config.model_name or "gemini-2.5-flash",
+                model=self.config.model_name,
                 contents=prompt
             )
             

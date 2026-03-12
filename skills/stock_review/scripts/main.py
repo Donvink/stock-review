@@ -4,6 +4,8 @@ from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 from datetime import datetime
 import json
+from dotenv import load_dotenv
+import yaml
 
 # add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -19,17 +21,56 @@ from config import Settings
 class StockReview:
     """A-share market review and analysis skill main class"""
     
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, 
+                 config_path: Optional[str] = None,
+                #  env_file: Optional[str] = None,
+                 config: Optional[Dict[str, Any]] = None):
         """
-        Initialize the stock review
+        Initialize the stock review with flexible configuration options
         
         Args:
-            config: configurations, if None, will load from environment variables and .env files
-        """
-        self.config = Settings(config or {})
-        self.logger = setup_logger(__name__)
+            config_path: path to YAML/JSON configuration file
+            env_file: path to .env file (default: auto-discover)
+            config: direct dictionary config (highest priority)
         
-        # initialize components
+        Configuration priority (higher overrides lower):
+            1. Direct `config` dict argument
+            2. Environment variables
+            3. Configuration file (YAML/JSON)
+            4. Default values
+        """
+        self.logger = setup_logger(__name__)
+        # Load environment variables from .env file if specified
+        # if env_file:
+        #     load_dotenv(env_file)
+        #     self.logger.info(f"Loaded environment variables from: {env_file}")
+        # else:
+        #     # Auto-discover .env file in current directory or parent directories
+        #     load_dotenv()
+        #     self.logger.info("Auto-discovered and loaded .env file")
+        
+        # Initialize with empty config
+        self.config = {}
+
+        # Load from config file if provided
+        if config_path is None:
+            config_path = self._find_config_file()
+        
+        file_config = self._load_config_file(config_path)
+        self.config.update(file_config)
+        self.logger.info(f"Loaded config from: {config_path}")
+
+        # Override with direct config dict (highest priority)
+        if config:
+            self.config.update(config)
+            self.logger.info("Applied direct config overrides")
+
+        # Environment variables will be used by components via os.getenv
+
+        # Convert to Settings object
+        self.config = Settings(self.config)
+        
+        # Initialize components
         self.data_fetcher = DataFetcher(self.config)
         self.analyzer = MarketAnalyzer(self.config)
         self.report_generator = ReportGenerator(self.config)
@@ -37,32 +78,96 @@ class StockReview:
         self.wechat_poster = WeChatPoster(self.config) if self.config.has_wechat else None
         
         self.logger.info("StockReview initialized successfully")
+
+    def _find_config_file(self) -> str:
+        """Find configuration file in common locations"""
+        current_dir = Path(__file__).parent
+        project_root = current_dir.parent.parent
+        
+        possible_paths = [
+            project_root / "config.yaml",
+            current_dir / "../config.yaml",
+            current_dir / "../../config.yaml",
+            Path.cwd() / "config.yaml",
+            Path.home() / ".stock-review" / "config.yaml",
+        ]
+        
+        for path in possible_paths:
+            if path.exists():
+                self.logger.info(f"Found config at: {path}")
+                return str(path)
+        
+        # if not found, create default config at project root
+        default_path = project_root / "config.yaml"
+        self._create_default_config(default_path)
+        return str(default_path)
+
+    def _load_config_file(self, config_path: str) -> Dict[str, Any]:
+        """Load configuration from YAML or JSON file"""
+        path = Path(config_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Config file not found: {config_path}")
+        
+        if path.suffix in ['.yaml', '.yml']:
+            with open(path, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        elif path.suffix == '.json':
+            import json
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        else:
+            raise ValueError(f"Unsupported config file format: {path.suffix}")
     
-    def execute(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    def _create_default_config(self, path: Path) -> None:
+        """Create default configuration file (optional)"""
+        default_config = {
+            'review': {
+                'markets': ['shanghai', 'shenzhen', 'hongkong'],
+                'default_period': 'daily',
+                'date': None,
+                'force_refresh': False,
+                'skip_ai_analysis': False,
+                'platforms': ['hugo']
+            },
+            'paths': {
+                'data_dir': None
+            },
+            'parameters': {
+                'max_retries': 3,
+                'request_delay': 0.5,
+                'backtrack_days': 0
+            },
+            'models': {
+                'type': 'gemini',
+                'model_name': 'gemini-2.5-flash'
+            }
+        }
+        
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, 'w', encoding='utf-8') as f:
+            yaml.dump(default_config, f, allow_unicode=True)
+        
+        self.logger.info(f"Created default config at: {path}")
+
+    def execute(self) -> Dict[str, Any]:
         """
         Execute the full review and analysis process
         
         Args:
-            context: execution context, can include:
-                - date: specified date (YYYYMMDD)
-                - force_refresh: force refresh data
-                - skip_ai: skip AI analysis
-                - platforms: list of platforms to publish to ['hugo', 'wechat']
+            None (all parameters are taken from configuration)
         
         Returns:
             execution result dictionary
-        """
-        self.logger.info(f"Starting stock review execution with context: {context}")
-        
+        """        
         try:
             # 1. prepare parameters
-            date = context.get('date')
-            force_refresh = context.get('force_refresh', False)
-            skip_ai = context.get('skip_ai', False)
-            platforms = context.get('platforms', ['hugo'])
+            date = self.config.date
+            force_refresh = self.config.force_refresh
+            skip_ai_analysis = self.config.skip_ai_analysis
+            platforms = self.config.platforms
             
             # 2. get latest date if not specified
-            if not date:
+            if self.config.date is None:
                 date = self.data_fetcher.get_latest_date()
                 self.logger.info(f"Using latest available date: {date}")
             
@@ -80,7 +185,7 @@ class StockReview:
             
             # 5. AI analysis (optional)
             ai_analysis = None
-            if not skip_ai and self.config.gemini_api_key:
+            if not skip_ai_analysis and self.config.gemini_api_key:
                 ai_analysis = self.analyzer.analyze(market_summary)
                 self.logger.info("AI analysis completed")
             
@@ -148,3 +253,24 @@ class StockReview:
         except Exception as e:
             self.logger.error(f"Validation failed: {str(e)}")
             return False
+
+class PathJSONEncoder(json.JSONEncoder):
+    """Path and datetime to string for JSON serialization"""
+    
+    def default(self, obj):
+        if isinstance(obj, Path):
+            return str(obj)             # convert Path to string
+        if isinstance(obj, datetime):
+            return obj.isoformat()      # convert datetime to ISO format string
+        if hasattr(obj, '__dict__'):    # handle custom objects
+            return obj.__dict__
+        return super().default(obj)
+
+
+if __name__ == "__main__":
+    skill = StockReview()
+    if skill.validate():
+        result = skill.execute()
+        print(json.dumps(result, ensure_ascii=False, indent=2, cls=PathJSONEncoder))
+    else:
+        print("Configuration validation failed. Please check the logs for details.")    

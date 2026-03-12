@@ -39,9 +39,9 @@ class ReportGenerator:
         save_dir = self.config.data_dir / date
         file_path = save_dir / f"market_summary_{date}.md"
         
-        if file_path.exists() and not market_data.get('cached', False):
-            with open(file_path, 'r', encoding='utf-8') as f:
-                return f.read()
+        # if file_path.exists() and not market_data.get('cached', False):
+        #     with open(file_path, 'r', encoding='utf-8') as f:
+        #         return f.read()
         
         index_df = market_data.get('index', pd.DataFrame())
         zt_df = market_data.get('zt', pd.DataFrame())

@@ -4,30 +4,15 @@ from typing import Optional, Dict, Any
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
+
 @dataclass
 class Settings:
     """Configuration settings for Stock Review Skill"""
-    
-    # keys
-    gemini_api_key: Optional[str] = None
-    wechat_app_id: Optional[str] = None
-    wechat_app_secret: Optional[str] = None
-    
-    # path configurations
-    base_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent.parent)
-    data_dir: Path = None
-    content_dir: Path = None
-    
-    # execution settings
-    max_retries: int = 3
-    request_delay: float = 0.5
-    backtrack_days: int = 20
-    
+
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         config = config or {}
         
         # step 1. load .env files
-        # priority: project root > skill root > user config > XDG config
         self._load_env_files()
         
         # step 2. load environment variables with fallback to config dict
@@ -35,9 +20,6 @@ class Settings:
             'gemini_api_key': os.getenv('GEMINI_API_KEY'),
             'wechat_app_id': os.getenv('WECHAT_APP_ID'),
             'wechat_app_secret': os.getenv('WECHAT_APP_SECRET'),
-            'max_retries': int(os.getenv('MAX_RETRIES', '3')),
-            'request_delay': float(os.getenv('REQUEST_DELAY', '0.5')),
-            'backtrack_days': int(os.getenv('BACKTRACK_DAYS', '20')),
         }
         
         # step 3. merge config with environment variables
@@ -47,21 +29,39 @@ class Settings:
                 config[key] = value
         
         # step 4. set attributes
-        self.gemini_api_key = config.get('gemini_api_key')
-        self.wechat_app_id = config.get('wechat_app_id')
-        self.wechat_app_secret = config.get('wechat_app_secret')
-        self.max_retries = int(config.get('max_retries', self.max_retries))
-        self.request_delay = float(config.get('request_delay', self.request_delay))
-        self.backtrack_days = int(config.get('backtrack_days', self.backtrack_days))
-        
-        # step 5. set paths
-        self.base_dir = Path(config.get('base_dir', self.base_dir))
-        self.data_dir = self.base_dir / 'data'
+        # Extract each top-level configuration block
+        review_config = config.get('review', {})
+        paths_config = config.get('paths', {})
+        params_config = config.get('parameters', {})
+        models_config = config.get('models', {})
+
+        # set values from review block
+        self.date = review_config.get('date', None)
+        self.force_refresh = review_config.get('force_refresh', False)
+        self.skip_ai_analysis = review_config.get('skip_ai_analysis', False)
+        self.platforms = review_config.get('platforms', ['hugo'])
+
+        # set values from paths block
+        self.base_dir = Path(__file__).parent.parent.parent.parent
+        data_dir_value = paths_config.get('data_dir')
+        self.data_dir = self.base_dir / 'data' if data_dir_value is None else Path(data_dir_value)
         self.content_dir = self.base_dir / 'content' / 'posts'
-        
         # make sure directories exist
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.content_dir.mkdir(parents=True, exist_ok=True)
+
+        # set values from parameters block
+        self.max_retries = int(params_config.get('max_retries', 3))
+        self.request_delay = float(params_config.get('request_delay', 0.5))
+        self.backtrack_days = int(params_config.get('backtrack_days', 0))
+
+        # set values from models block
+        self.model_name = models_config.get('model_name', 'gemini-2.5-flash')
+
+        # step 5. set api keys from environment variables or config
+        self.gemini_api_key = config.get('gemini_api_key')
+        self.wechat_app_id = config.get('wechat_app_id')
+        self.wechat_app_secret = config.get('wechat_app_secret')
         
         # step 6. validate necessary configurations
         self._validate()
@@ -88,7 +88,7 @@ class Settings:
         loaded_files = []
         for env_path in search_paths:
             if env_path.exists():
-                load_dotenv(env_path, override=False)
+                load_dotenv(env_path, override=True)
                 loaded_files.append(str(env_path))
         
         if loaded_files:
