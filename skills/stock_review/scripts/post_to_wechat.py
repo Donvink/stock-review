@@ -53,12 +53,22 @@ class WeChatPoster:
             
             # 4. Upload cover image and get media_id
             thumb_media_id = None
-            if cover_image_path and os.path.exists(cover_image_path):
-                thumb_media_id = self._upload_image_as_thumb(token, cover_image_path)
-            else:
+            if cover_image_path is None or not os.path.exists(cover_image_path):
                 self.logger.warning("No cover image provided, using default")
                 # 使用默认封面图或留空
-                thumb_media_id = self._get_default_thumb_media_id()
+                # thumb_media_id = self._get_default_thumb_media_id()
+                possible_covers = [
+                    Path.cwd() / "cover.jpg",
+                    Path(__file__).parent / "cover.jpg",
+                    Path(__file__).parent.parent / "cover.jpg",
+                    Path(__file__).parent.parent.parent / "cover.jpg",
+                ]
+                for p in possible_covers:
+                    if p.exists():
+                        cover_image_path = str(p)
+                        print(f"✅ 使用默认封面: {cover_image_path}")
+                        break
+            thumb_media_id = self._upload_image_as_thumb(token, cover_image_path)
             
             if not thumb_media_id:
                 self.logger.error("No valid cover image media_id")
