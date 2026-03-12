@@ -8,7 +8,7 @@ review:
   date: null                        # can be specific date "YYYYMMDD" like "20260101" or null for today
   force_refresh: false              # whether to force refresh data even if cached data is available
   skip_ai_analysis: false           # whether to skip AI analysis and just return raw data
-  platforms: ["hugo"]               # platforms to publish the report, e.g. ['hugo', 'wechat'] or ['hugo'] or ['wechat']
+  platforms: ["hugo", 'wechat']               # platforms to publish the report, e.g. ['hugo', 'wechat'] or ['hugo'] or ['wechat']
 
 paths:
   data_dir: null                    # directory to store fetched data and cache, null means current project directory
