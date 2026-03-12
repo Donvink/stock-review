@@ -320,9 +320,10 @@ def main():
     from config import Settings
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--date', type=str, default="20260312", help='Date for the article')
-    parser.add_argument('--md-file', type=str, default="skills/stock_review/stock-analysis-2026-03-12_example.md", help='Markdown file path')
-    parser.add_argument('--cover', type=str, default="skills/stock_review/cover.jpg", help='Cover image path')
+    parser.add_argument('--date', type=str, help='Date for the article with format YYYYMMDD, e.g. 20260312')
+    parser.add_argument('--market-summary-file', type=str, default=None, help='Markdown file path')
+    parser.add_argument('--ai-analysis-file', type=str, default=None, help='Markdown file path')
+    parser.add_argument('--cover-file', type=str, default="skills/stock_review/cover.jpg", help='Cover image path')
     parser.add_argument('--title', type=str, default="Test Article", help='Article title')
     args = parser.parse_args()
     
@@ -332,22 +333,26 @@ def main():
     poster = WeChatPoster(config)
     
     # 准备测试数据
-    date = args.date
+    date = args.date or "20260312"
     
     # 如果指定了 Markdown 文件，从文件读取
-    if args.md_file and Path(args.md_file).exists():
-        with open(args.md_file, 'r', encoding='utf-8') as f:
+    if args.market_summary_file and Path(args.market_summary_file).exists():
+        with open(args.market_summary_file, 'r', encoding='utf-8') as f:
             market_summary = f.read()
-        print(f"✅ 从文件读取 Markdown: {args.md_file}")
+        print(f"✅ 从文件读取 Markdown: {args.market_summary_file}")
     else:
-        # 否则使用内置示例 Markdown
-        market_summary = f"""# A股全市场复盘：{date} 深度解析"""
-        print(f"❗️ 使用内置示例 Markdown")
-        
-    ai_analysis = f"""# A股全市场复盘：{date} 深度解析"""
+        print(f"❗️ 未指定 Markdown 文件")
     
+    # 如果指定了 Markdown 文件，从文件读取
+    if args.ai_analysis_file and Path(args.ai_analysis_file).exists():
+        with open(args.ai_analysis_file, 'r', encoding='utf-8') as f:
+            ai_analysis = f.read()
+        print(f"✅ 从文件读取 Markdown: {args.ai_analysis_file}")
+    else:
+        print(f"❗️ 未指定 Markdown 文件")
+
     # 封面图片路径
-    cover_image = args.cover
+    cover_image = args.cover_file
     if not cover_image:
         # 尝试查找默认封面
         possible_covers = [

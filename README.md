@@ -1,9 +1,35 @@
 # 🚀 Stock Analysis AI Navigator
 
+English | [中文](./README.zh.md)
+
 👉 **[Live AI Stock Review Blog](https://donvink.github.io/stock-review/)**
 
 An automated stock market analysis system powered by **Gemini**. This project leverages Linux-driven automation to fetch global market data, generate deep A-股 (A-share) daily reviews, and sync them seamlessly to both a **[Hugo blog](https://donvink.github.io/stock-review/)** and **WeChat Official Account**.
 
+## Prerequisites
+
+- Node.js environment installed
+- Ability to run `npx bun` commands
+
+## Installation
+
+**Option 1: Ask the Agent (Recommended)**
+
+Simply tell OpenClaw:
+
+> Please install Skills from github.com/Donvink/stock-review
+
+**Option 2: Quick Install**
+
+```bash
+npx skills add Donvink/stock-review
+```
+
+**Option 3: Install from ClawHub**
+
+```bash
+clawhub install stock-review
+```
 
 ### 🖥️ Homepage Overview
 ![Main Dashboard](./imgs/overview.jpg) 
@@ -14,7 +40,7 @@ An automated stock market analysis system powered by **Gemini**. This project le
 ### 📈 AI Analysis Example
 The system generates multi-dimensional reports based on real-time market data. You can view a full sample report generated on March 4, 2026, here:
 
-👉 **[View Sample AI Report: March 4, 2026](https://www.google.com/search?q=./data/20260304/ai_analysis_20260304.md)**
+👉 **[View Sample AI Report: March 4, 2026](https://github.com/Donvink/stock-review/blob/main/data/20260304/ai_analysis_20260304.md)**
 
 **Key Insights from this Report:**
 
@@ -68,7 +94,7 @@ cd stock-review
 Ensure you have Python 3.10+ installed. Install the required dependencies:
 
 ```bash
-pip install akshare pandas tabulate google-genai
+pip install -r requirements.txt
 
 ```
 
@@ -85,7 +111,8 @@ For security, never hardcode your keys. Use a `.env` file locally or configure *
 **To manually generate and upload a report:**
 
 ```bash
-python fetch_data_and_analyze.py
+cd skills/stock_review/scripts
+python main.py
 
 ```
 

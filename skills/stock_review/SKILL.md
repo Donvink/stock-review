@@ -1,6 +1,6 @@
 ---
 name: stock-review
-description: A股市场自动化复盘分析系统，基于Gemini AI生成每日市场洞察报告，支持发布到Hugo博客和微信公众号
+description: A-share market automated review and analysis system, generating daily market insights with Gemini AI, supporting publishing to Hugo blog and WeChat Official Account
 version: 1.0.0
 metadata:
   openclaw:
@@ -13,370 +13,358 @@ metadata:
 
 # 🚀 Stock Review
 
-👉 **[在线演示博客](https://donvink.github.io/stock-review/)**
+👉 **[Live Demo Blog](https://donvink.github.io/stock-review/)**
 
 ## Language
 
-**匹配用户语言**: 使用用户使用的相同语言回复。如果用户用中文写，就用中文回复。如果用户用英文写，就用英文回复。
+**Match user's language**: Respond in the same language the user uses. If the user writes in Chinese, respond in Chinese. If the user writes in English, respond in English.
 
-## 脚本目录
+## Script Directory
 
-**Agent执行**: 确定此SKILL.md目录为 `{baseDir}`，然后使用 `{baseDir}/scripts/<name>.py`。运行时需确保Python 3.10+已安装，依赖包已配置。
+**Agent Execution**: Determine this SKILL.md directory as `{baseDir}`, then use `{baseDir}/scripts/<name>.py`. Ensure Python 3.10+ is installed and dependencies are configured.
 
-| 脚本 | 用途 |
+| Script | Purpose |
 |------|------|
-| `scripts/fetch_data.py` | 获取A股市场数据（指数、个股、板块等） |
-| `scripts/analyze.py` | Gemini AI分析市场数据 |
-| `scripts/post_to_hugo.py` | 发布到Hugo博客 |
-| `scripts/post_to_wechat.py` | 发布到微信公众号 |
-| `scripts/main.py` | 主执行脚本，协调整个流程 |
-| `scripts/check_env.py` | 验证环境和权限 |
+| `scripts/fetch_data.py` | Fetch A-share market data (indices, stocks, sectors, etc.) |
+| `scripts/analyze.py` | Gemini AI analysis of market data |
+| `scripts/post_to_hugo.py` | Publish to Hugo blog |
+| `scripts/post_to_wechat.py` | Publish to WeChat Official Account |
+| `scripts/main.py` | Main execution script, coordinates the entire workflow |
 
-## 偏好配置 (EXTEND.md)
+## Configuration Preferences
 
-检查EXTEND.md是否存在（优先级顺序）：
+1. Check if config.yaml exists: `{baseDir}/stock-review/config.yaml`
 
-```bash
-# macOS, Linux, WSL, Git Bash
-test -f .baoyu-skills/stock-review/EXTEND.md && echo "project"
-test -f "${XDG_CONFIG_HOME:-$HOME/.config}/baoyu-skills/stock-review/EXTEND.md" && echo "xdg"
-test -f "$HOME/.baoyu-skills/stock-review/EXTEND.md" && echo "user"
-```
+2. Check if .env file exists and is configured with `GEMINI_API_KEY`, `WECHAT_APP_ID`, `WECHAT_APP_SECRET`: `{baseDir}/stock-review/.env`
 
-```powershell
-# PowerShell (Windows)
-if (Test-Path .baoyu-skills/stock-review/EXTEND.md) { "project" }
-$xdg = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { "$HOME/.config" }
-if (Test-Path "$xdg/baoyu-skills/stock-review/EXTEND.md") { "xdg" }
-if (Test-Path "$HOME/.baoyu-skills/stock-review/EXTEND.md") { "user" }
-```
 
-┌─────────────────────────────────────────────────┬───────────────────┐
-│                       Path                       │     Location      │
-├─────────────────────────────────────────────────┼───────────────────┤
-│ .baoyu-skills/stock-review/EXTEND.md             │ Project directory │
-├─────────────────────────────────────────────────┼───────────────────┤
-│ $HOME/.baoyu-skills/stock-review/EXTEND.md       │ User home         │
-└─────────────────────────────────────────────────┴───────────────────┘
+**config.yaml supports**: Default publishing platforms | Whether to skip AI analysis by default | Default data backtracking days | Default request delay | Default retry count | API key configuration
+**.env supports**: API key configuration
 
-┌───────────┬───────────────────────────────────────────────────────────────────────────┐
-│  Result   │                                  Action                                   │
-├───────────┼───────────────────────────────────────────────────────────────────────────┤
-│ Found     │ Read, parse, apply settings                                               │
-├───────────┼───────────────────────────────────────────────────────────────────────────┤
-│ Not found │ 使用默认配置继续                                                          │
-└───────────┴───────────────────────────────────────────────────────────────────────────┘
+**Minimum supported keys** (case-insensitive, accepts `1/0` or `true/false`):
 
-**EXTEND.md支持**: 默认发布平台 | 默认是否跳过AI分析 | 默认数据回溯天数 | 默认请求延迟 | 默认重试次数 | API密钥配置
-
-**最小支持键** (不区分大小写，接受 `1/0` 或 `true/false`):
-
-| 键 | 默认值 | 说明 |
+| Key | Default | Description |
 |-----|---------|------|
-| `default_platforms` | `["hugo"]` | 默认发布平台 (`hugo`/`wechat`/`both`) |
-| `default_skip_ai` | `false` | 默认是否跳过AI分析 |
-| `default_backtrack_days` | `20` | 默认数据回溯天数 |
-| `default_request_delay` | `0.5` | 默认请求延迟(秒) |
-| `default_max_retries` | `3` | 默认重试次数 |
-| `gemini_api_key` | - | Gemini API密钥 |
-| `wechat_app_id` | - | 微信公众号AppID |
-| `wechat_app_secret` | - | 微信公众号AppSecret |
+| `date` | `null` | Date in YYYYMMDD format |
+| `force_refresh` | `false` | Whether to force refresh already fetched data |
+| `skip_ai_analysis` | `false` | Whether to skip AI analysis |
+| `platforms` | `["hugo"]` | Default publishing platforms (['hugo']/['wechat']/['hugo', 'wechat']) |
+| `data_dir` | `null` | Directory for data storage |
+| `max_retries` | `3` | Default retry count |
+| `request_delay` | `0.5` | Default request delay (seconds) |
+| `backtrack_days` | `0` | Default data backtracking days |
+| `type` | `gemini` | Model type |
+| `model_name` | `gemini-2.5-flash` | Model name |
 
-**推荐EXTEND.md示例**:
+
+**Recommended config.yaml example**:
+
+```yml
+# default configuration for stock review skill
+review:
+  markets:                          # can include "shanghai", "shenzhen", "hongkong"
+    - "shanghai"
+    - "shenzhen"
+    - "hongkong"
+  default_period: "daily"           # can be "daily", "weekly", "monthly"
+  date: null                        # can be specific date "YYYYMMDD" like "20260101" or null for today
+  force_refresh: false              # whether to force refresh data even if cached data is available
+  skip_ai_analysis: false           # whether to skip AI analysis and just return raw data
+  platforms: ["hugo"]               # platforms to publish the report, e.g. ['hugo', 'wechat'] or ['hugo'] or ['wechat']
+
+paths:
+  data_dir: null                    # directory to store fetched data and cache, null means current project directory
+
+parameters:
+  max_retries: 3
+  request_delay: 0.5
+  backtrack_days: 0
+  
+models:
+  type: "gemini"
+  model_name: "gemini-2.5-flash"
+```
+
+**.env example**:
 
 ```md
-default_platforms: both
-default_skip_ai: false
-default_backtrack_days: 20
-default_request_delay: 0.5
-default_max_retries: 3
-gemini_api_key: your_gemini_api_key_here
-wechat_app_id: your_wechat_app_id
-wechat_app_secret: your_wechat_appsecret
+# Gemini API Key
+GEMINI_API_KEY="your_gemini_api_key"
+
+# WeChat Official Account Configuration
+WECHAT_APP_ID="your_wechat_app_id"
+WECHAT_APP_SECRET="your_wechat_app_secret"
 ```
 
-**值优先级**:
-1. CLI参数
-2. EXTEND.md配置
-3. Skill默认值
+### How to Get a Gemini API Key:
+1. Visit the official portal: Go to https://aistudio.google.com/ and log in with your Google account.
 
-## 环境检查 (可选)
+2. Create an API Key: Click "Get API key" in the left sidebar, click "Create API key in new project", and copy the generated string (please save it securely—you won't be able to see the full key again after closing the window).
 
-首次使用前，建议运行环境检查。用户可以跳过此步骤。
+3. Important Notes:
+**Free Tier**: Provides free quota but with request frequency limits (RPM/RPD).
+**Data Privacy**: Free tier data may be used for model improvement. For commercially sensitive data, consider enabling the paid mode.
+
+### How to Get WeChat Official Account Credentials:
+
+1. Visit https://developers.weixin.qq.com/platform/
+2. Navigate: My Business → Official Account → Development Keys
+3. Add a development key, copy the AppID and AppSecret
+4. **Add the IP address of your machine to the whitelist**
+
+
+## Environment Check
+
+Before first use, install the dependencies.
 
 ```bash
-python3 {baseDir}/scripts/check_env.py
+pip install -r {baseDir}/requirements.txt
 ```
 
-检查项: Python版本 | 依赖包 | API密钥 | 网络连接 | 目录权限
+Check items: Python version | Dependencies | API keys | Network connection | Directory permissions
 
-**如果任何检查失败**，提供修复指导：
+**If any check fails**, provide fix guidance:
 
-| 检查项 | 修复方法 |
+| Check Item | Fix Method |
 |-------|----------|
-| Python版本 | 安装Python 3.10+：`brew install python@3.10` (macOS) 或 `apt install python3.10` (Linux) |
-| 依赖包 | 运行 `pip install -r {baseDir}/requirements.txt` |
-| Gemini API密钥 | 在EXTEND.md中设置或通过CLI参数传递 |
-| 微信公众号凭证 | 在EXTEND.md中设置（可选） |
-| 网络连接 | 检查网络代理设置 |
-| 目录权限 | 确保data/和content/posts/目录可写 |
+| Python version | Install Python 3.10+: `brew install python@3.10` (macOS) or `apt install python3.10` (Linux) |
+| Dependencies | Run `pip install -r {baseDir}/requirements.txt` |
+| Gemini API key | Configure in .env or via environment variables |
+| WeChat Official Account credentials | Configure in .env or via environment variables |
+| Network connection | Check network proxy settings |
+| Directory permissions | Ensure data/ and content/posts/ directories are writable |
 
-## 工作流程概览
+## Workflow Overview
 
-复制此清单并随进度勾选：
+Copy this checklist and check items as you progress:
 
 ```
-复盘分析进度:
-- [ ] 步骤0: 加载偏好配置 (EXTEND.md)
-- [ ] 步骤1: 确定执行参数
-- [ ] 步骤2: 获取市场数据
-- [ ] 步骤3: 运行AI分析（可选）
-- [ ] 步骤4: 生成报告
-- [ ] 步骤5: 发布到平台
-- [ ] 步骤6: 报告完成
+Review Analysis Progress:
+- [ ] Step 0: Load preferences (config.yaml, .env), determine execution parameters
+- [ ] Step 1: Fetch market data
+- [ ] Step 2: Run AI analysis (optional)
+- [ ] Step 3: Generate report
+- [ ] Step 4: Publish to platforms
+- [ ] Step 5: Report complete
 ```
 
-### 步骤0: 加载偏好配置
+### Step 0: Load Preferences
 
-检查并加载EXTEND.md设置（见上方偏好配置部分）。
+Check and load config.yaml settings (see Configuration Preferences section above), parse and store default values for subsequent steps.
 
-解析并存储以下默认值供后续步骤使用：
-- `default_platforms` (默认 `["hugo"]`)
-- `default_skip_ai` (默认 `false`)
-- `default_backtrack_days` (默认 `20`)
-- `default_request_delay` (默认 `0.5`)
-- `default_max_retries` (默认 `3`)
+### Step 1: Fetch Market Data
 
-### 步骤1: 确定执行参数
+Fetch the following data for the specified date:
 
-| 参数 | 来源 | 说明 |
-|------|------|------|
-| `--date` | CLI参数 | 指定日期 (YYYYMMDD)，默认自动获取最新 |
-| `--force` | CLI参数 | 强制刷新数据 |
-| `--skip-ai` | CLI参数/EXTEND.md | 跳过AI分析 |
-| `--platform` | CLI参数/EXTEND.md | 发布平台 (`hugo`/`wechat`/`both`) |
-| `--validate` | CLI参数 | 仅验证配置 |
-
-**示例**:
-```bash
-python3 {baseDir}/scripts/main.py --date 20260304 --platform both --force
-```
-
-### 步骤2: 获取市场数据
-
-根据指定日期获取以下数据：
-
-| 数据类型 | 来源 | 文件 |
+| Data Type | Source | File |
 |----------|------|------|
-| 指数数据 | stock_zh_index_spot_sina | `data/{date}/index_{date}.csv` |
-| 涨停池 | stock_zt_pool_em | `data/{date}/zt_pool_{date}.csv` |
-| 跌停池 | stock_zt_pool_dtgc_em | `data/{date}/dt_pool_{date}.csv` |
-| 炸板池 | stock_zt_pool_zbgc_em | `data/{date}/zb_pool_{date}.csv` |
-| 全市场数据 | stock_zh_a_spot_em | `data/{date}/A_stock_{date}.csv` |
-| 成交额前20 | 计算得出 | `data/{date}/top_amount_stocks_{date}.csv` |
-| 概念板块 | stock_board_concept_name_em | `data/{date}/concept_summary_{date}.csv` |
-| 龙虎榜 | stock_lhb_detail_daily_sina | `data/{date}/lhb_{date}.csv` |
-| Watchlist | 计算得出 | `data/{date}/watchlist*_{date}.csv` |
+| Index data | stock_zh_index_spot_sina | `data/{date}/index_{date}.csv` |
+| Limit-up pool | stock_zt_pool_em | `data/{date}/zt_pool_{date}.csv` |
+| Limit-down pool | stock_zt_pool_dtgc_em | `data/{date}/dt_pool_{date}.csv` |
+| Failed limit-up pool | stock_zt_pool_zbgc_em | `data/{date}/zb_pool_{date}.csv` |
+| Full market data | stock_zh_a_spot_em | `data/{date}/A_stock_{date}.csv` |
+| Top 20 by turnover | Calculated | `data/{date}/top_amount_stocks_{date}.csv` |
+| Concept sectors | stock_board_concept_name_em | `data/{date}/concept_summary_{date}.csv` |
+| Top traders list | stock_lhb_detail_daily_sina | `data/{date}/lhb_{date}.csv` |
+| Watchlist | Calculated | `data/{date}/watchlist*_{date}.csv` |
 
-**重试机制**:
-- 默认重试3次
-- 请求间隔0.5秒
-- 失败自动切换备用接口
+**Retry Mechanism**:
+- Default 3 retries
+- 0.5 second request interval
+- Automatic fallback to alternative interfaces on failure
 
-### 步骤3: 运行AI分析
+### Step 2: Run AI Analysis
 
-**CRITICAL**: 仅在以下情况运行AI分析：
-- `--skip-ai` 未设置
-- `GEMINI_API_KEY` 已配置（通过EXTEND.md或环境变量）
+**CRITICAL**: Run AI analysis only if:
+- `--skip-ai` is not set
+- `GEMINI_API_KEY` is configured (via config.yaml or environment variables)
 
-**AI分析提示词**:
+**AI Analysis Prompt**:
 
 ```python
 prompt = f"""
-角色设定：你是一位拥有20年经验的A股资深策略分析师...
+Role Setting: You are a seasoned A-share strategy analyst with 20 years of experience...
 
-任务描述：基于【当日复盘数据】进行多维度复盘：
-1. 🚩 市场情绪诊断
-2. 💰 核心主线与资金流向
-3. 🪜 连板梯度与空间博弈
-4. ⚡ 重点异动个股分析
-5. 🧭 次日交易策略建议
+Task Description: Conduct a multi-dimensional review based on the [daily review data]:
+1. 🚩 Market Sentiment Diagnosis
+2. 💰 Core Themes and Capital Flow
+3. 🪜 Consecutive Limit-up Gradient and Space Game
+4. ⚡ Key Stocks with Abnormal Movements Analysis
+5. 🧭 Next Trading Day Strategy Recommendations
 
-📊 当日复盘数据:
+📊 Daily Review Data:
 {market_summary}
 """
 ```
 
-**输出**: `data/{date}/ai_analysis_{date}.md`
+**Output**: `data/{date}/ai_analysis_{date}.md`
 
-### 步骤4: 生成报告
+### Step 3: Generate Reports
 
-**市场汇总报告**:
-- 文件: `data/{date}/market_summary_{date}.md`
-- 格式: Markdown
-- 内容: 所有数据的表格化汇总
+**Market Summary Report**:
+- File: `data/{date}/market_summary_{date}.md`
+- Format: Markdown
+- Content: Tabular summary of all data
 
-**AI分析报告** (如果运行):
-- 文件: `data/{date}/ai_analysis_{date}.md`
-- 格式: Markdown
-- 内容: Gemini生成的深度分析
+**AI Analysis Report** (if run):
+- File: `data/{date}/ai_analysis_{date}.md`
+- Format: Markdown
+- Content: In-depth analysis generated by Gemini
 
-### 步骤5: 发布到平台
+### Step 4: Publish to Platforms
 
-**Hugo博客发布**:
+**Hugo Blog Publishing**:
 
 ```bash
 python3 {baseDir}/scripts/post_to_hugo.py --market-summary <file> --ai-analysis <file> --date <date>
 ```
 
-**输出**: `content/posts/stock-analysis-{YYYY-MM-DD}.md`
+**Output**: `content/posts/stock-analysis-{YYYY-MM-DD}.md`
 
-**微信公众号发布** (需要API凭证):
+**WeChat Official Account Publishing** (requires API credentials):
 
 ```bash
-python3 {baseDir}/scripts/post_to_wechat.py --market-summary <file> --ai-analysis <file> --date <date>
+python3 {baseDir}/scripts/post_to_wechat.py --market-summary-file <file> --ai-analysis-file <file> --date <date> --cover-file <file> --title <title>
 ```
 
-**微信公众号API请求规则**:
-- 端点: `POST https://api.weixin.qq.com/cgi-bin/draft/add?access_token=ACCESS_TOKEN`
+**WeChat Official Account API Request Rules**:
+- Endpoint: `POST https://api.weixin.qq.com/cgi-bin/draft/add?access_token=ACCESS_TOKEN`
 - `article_type`: `news`
-- 需要 `thumb_media_id` (封面图)
-- 评论设置: `need_open_comment=1`, `only_fans_can_comment=0`
+- Requires `thumb_media_id` (cover image)
+- Comment settings: `need_open_comment=1`, `only_fans_can_comment=0`
 
-### 步骤6: 完成报告
+### Step 5: Completion Report
 
-**成功执行后报告**:
-
-```
-✅ A股复盘分析完成！
-
-日期: 2026-03-04
-数据: data/20260304/ (12个文件)
-AI分析: ✓ 已生成 (Gemini 2.0 Flash)
-
-发布平台:
-→ Hugo博客: content/posts/stock-analysis-2026-03-04.md
-→ 微信公众号: 草稿ID: abc123def456
-
-市场快照:
-• 上证指数: 3350.52 (+1.02%)
-• 成交额: 1.95万亿
-• 涨跌比: 2857 / 2058
-• 涨停/跌停: 78 / 3
-
-查看博客: https://donvink.github.io/stock-review/
-```
-
-**错误时报告**:
+**Success Report**:
 
 ```
-❌ 复盘分析失败
+✅ A-share Review Analysis Complete!
 
-错误: 无法获取涨停板数据
-建议: 
-1. 检查网络连接
-2. 尝试 --force 参数强制刷新
-3. 增加 --date 指定其他日期
+Date: 2026-03-04
+Data: data/20260304/ (12 files)
+AI Analysis: ✓ Generated (Gemini 2.0 Flash)
+
+Published Platforms:
+→ Hugo Blog: content/posts/stock-analysis-2026-03-04.md
+→ WeChat Official Account: Draft ID: abc123def456
+
+Market Snapshot:
+• Shanghai Composite: 3350.52 (+1.02%)
+• Turnover: 1.95 trillion
+• Advance/Decline: 2857 / 2058
+• Limit-up/Limit-down: 78 / 3
+
+View Blog: https://donvink.github.io/stock-review/
 ```
 
-## 详细功能说明
+**Error Report**:
 
-### 数据获取模块
+```
+❌ Review Analysis Failed
 
-| 函数 | 用途 | 重试 | 缓存 |
+Error: Unable to fetch limit-up pool data
+Suggestions: 
+1. Check network connection
+2. Try --force parameter to force refresh
+3. Use --date to specify another date
+```
+
+## Detailed Feature Description
+
+### Data Fetching Module
+
+| Function | Purpose | Retry | Cache |
 |------|------|------|------|
-| `stock_summary()` | 获取指数数据 | ✓ | ✓ |
-| `stock_zt_dt_pool()` | 获取涨跌停数据 | ✓ | ✓ |
-| `fetch_all_stock_data()` | 获取全市场数据 | ✓ (3次) | ✓ |
-| `get_top_amount_stocks()` | 获取成交额前20 | ✓ | ✓ |
-| `get_concept_summary()` | 获取概念板块 | ✓ | ✓ |
-| `get_lhb_data()` | 获取龙虎榜 | ✓ | ✓ |
+| `stock_summary()` | Fetch index data | ✓ | ✓ |
+| `stock_zt_dt_pool()` | Fetch limit-up/down data | ✓ | ✓ |
+| `fetch_all_stock_data()` | Fetch full market data | ✓ (3 times) | ✓ |
+| `get_top_amount_stocks()` | Fetch top 20 by turnover | ✓ | ✓ |
+| `get_concept_summary()` | Fetch concept sectors | ✓ | ✓ |
+| `get_lhb_data()` | Fetch top traders list | ✓ | ✓ |
 
-### AI分析模块
+### AI Analysis Module
 
-**模型**: `gemini-2.0-flash-exp`
+**Model**: `gemini-2.5-flash`
 
-**分析维度**:
-1. **市场情绪诊断** - 涨跌比、涨停跌停对比、成交额
-2. **核心主线追踪** - 资金流向、热点板块
-3. **连板梯度分析** - 空间板高度、连板结构
-4. **异动个股分析** - 大额成交、龙虎榜
-5. **次日策略建议** - 基于数据的操作建议
+**Analysis Dimensions**:
+1. **Market Sentiment Diagnosis** - Advance/decline ratio, limit-up/down comparison, turnover
+2. **Core Theme Tracking** - Capital flow, hot sectors
+3. **Consecutive Limit-up Gradient Analysis** - Space board height, limit-up structure
+4. **Abnormal Movement Stock Analysis** - High turnover, top traders list
+5. **Next Day Strategy Recommendations** - Data-based trading suggestions
 
-### 发布模块
+### Publishing Module
 
-| 平台 | 方式 | 要求 | 输出 |
+| Platform | Method | Requirements | Output |
 |------|------|------|------|
-| Hugo博客 | 文件写入 | 无 | Markdown文件 |
-| 微信公众号 | API | AppID/Secret | 草稿ID |
+| Hugo Blog | File write | None | Markdown file |
+| WeChat Official Account | API | AppID/Secret | Draft ID |
 
-## 功能对比
+## Feature Comparison
 
-| 功能 | 数据获取 | AI分析 | Hugo发布 | 微信发布 |
+| Feature | Data Fetching | AI Analysis | Hugo Publishing | WeChat Publishing |
 |------|----------|--------|----------|----------|
-| 自动获取最新日期 | ✓ | - | - | - |
-| 数据缓存 | ✓ | - | - | - |
-| 重试机制 | ✓ | - | - | - |
-| 多源备份 | ✓ | - | - | - |
-| 格式化数值(亿/万) | ✓ | - | - | - |
-| 过滤ST股票 | ✓ | - | - | - |
-| Watchlist构建 | ✓ | - | - | - |
-| 市场情绪诊断 | - | ✓ | - | - |
-| 连板梯度分析 | - | ✓ | - | - |
-| 策略建议 | - | ✓ | - | - |
-| Markdown格式 | - | ✓ | ✓ | ✓ |
-| 时区处理 | - | - | ✓ | - |
+| Auto-fetch latest date | ✓ | - | - | - |
+| Data caching | ✓ | - | - | - |
+| Retry mechanism | ✓ | - | - | - |
+| Multi-source backup | ✓ | - | - | - |
+| Format values (hundreds millions/ten thousands) | ✓ | - | - | - |
+| Filter ST stocks | ✓ | - | - | - |
+| Watchlist construction | ✓ | - | - | - |
+| Market sentiment diagnosis | - | ✓ | - | - |
+| Limit-up gradient analysis | - | ✓ | - | - |
+| Strategy recommendations | - | ✓ | - | - |
+| Markdown format | - | ✓ | ✓ | ✓ |
+| Timezone handling | - | - | ✓ | - |
 | Hugo frontmatter | - | - | ✓ | - |
-| 微信HTML转换 | - | - | - | ✓ |
-| 评论设置 | - | - | - | ✓ |
+| WeChat HTML conversion | - | - | - | ✓ |
+| Comment settings | - | - | - | ✓ |
 
-## 先决条件
+## Prerequisites
 
-**必需**:
+**Required**:
 - Python 3.10+
-- 依赖包: `pip install -r requirements.txt`
-- Gemini API密钥（用于AI分析）
+- Dependencies: `pip install -r requirements.txt`
+- Gemini API key (for AI analysis)
 
-**可选**:
-- 微信公众号AppID和AppSecret（用于微信发布）
-- Hugo博客环境（用于博客发布）
+**Optional**:
+- WeChat Official Account AppID and AppSecret (for WeChat publishing)
+- Hugo blog environment (for blog publishing)
 
-**配置位置** (优先级):
-1. CLI参数
-2. EXTEND.md (项目级/用户级)
-3. 环境变量
-4. 默认值
+**Configuration Locations** (priority order):
+1. CLI parameters
+2. config.yaml, .env (project-level/user-level)
+3. Environment variables
+4. Default values
 
-## 故障排除
+## Troubleshooting
 
-| 问题 | 解决方案 |
+| Issue | Solution |
 |------|----------|
-| 无法获取数据 | 检查网络，尝试 `--force`，使用 `--date` 指定其他日期 |
-| Gemini API错误 | 检查API密钥是否有效，配额是否足够 |
-| 涨停板数据为空 | 可能是非交易日，尝试回溯其他日期 |
-| 微信发布失败 | 检查AppID/Secret，确认IP已加入白名单 |
-| 中文乱码 | 确保文件编码为UTF-8 |
-| 数据格式错误 | 检查CSV文件，确认代码列未转为数字 |
-| 超时错误 | 增加 `default_request_delay` 或 `default_max_retries` |
-| 内存不足 | 减少数据量，或分批处理 |
+| Unable to fetch data | Check network, specify another date |
+| Gemini API error | Check if API key is valid, quota is sufficient |
+| Limit-up pool data empty | Possibly non-trading day, try backtracking to another date |
+| WeChat publishing failed | Check AppID/Secret, **confirm IP is whitelisted** |
+| Chinese character encoding issues | Ensure file encoding is UTF-8 |
+| Data format error | Check CSV files, ensure code column isn't converted to numbers |
+| Timeout error | Increase `request_delay` or `max_retries` |
+| Insufficient memory | Reduce data volume or process in batches |
 
-## 扩展支持
+## Extension Support
 
-通过EXTEND.md自定义配置。参见**偏好配置**部分了解路径和支持的选项。
+Customize via config.yaml. See the **Configuration Preferences** section for supported options.
 
-## 相关参考
+## Related References
 
-| 主题 | 参考 |
+| Topic | Reference |
 |------|------|
-| AkShare文档 | https://www.akshare.xyz/ |
-| Gemini API | https://ai.google.dev/ |
-| 微信公众号API | https://developers.weixin.qq.com/doc/offiaccount/ |
-| Hugo文档 | https://gohugo.io/ |
+| AkShare Documentation | https://akshare.akfamily.xyz/index.html |
+| Gemini API | https://aistudio.google.com/ |
+| WeChat Official Account API | https://developers.weixin.qq.com/platform |
+| Hugo Documentation | https://gohugo.io/ |
 
-## 版本历史
+## Version History
 
-| 版本 | 日期 | 变更 |
+| Version | Date | Changes |
 |------|------|------|
-| 1.0.0 | 2026-03-11 | 初始版本 |
-
-
+| 1.0.0 | 2026-03-11 | Initial version |
