@@ -1,29 +1,30 @@
-# 🚀 Stock Analysis AI Navigator
+# 🚀 Stock Analysis AI
 
-English | [中文](./README.zh.md)
+🤖 **OpenClaw Ready** | 🇬🇧 English | 🇨🇳 [中文](./README.zh.md)
 
 👉 **[Live AI Stock Review Blog](https://donvink.github.io/stock-review/)**
 
-An automated stock market analysis system powered by **Gemini**. This project leverages Linux-driven automation to fetch global market data, generate deep A-股 (A-share) daily reviews, and sync them seamlessly to both a **[Hugo blog](https://donvink.github.io/stock-review/)** and **WeChat Official Account**.
+An automated stock market analysis system powered by **Gemini**, with native **OpenClaw** support. This project leverages Linux-driven automation to fetch global market data, generate deep A-股 (A-share) daily reviews, and sync them seamlessly to both a **[Hugo blog](https://donvink.github.io/stock-review/)** and **WeChat Official Account**.
+
 
 ## Prerequisites
 
 - Node.js environment installed
 - Ability to run `npx bun` commands
 
-## Installation
+## Installation for OpenClaw
 
-**Option 1: Ask the Agent (Recommended)**
-
-Simply tell OpenClaw:
-
-> Please install Skills from github.com/Donvink/stock-review
-
-**Option 2: Quick Install**
+**Option 1: Quick Install (Recommended)**
 
 ```bash
 npx skills add Donvink/stock-review
 ```
+
+**Option 2: Ask the Agent**
+
+Simply tell OpenClaw:
+
+> Please install Skills from github.com/Donvink/stock-review
 
 **Option 3: Install from ClawHub**
 

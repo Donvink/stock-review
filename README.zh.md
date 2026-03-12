@@ -1,29 +1,29 @@
-# 🚀 股票分析AI导航
+# 🚀 股票分析AI
 
-🇬🇧 [English](./README.md) | 🇨🇳 中文
+🤖 **支持 OpenClaw** | 🇬🇧 [English](./README.md) | 🇨🇳 中文
 
 👉 **[AI股票复盘博客](https://donvink.github.io/stock-review/)**
 
-一个由 **Gemini AI** 驱动的自动化股票市场分析系统。本项目利用 Linux 自动化任务获取全球市场数据，生成深度的 A 股每日复盘报告，并自动同步至 **[Hugo博客](https://donvink.github.io/stock-review/)** 和 **微信公众号**。
+一个由 **Gemini AI** 驱动的自动化股票市场分析系统，原生支持 **OpenClaw**。本项目利用 Linux 自动化任务获取全球市场数据，生成深度的 A 股每日复盘报告，并自动同步至 **[Hugo博客](https://donvink.github.io/stock-review/)** 和 **微信公众号**。
 
 ## 环境要求
 
 - 已安装 Node.js 环境
 - 能够运行 `npx bun` 命令
 
-## 安装方法
+## OpenClaw技能安装方法
 
-**方式一：通过 Agent 安装（推荐）**
-
-直接告诉 OpenClaw：
-
-> 请从 github.com/Donvink/stock-review 安装技能
-
-**方式二：快速安装**
+**方式一：快速安装（推荐）**
 
 ```bash
 npx skills add Donvink/stock-review
 ```
+
+**方式二：通过 Agent 安装**
+
+直接告诉 OpenClaw：
+
+> 请从 github.com/Donvink/stock-review 安装技能
 
 **方式三：从 ClawHub 安装**
 
