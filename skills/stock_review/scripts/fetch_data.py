@@ -58,11 +58,11 @@ class DataFetcher:
         save_dir.mkdir(parents=True, exist_ok=True)
         
         # check cache
-        if not force_refresh:
-            cached_data = self._load_cached_data(date, save_dir)
-            if cached_data is not None:
-                self.logger.info(f"Using cached data for {date}")
-                return cached_data
+        # if not force_refresh:
+        #     cached_data = self._load_cached_data(date, save_dir)
+        #     if cached_data is not None:
+        #         self.logger.info(f"Using cached data for {date}")
+        #         return cached_data
         
         # get data
         data = {}
