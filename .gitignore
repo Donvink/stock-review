@@ -4,6 +4,10 @@ __pycache__/
 *$py.class
 .env
 
+# 忽略 Hugo 生成的静态资源目录
+public/
+resources/
+
 # C extensions
 *.so
 
