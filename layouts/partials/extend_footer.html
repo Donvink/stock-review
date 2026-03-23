@@ -1,0 +1,14 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // 卡片化
+    const allH2 = document.querySelectorAll('h2');
+    allH2.forEach(h2 => {
+        if (h2.innerText.includes("市场核心快照")) {
+            let nextEl = h2.nextElementSibling;
+            while (nextEl && nextEl.tagName !== 'UL') nextEl = nextEl.nextElementSibling;
+            if (nextEl) nextEl.classList.add('market-grid-auto');
+        }
+    });
+});
+</script>

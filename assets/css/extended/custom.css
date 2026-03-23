@@ -1,0 +1,82 @@
+/* --- 1. 基础颜色变量 --- */
+:root {
+    --stock-up: #ff4d4f;    /* 涨红 */
+    --stock-down: #52c41a;  /* 跌绿 */
+    --brand-blue: #1d4ed8;  /* 研报主蓝色 */
+}
+
+/* --- 2. 标题美化 --- */
+.post-content h2 {
+    border-left: 6px solid var(--brand-blue);
+    padding-left: 15px;
+    background: linear-gradient(90deg, #f0f7ff 0%, transparent 100%);
+    margin: 2.5rem 0 1.2rem 0;
+    color: #1a202c;
+    font-size: 1.5rem;
+}
+
+/* --- 3. 表格整体样式优化 --- */
+.post-content table {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums; /* 确保数字等宽对齐 */
+}
+
+.post-content th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+    padding: 12px 8px;
+}
+
+.post-content td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* 隔行换色 */
+.post-content tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+/* --- 4. 市场快照列表变卡片 (针对 h2 下的第一个 ul) --- */
+h2 + p + ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+h2 + p + ul li {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    font-weight: 500;
+}
+
+/* 强制卡片化样式 */
+.market-grid-auto {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    gap: 15px !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 20px 0 !important;
+}
+
+.market-grid-auto li {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+    font-weight: 600;
+}
