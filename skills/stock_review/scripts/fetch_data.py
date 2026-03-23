@@ -306,11 +306,11 @@ class DataFetcher:
             lhb_df = lhb_df[~lhb_df[col_name].str.contains('ST', case=False, na=False)].copy()
             lhb_df.drop_duplicates(subset=[col_name], inplace=True)
             lhb_df.reset_index(drop=True, inplace=True)
-            if '序号' not in lhb_df.columns:
-                lhb_df.insert(0, '序号', range(1, len(lhb_df) + 1))
-            else:
-                self.logger.debug("'序号' column already exists, skipping insertion")
             
+            if '序号' in lhb_df.columns:
+                lhb_df.drop(columns=['序号'], inplace=True)
+            lhb_df.insert(0, '序号', range(1, len(lhb_df) + 1))
+
             lhb_df.to_csv(file_path, index=False, encoding="utf-8-sig")
             return lhb_df
             

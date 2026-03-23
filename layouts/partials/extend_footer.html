@@ -1,13 +1,93 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    
+    // 1. 自动检测导航栏高度并注入 CSS 变量
+    function updateNavHeight() {
+        const nav = document.querySelector('nav') || document.querySelector('header') || document.querySelector('.nav-container');
+        if (nav) {
+            const height = nav.offsetHeight;
+            document.documentElement.style.setProperty('--nav-height', height + 'px');
+        }
+    }
+    updateNavHeight();
+    window.addEventListener('resize', updateNavHeight);
 
-    // 卡片化
-    const allH2 = document.querySelectorAll('h2');
-    allH2.forEach(h2 => {
-        if (h2.innerText.includes("市场核心快照")) {
-            let nextEl = h2.nextElementSibling;
-            while (nextEl && nextEl.tagName !== 'UL') nextEl = nextEl.nextElementSibling;
-            if (nextEl) nextEl.classList.add('market-grid-auto');
+    // 2. 表格自动化处理：套壳 + 折叠 (仅限超过10行的表格)
+    const tables = document.querySelectorAll('.post-content table');
+    tables.forEach(table => {
+        const rows = table.querySelectorAll('tbody tr');
+        
+        // 创建包裹层
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+
+        if (rows.length > 10) {
+            const btn = document.createElement('button');
+            btn.className = 'show-more-btn';
+            btn.innerHTML = `展开剩余 ${rows.length - 10} 条数据 ▽`;
+            wrapper.after(btn);
+
+            btn.onclick = function() {
+                if (wrapper.classList.contains('expanded')) {
+                    wrapper.classList.remove('expanded');
+                    btn.innerHTML = `展开剩余 ${rows.length - 10} 条数据 ▽`;
+                    wrapper.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    wrapper.classList.add('expanded');
+                    btn.innerHTML = "收起数据 △";
+                }
+            };
+        } else {
+            wrapper.classList.add('expanded'); // 行数少则直接展开
+        }
+    });
+
+    // 3. 列表项红绿染色 (卡片内容)
+    const listItems = document.querySelectorAll(".market-grid-auto li, .post-content li");
+    listItems.forEach(item => {
+        let html = item.innerHTML;
+        // 括号涨跌幅染色
+        html = html.replace(/\(([\+涨].*?%)\)/g, '<span style="color: #ff4d4f; font-weight: bold;">($1)</span>');
+        html = html.replace(/\(([\-跌−—].*?%)\)/g, '<span style="color: #52c41a; font-weight: bold;">($1)</span>');
+        // 成交额黄色
+        if (html.includes('成交总额')) html = html.replace(/(\d+\.?\d*\s*亿)/g, '<span style="color: #eab308; font-weight: bold;">$1</span>');
+        // 涨跌比/炸板数
+        if (html.includes('涨跌比')) html = html.replace(/(\d+)\s*\/\s*(\d+)/g, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span>');
+        if (html.includes('炸板数')) html = html.replace(/(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/g, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span> / <span style="color: #eab308; font-weight: bold;">$3</span>');
+        item.innerHTML = html;
+    });
+
+    // 4. 表格单元格染色
+    document.querySelectorAll(".post-content td").forEach(td => {
+        const text = td.innerText.trim();
+        if (text.includes('%')) {
+            if (text.includes('+') || text.includes('涨')) {
+                td.style.setProperty('color', '#ff4d4f', 'important');
+                td.style.fontWeight = "bold";
+            } else if (text.includes('-') || text.includes('−') || text.includes('—') || text.includes('跌')) {
+                td.style.setProperty('color', '#52c41a', 'important');
+                td.style.fontWeight = "bold";
+            }
+        }
+    });
+
+    // 5. 点击行高亮
+    document.querySelectorAll('.post-content tr').forEach(row => {
+        row.addEventListener('click', function() {
+            const table = this.closest('table');
+            table.querySelectorAll('tr').forEach(r => r.style.backgroundColor = '');
+            this.style.setProperty('background-color', '#fff9db', 'important');
+        });
+    });
+
+    // 6. 市场快照卡片化
+    document.querySelectorAll('.post-content h2').forEach(h2 => {
+        if (h2.innerText.includes("市场核心快照") || h2.innerText.includes("概览")) {
+            let ul = h2.nextElementSibling;
+            while (ul && ul.tagName !== 'UL') ul = ul.nextElementSibling;
+            if (ul) ul.classList.add('market-grid-auto');
         }
     });
 });
