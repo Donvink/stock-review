@@ -147,6 +147,39 @@ class DataFetcher:
         except Exception as e:
             self.logger.error(f"Failed to fetch index data: {e}")
             return pd.DataFrame()
+        
+    def _reorder_columns(self, df, priority_cols):
+        """
+        Reorder columns in the dataframe based on priority_cols list,
+        while keeping other columns in original order after the priority columns.
+        Also adds a '序号' column at the beginning.
+        priority_cols: list of column names in desired order,
+        e.g. ['名称', '代码', '连板数', '涨停统计']
+        """
+        df = df.drop(columns=['序号', 'index', 'level_0'], errors='ignore')
+        existing_priority = [c for c in priority_cols if c in df.columns]
+        other_cols = [c for c in df.columns if c not in existing_priority]
+        new_column_order = existing_priority + other_cols
+        df_reorder = df[existing_priority + other_cols].copy()
+        df_reorder.insert(0, '序号', range(1, len(df_reorder) + 1))
+        return df_reorder
+
+    def _rename_zt_cal_value(self, df):
+        """
+        Replace specific values in '涨停统计' and '连板数' columns with new values
+        """
+        if '涨停统计' in df.columns:
+            for index, row in df.iterrows():
+                ori_value = row['涨停统计']
+                cal_day = ori_value.split('/')[0] if isinstance(ori_value, str) else ori_value
+                continue_day = ori_value.split('/')[1] if isinstance(ori_value, str) else ori_value
+                if cal_day == '1':
+                    df.loc[index, '涨停统计'] = "首板"
+                else:
+                    df.loc[index, '涨停统计'] = f"{cal_day}天{continue_day}板" if pd.notna(ori_value) else ori_value
+        # if '连板数' in df.columns:
+        #     df['连板数'] = df['连板数'].replace(1, '首板')
+        return df
     
     def _fetch_zt_dt(self, date: str, save_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Get limit up/down and special treatment stocks"""
@@ -167,6 +200,8 @@ class DataFetcher:
             dt_df = ak.stock_zt_pool_dtgc_em(date=date)
             time.sleep(self.config.request_delay)
             zb_df = ak.stock_zt_pool_zbgc_em(date=date)
+
+            zt_df.sort_values(by='连板数', ascending=False, inplace=True)
             
             # format values
             for df in [zt_df, dt_df, zb_df]:
@@ -176,6 +211,14 @@ class DataFetcher:
                     df['流通市值'] = df['流通市值'].apply(self._format_value)
                 if '总市值' in df.columns:
                     df['总市值'] = df['总市值'].apply(self._format_value)
+
+            # rename specific values in '涨停统计' and '连板数' columns
+            self._rename_zt_cal_value(zt_df)
+            self._rename_zt_cal_value(zb_df)
+
+            priority_cols = ['名称', '代码', '连板数', '涨停统计']
+            zt_df = self._reorder_columns(zt_df, priority_cols)
+            zb_df = self._reorder_columns(zb_df, priority_cols)
             
             # save
             zt_df.to_csv(zt_path, index=False, encoding="utf-8-sig")

@@ -22,7 +22,7 @@
 /* --- 3. 表格容器与折叠样式 --- */
 .table-wrapper {
     width: 100%;
-    max-height: 500px; /* 默认折叠高度 */
+    max-height: 260px; /* 默认折叠高度 */
     overflow: auto;    /* 必须开启，否则 sticky 失效 */
     -webkit-overflow-scrolling: touch;
     border: 1px solid var(--border-color);

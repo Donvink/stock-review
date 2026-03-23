@@ -23,24 +23,32 @@ document.addEventListener("DOMContentLoaded", function() {
         table.parentNode.insertBefore(wrapper, table);
         wrapper.appendChild(table);
 
-        if (rows.length > 10) {
+        // 显示 5 行，剩余折叠
+        if (rows.length > 5) {
             const btn = document.createElement('button');
             btn.className = 'show-more-btn';
-            btn.innerHTML = `展开剩余 ${rows.length - 10} 条数据 ▽`;
+            btn.innerHTML = `展开剩余 ${rows.length - 5} 条数据 ▽`;
             wrapper.after(btn);
 
             btn.onclick = function() {
                 if (wrapper.classList.contains('expanded')) {
                     wrapper.classList.remove('expanded');
-                    btn.innerHTML = `展开剩余 ${rows.length - 10} 条数据 ▽`;
+                    // 恢复折叠高度（与 CSS 对应）
+                    wrapper.style.maxHeight = '260px'; 
+                    btn.innerHTML = `展开剩余 ${rows.length - 5} 条数据 ▽`;
+                    // 平滑滚动回表格顶部
                     wrapper.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     wrapper.classList.add('expanded');
+                    wrapper.style.maxHeight = 'none';
                     btn.innerHTML = "收起数据 △";
                 }
             };
+            // 初始状态显式设置高度
+            wrapper.style.maxHeight = '260px';
         } else {
-            wrapper.classList.add('expanded'); // 行数少则直接展开
+            wrapper.classList.add('expanded');
+            wrapper.style.maxHeight = 'none';
         }
     });
 
