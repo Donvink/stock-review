@@ -58,13 +58,13 @@ class ReportGenerator:
         
         # create report content
         content = []
-        content.append(f"# A股全市场复盘 {date}\n")
+        # content.append(f"# A股全市场复盘 {date}\n")
         
         # market snapshot
         if index_df is not None:
             if not index_df.empty:
                 content.append("## 📊 市场核心快照")
-                content.append(f"- **上证指数**: {index_df.iloc[0]['最新价']:.2f} ({index_df.iloc[0]['涨跌幅']:.2f}%)")
+                content.append(f"- **上证指数**: {index_df.iloc[0]['最新价']:.2f} ({index_df.iloc[0]['涨跌幅']:+.2f}%)")
                 if len(index_df) > 2:
                     content.append(f"- **全市场成交总额**: {index_df.iloc[2]['成交额(亿元)']}")
                 content.append(f"- **涨跌比**: {up_count} / {down_count}")
@@ -76,7 +76,7 @@ class ReportGenerator:
         if top_amount is not None:
             if not top_amount.empty:
                 content.append("## 🔍 成交额前二十个股")
-                content.append(self._df_to_markdown(top_amount))
+                content.append(self._df_to_markdown(self._format_financial_df(top_amount)))
         else:
             content.append("## 🔍 成交额前二十个股\n暂无数据\n")
         
@@ -85,7 +85,7 @@ class ReportGenerator:
             if not concept.empty:
                 content.append("## 🏆 概念板块分析")
                 content.append("**前五概念板块**（按涨幅排序）")
-                content.append(self._df_to_markdown(concept))
+                content.append(self._df_to_markdown(self._format_financial_df(concept)))
         else:
             content.append("## 🏆 概念板块分析\n暂无数据\n")
         
@@ -96,7 +96,7 @@ class ReportGenerator:
                 if not cons_df.empty:
                     board_name = cons_df['所属板块'].iloc[0] if '所属板块' in cons_df.columns else f"板块{i+1}"
                     content.append(f"**{board_name}**")
-                    content.append(self._df_to_markdown(cons_df))
+                    content.append(self._df_to_markdown(self._format_financial_df(cons_df)))
         else:
             content.append("### 各板块涨幅靠前个股\n暂无数据\n")
         
@@ -104,14 +104,14 @@ class ReportGenerator:
         if zt_df is not None:
             if not zt_df.empty:
                 content.append("## 💥 涨停个股")
-                content.append(self._df_to_markdown(zt_df))
+                content.append(self._df_to_markdown(self._format_financial_df(zt_df)))
         else:
             content.append("## 💥 涨停个股\n暂无数据\n")
         
         if zb_df is not None:
             if not zb_df.empty:
                 content.append("## 💔 炸板个股")
-                content.append(self._df_to_markdown(zb_df))
+                content.append(self._df_to_markdown(self._format_financial_df(zb_df)))
         else:
             content.append("## 💔 炸板个股\n暂无数据\n")
         
@@ -119,7 +119,7 @@ class ReportGenerator:
         if lhb_df is not None:
             if not lhb_df.empty:
                 content.append("## 🚀 龙虎榜")
-                content.append(self._df_to_markdown(lhb_df))
+                content.append(self._df_to_markdown(self._format_financial_df(lhb_df)))
         else:
             content.append("## 🚀 龙虎榜\n暂无数据\n")
         
@@ -128,16 +128,16 @@ class ReportGenerator:
             if not w1_df.empty:
                 content.append("## ⭐ 重点个股 Watchlist")
                 content.append("### 大额异动池")
-                content.append(self._df_to_markdown(w1_df))
+                content.append(self._df_to_markdown(self._format_financial_df(w1_df)))
         
         if w2_df is not None:
             if not w2_df.empty:
                 content.append("### 风口涨停池")
-                content.append(self._df_to_markdown(w2_df))
+                content.append(self._df_to_markdown(self._format_financial_df(w2_df)))
         else:
             content.append("### 风口涨停池\n暂无数据\n")
         
-        content.append("\n---\n*数据来源：AKShare*")
+        # content.append("\n---\n*数据来源：AKShare*")
         
         full_content = "\n\n".join(content)
         
@@ -188,3 +188,15 @@ class ReportGenerator:
                 display_df[col] = display_df[col].astype(str).str[:30]
         
         return display_df.to_markdown(index=False, tablefmt="pipe")
+    
+    def _format_financial_df(self, df):
+        """ Format financial DataFrame for better display in Markdown, e.g. add % signs, format numbers"""
+        temp_df = df.copy()
+        for col in temp_df.columns:
+            # As long as the column name contains '涨跌', force add + - sign and % sign
+            if '涨跌' in col:
+                temp_df[col] = temp_df[col].map(lambda x: f"{float(x):+.2f}%" if x != '' else x)
+            # As long as the column name contains '换手' or '比', add % sign but do not force + sign
+            elif any(k in col for k in ['换手', '比', '率']):
+                temp_df[col] = temp_df[col].map(lambda x: f"{float(x):.2f}%" if x != '' else x)
+        return temp_df

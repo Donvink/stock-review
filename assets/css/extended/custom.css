@@ -1,8 +1,12 @@
-/* --- 1. 基础颜色变量 --- */
+/* --- 1. 变量与全局优化 --- */
 :root {
     --stock-up: #ff4d4f;    /* 涨红 */
     --stock-down: #52c41a;  /* 跌绿 */
+    --stock-warn: #eab308;  /* 炸板黄 */
     --brand-blue: #1d4ed8;  /* 研报主蓝色 */
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --nav-height: 0px;      /* 由 JS 动态计算 */
 }
 
 /* --- 2. 标题美化 --- */
@@ -15,68 +19,104 @@
     font-size: 1.5rem;
 }
 
-/* --- 3. 表格整体样式优化 --- */
-.post-content table {
+/* --- 3. 表格容器与折叠样式 --- */
+.table-wrapper {
     width: 100%;
-    margin-bottom: 2rem;
-    border-collapse: collapse;
-    font-variant-numeric: tabular-nums; /* 确保数字等宽对齐 */
+    max-height: 500px; /* 默认折叠高度 */
+    overflow: auto;    /* 必须开启，否则 sticky 失效 */
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-color);
+    border-radius: 8px 8px 0 0; /* 底部圆角留给按钮 */
+    position: relative;
+    transition: max-height 0.3s ease;
+    background: #fff;
 }
 
+/* 当表格被展开时的样式 */
+.table-wrapper.expanded {
+    max-height: none;
+    border-radius: 8px;
+}
+
+.post-content table {
+    width: 100%;
+    margin-bottom: 0 !important;
+    border-collapse: separate; 
+    border-spacing: 0;
+    font-variant-numeric: tabular-nums; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- 4. 表头吸顶 (核心修复) --- */
 .post-content th {
-    background-color: #f8fafc;
+    position: sticky;
+    top: 0; /* 在容器内部吸顶 */
+    z-index: 20;
+    background-color: var(--bg-light) !important;
     color: #475569;
     font-weight: 600;
-    border: 1px solid #e2e8f0;
+    border-bottom: 2px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     padding: 12px 8px;
+    white-space: nowrap;
 }
 
 .post-content td {
-    border: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     padding: 10px 8px;
-    text-align: center;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+/* 移除最后一列的右边框 */
+.post-content th:last-child, .post-content td:last-child {
+    border-right: none;
+}
+
+/* 隔行换色与高亮 */
+.post-content tr:nth-child(even) { background-color: #fbfcfd; }
+.post-content tr:hover td { background-color: #f1f5f9 !important; }
+
+/* --- 5. 展开按钮样式 --- */
+.show-more-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f8fafc;
+    color: var(--brand-blue);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    cursor: pointer;
+    font-weight: bold;
     font-size: 0.9rem;
+    transition: background 0.2s;
 }
+.show-more-btn:hover { background: #f1f5f9; }
 
-/* 隔行换色 */
-.post-content tr:nth-child(even) {
-    background-color: #fcfcfc;
-}
-
-/* --- 4. 市场快照列表变卡片 (针对 h2 下的第一个 ul) --- */
-h2 + p + ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-    list-style: none;
-    padding: 0;
-}
-
-h2 + p + ul li {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    font-weight: 500;
-}
-
-/* 强制卡片化样式 */
+/* --- 6. 列表卡片化 --- */
 .market-grid-auto {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
     gap: 15px !important;
     list-style: none !important;
     padding: 0 !important;
     margin: 20px 0 !important;
 }
-
 .market-grid-auto li {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     text-align: center;
     font-weight: 600;
+}
+
+/* --- 7. 对齐逻辑 --- */
+.post-content td:nth-child(2), .post-content td:nth-child(3) { text-align: left; padding-left: 15px; }
+.post-content td:nth-child(n+4) { text-align: right; padding-right: 15px; }
+
+@media screen and (max-width: 768px) {
+    .post-content table { min-width: 600px; }
 }
