@@ -29,3 +29,6 @@ theme = "PaperMod"
         name = "资讯档案"
         url = "/posts/"
         weight = 10
+
+[markup.goldmark.renderer]
+    unsafe = true # 允许渲染 Markdown 中的 HTML 或 JS 注入
