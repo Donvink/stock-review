@@ -8,6 +8,8 @@ languageCode = 'zh-cn'
 title = 'AI 股市导航'
 theme = "PaperMod"
 
+googleAnalytics = "G-DBWSC03BX5"
+
 [params]
     author = "Leo Zhong"
     defaultTheme = "auto"
