@@ -23,6 +23,11 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Clean old data (>60 days)
+        run: |
+          chmod +x scripts/clean_old_data.sh
+          ./scripts/clean_old_data.sh
+
       # --- 第一阶段：运行 Python 抓取数据 ---
       - name: Set up Python
         uses: actions/setup-python@v5

@@ -1,0 +1,27 @@
+name: Monthly Archive
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'   # 每月1日 UTC 2:00（北京时间上午10:00）
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GitHub CLI
+        run: |
+          type -p gh >/dev/null || (curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+          sudo apt update && sudo apt install gh -y)
+
+      - name: Create monthly archive
+        run: |
+          chmod +x scripts/archive_monthly.sh
+          ./scripts/archive_monthly.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
