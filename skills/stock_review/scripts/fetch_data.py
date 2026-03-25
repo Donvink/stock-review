@@ -201,6 +201,10 @@ class DataFetcher:
             time.sleep(self.config.request_delay)
             zb_df = ak.stock_zt_pool_zbgc_em(date=date)
 
+            for df in [zt_df, dt_df, zb_df]:
+                if '代码' in df.columns:
+                    df['代码'] = df['代码'].astype(str).str.zfill(6)
+
             zt_df.sort_values(by='连板数', ascending=False, inplace=True)
             
             # format values
@@ -349,6 +353,10 @@ class DataFetcher:
             lhb_df = lhb_df[~lhb_df[col_name].str.contains('ST', case=False, na=False)].copy()
             lhb_df.drop_duplicates(subset=[col_name], inplace=True)
             lhb_df.reset_index(drop=True, inplace=True)
+
+            code_col = '代码' if '代码' in lhb_df.columns else '股票代码'
+            if code_col in lhb_df.columns:
+                lhb_df[code_col] = lhb_df[code_col].astype(str).str.zfill(6)
             
             if '序号' in lhb_df.columns:
                 lhb_df.drop(columns=['序号'], inplace=True)

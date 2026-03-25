@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 from dotenv import load_dotenv
 import yaml
+import re
 
 # add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -184,14 +185,27 @@ class StockReview:
             )
             
             # 5. AI analysis (optional)
-            ai_analysis = None
+            ai_title, ai_content, ai_tags = None, None, None
             if not skip_ai_analysis and self.config.gemini_api_key:
-                ai_analysis = self.analyzer.analyze(market_summary)
-                self.logger.info("AI analysis completed")
+                # ai_analysis = self.analyzer.analyze(market_summary)
+                # self.logger.info("AI analysis completed")
+                raw_output = self.analyzer.analyze(market_summary)
+                try:
+                    # Use regex to extract the JSON object from the raw AI output, which may contain extra text
+                    json_str = re.search(r'\{.*\}', raw_output, re.DOTALL).group()
+                    data = json.loads(json_str)
+                    ai_title = data.get("title", f"A股复盘：{date}")
+                    ai_tags = data.get("tags", ["每日复盘", "市场分析"])
+                    ai_content = data.get("content", raw_output)
+                except Exception as e:
+                    self.logger.error(f"JSON parsing failed, using fallback solution: {e}")
+                    ai_title = f"A股全市场复盘：{date} 深度解析"
+                    ai_tags = ["每日复盘", "市场分析"]
+                    ai_content = raw_output
             
             # 6. generate reports
             reports = self.report_generator.generate_all(
-                market_data, market_summary, ai_analysis, date
+                market_data, market_summary, ai_content, date
             )
             
             # 7. post to platforms
@@ -203,17 +217,56 @@ class StockReview:
             }
             
             if 'hugo' in platforms:
-                post_path = self.blog_poster.create_post(
-                    market_summary, ai_analysis, date
+                # post_path_zh = self.blog_poster.create_post(
+                #     market_summary, ai_title, ai_content, date, lang="zh"
+                # )
+                date_filename, content_zh = self.blog_poster.build_content(
+                    market_summary, ai_title, ai_tags, ai_content
                 )
+                post_path_zh = self.blog_poster.save_post(date_filename, content_zh, lang="zh")
                 results["published"].append({
                     "platform": "hugo",
-                    "path": post_path
+                    "language": "zh",
+                    "path": post_path_zh
                 })
+                # Publish English version (in BlogPoster internal translation)
+                self.logger.info("Translating full report to English...")
+                content_en = self.analyzer.translate(content_zh, target_lang="English")
+                # Clean up the translated content to ensure proper formatting in Hugo
+                if content_en:
+                    clean_lines = []
+                    for line in content_en.splitlines():
+                        # 1. 排除 Hugo 的 Front Matter 分隔符 (---)
+                        # 如果这一行全是横线且长度大于等于 3，原样保留
+                        if re.match(r'^\s*-{3,}\s*$', line):
+                            clean_lines.append(line.strip()) # 确保是干净的 ---
+                            continue
+
+                        # 2. 精准匹配列表引导符
+                        # ^\s*-\s+ : 匹配行首减号后已经有空格的（规范化空格）
+                        # ^\s*-[^-\d\s] : 匹配行首减号后紧跟文字但没空格的（补空格）
+                        # 且确保不是数字（防止误伤负数）
+                        if re.match(r'^\s*-\s*(?!\d)[^-\s]', line):
+                            # 强制规范化为 "- 内容"
+                            content_part = re.sub(r'^\s*-\s*', '', line)
+                            clean_lines.append(f"- {content_part}")
+                        else:
+                            # 3. 其他情况（标题、正文、负数、空行等）原样保留
+                            clean_lines.append(line)
+                    
+                    clean_content_en = "\n".join(clean_lines)
+                    post_path_en = self.blog_poster.save_post(
+                        date_filename, clean_content_en, lang="en"
+                    )
+                    results["published"].append({
+                        "platform": "hugo_en",
+                        "language": "en",
+                        "path": post_path_en
+                    })
             
             if 'wechat' in platforms and self.wechat_poster:
                 draft_id = self.wechat_poster.create_draft(
-                    market_summary, ai_analysis, date
+                    market_summary, ai_content, date
                 )
                 results["published"].append({
                     "platform": "wechat",

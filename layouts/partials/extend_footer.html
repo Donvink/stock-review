@@ -1,6 +1,10 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     
+    // 获取当前页面语言 (zh 或 en)
+    const lang = document.documentElement.lang || 'zh';
+    const isEn = lang.startsWith('en');
+
     // 1. 自动检测导航栏高度并注入 CSS 变量
     function updateNavHeight() {
         const nav = document.querySelector('nav') || document.querySelector('header') || document.querySelector('.nav-container');
@@ -12,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateNavHeight();
     window.addEventListener('resize', updateNavHeight);
 
-    // 2. 表格自动化处理：套壳 + 折叠 (仅限超过10行的表格)
+    // 2. 表格自动化处理：套壳 + 折叠 (多语言支持)
     const tables = document.querySelectorAll('.post-content table');
     tables.forEach(table => {
         const rows = table.querySelectorAll('tbody tr');
@@ -27,24 +31,29 @@ document.addEventListener("DOMContentLoaded", function() {
         if (rows.length > 5) {
             const btn = document.createElement('button');
             btn.className = 'show-more-btn';
-            btn.innerHTML = `展开剩余 ${rows.length - 5} 条数据 ▽`;
+            
+            const remaining = rows.length - 5;
+            // 初始按钮文字
+            btn.innerHTML = isEn 
+                ? `Show ${remaining} more rows ▽` 
+                : `展开剩余 ${remaining} 条数据 ▽`;
+                
             wrapper.after(btn);
 
             btn.onclick = function() {
                 if (wrapper.classList.contains('expanded')) {
                     wrapper.classList.remove('expanded');
-                    // 恢复折叠高度（与 CSS 对应）
                     wrapper.style.maxHeight = '260px'; 
-                    btn.innerHTML = `展开剩余 ${rows.length - 5} 条数据 ▽`;
-                    // 平滑滚动回表格顶部
+                    btn.innerHTML = isEn 
+                        ? `Show ${remaining} more rows ▽` 
+                        : `展开剩余 ${remaining} 条数据 ▽`;
                     wrapper.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     wrapper.classList.add('expanded');
                     wrapper.style.maxHeight = 'none';
-                    btn.innerHTML = "收起数据 △";
+                    btn.innerHTML = isEn ? "Collapse △" : "收起数据 △";
                 }
             };
-            // 初始状态显式设置高度
             wrapper.style.maxHeight = '260px';
         } else {
             wrapper.classList.add('expanded');
@@ -52,18 +61,30 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 3. 列表项红绿染色 (卡片内容)
+    // 3. 列表项红绿染色 (兼容英文关键词)
     const listItems = document.querySelectorAll(".market-grid-auto li, .post-content li");
     listItems.forEach(item => {
         let html = item.innerHTML;
-        // 括号涨跌幅染色
+        // 括号涨跌幅染色 (兼容 + / - / 涨 / 跌)
         html = html.replace(/\(([\+涨].*?%)\)/g, '<span style="color: #ff4d4f; font-weight: bold;">($1)</span>');
         html = html.replace(/\(([\-跌−—].*?%)\)/g, '<span style="color: #52c41a; font-weight: bold;">($1)</span>');
-        // 成交额黄色
-        if (html.includes('成交总额')) html = html.replace(/(\d+\.?\d*\s*亿)/g, '<span style="color: #eab308; font-weight: bold;">$1</span>');
-        // 涨跌比/炸板数
-        if (html.includes('涨跌比')) html = html.replace(/(\d+)\s*\/\s*(\d+)/g, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span>');
-        if (html.includes('炸板数')) html = html.replace(/(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/g, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span> / <span style="color: #eab308; font-weight: bold;">$3</span>');
+        
+        // 成交额染色 (支持 CNY/Billion/Trillion/亿)
+        const turnoverRegex = /(\d+\.?\d*\s*(?:亿|Billion|Trillion|CNY|Yuan))/gi;
+        if (html.includes('成交总额') || html.includes('Turnover')) {
+            html = html.replace(turnoverRegex, '<span style="color: #eab308; font-weight: bold;">$1</span>');
+        }
+
+        // 涨跌比/炸板数 (支持 Ratio / Ratio: 等英文描述)
+        const ratioRegex = /(\d+)\s*\/\s*(\d+)/g;
+        if (html.includes('涨跌比') || html.includes('Ratio')) {
+            html = html.replace(ratioRegex, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span>');
+        }
+        
+        const limitRegex = /(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/g;
+        if (html.includes('炸板数') || html.includes('Limit')) {
+            html = html.replace(limitRegex, '<span style="color: #ff4d4f; font-weight: bold;">$1</span> / <span style="color: #52c41a; font-weight: bold;">$2</span> / <span style="color: #eab308; font-weight: bold;">$3</span>');
+        }
         item.innerHTML = html;
     });
 
@@ -90,12 +111,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 6. 市场快照卡片化
+    // 6. 市场快照卡片化 (支持中英文标题识别)
     document.querySelectorAll('.post-content h2').forEach(h2 => {
-        if (h2.innerText.includes("市场核心快照") || h2.innerText.includes("概览")) {
+        const title = h2.innerText;
+        if (title.includes("市场核心快照") || title.includes("Market Core Snapshot") || title.includes("概览") || title.includes("Metrics")) {
             let ul = h2.nextElementSibling;
-            while (ul && ul.tagName !== 'UL') ul = ul.nextElementSibling;
-            if (ul) ul.classList.add('market-grid-auto');
+            // 查找标题后第一个 UL
+            while (ul && ul.tagName !== 'UL' && ul.tagName !== 'H2') {
+                ul = ul.nextElementSibling;
+            }
+            if (ul && ul.tagName === 'UL') ul.classList.add('market-grid-auto');
         }
     });
 });
@@ -105,10 +130,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div style="font-size: 0.85rem; color: #888; text-align: center; margin-top: 20px;">
     <span id="busuanzi_container_site_pv">
-        本站总访问量 <span id="busuanzi_value_site_pv" style="color: #e63946; font-weight: bold;">--</span> 次
+        <script>document.write(document.documentElement.lang.startsWith('en') ? 'Total Visits ' : '本站总访问量 ');</script>
+        <span id="busuanzi_value_site_pv" style="color: #e63946; font-weight: bold;">--</span> 
+        <script>document.write(document.documentElement.lang.startsWith('en') ? 'times' : '次');</script>
     </span>
     <span style="margin: 0 8px;">|</span>
     <span id="busuanzi_container_site_uv">
-        您是第 <span id="busuanzi_value_site_uv" style="color: #e63946; font-weight: bold;">--</span> 位访客
+        <script>document.write(document.documentElement.lang.startsWith('en') ? 'You are visitor No. ' : '您是第 ');</script>
+        <span id="busuanzi_value_site_uv" style="color: #e63946; font-weight: bold;">--</span> 
+        <script>document.write(document.documentElement.lang.startsWith('en') ? '' : '位访客');</script>
     </span>
 </div>

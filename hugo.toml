@@ -1,36 +1,52 @@
-# baseURL = 'https://example.org/'
-# languageCode = 'en-us'
-# title = 'My New Hugo Site'
-# theme = 'PaperMod'
-
 baseURL = 'https://donvink.github.io/stock-review/'
-languageCode = 'zh-cn'
-title = 'AI 股市导航'
+title = 'AI 股市洞察 | AI Stock Insight'
 theme = "PaperMod"
-
 googleAnalytics = "G-DBWSC03BX5"
+
+# 默认语言设置
+defaultContentLanguage = 'en'
+enableRobotsTXT = true
 
 [params]
     author = "Leo Zhong"
     defaultTheme = "auto"
-    # 在首页显示文章全文摘要，方便快速浏览资讯
     showFullContents = false 
     displayFullLangName = true
+    showLanguagePicker = true # 开启语言切换按钮
     mainSections = ["posts"]
-    
-    [params.homeInfoParams]
-        Title = "📈 每日股市 AI 分析"
-        Content = "利用 AI 技术自动抓取并分析全球市场资讯。由 Linux 自动化驱动。"
 
     [params.assets]
-        disableHLJS = false # 开启代码高亮（如果你要展示分析代码）
+        disableHLJS = false 
 
-    # 导航栏配置
-    [[menu.main]]
+# ----------------- 中文配置 -----------------
+[languages.zh]
+    languageName = "中文"
+    contentDir = "content/zh"
+    weight = 1
+    [languages.zh.params.homeInfoParams]
+        Title = "📈 每日股市 AI 分析"
+        Content = "💡 **Smart Market Insight, Powered by AI.**\n\n自动化驱动，AI 深度复盘。利用技术力量，捕捉每一份全球市场机遇。"
+    
+    [[languages.zh.menu.main]]
         identifier = "posts"
         name = "资讯档案"
         url = "/posts/"
         weight = 10
 
+# ----------------- 英文配置 -----------------
+[languages.en]
+    languageName = "English"
+    contentDir = "content/en"
+    weight = 2
+    [languages.en.params.homeInfoParams]
+        Title = "📈 Daily AI Stock Analysis"
+        Content = "💡 **Smart Market Insight, Powered by AI.**\n\nAutomated workflows for deep AI-driven market review. Capturing every global opportunity with technology."
+
+    [[languages.en.menu.main]]
+        identifier = "posts"
+        name = "Archive"
+        url = "/posts/"
+        weight = 10
+
 [markup.goldmark.renderer]
-    unsafe = true # 允许渲染 Markdown 中的 HTML 或 JS 注入
+    unsafe = true

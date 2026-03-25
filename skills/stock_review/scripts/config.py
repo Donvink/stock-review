@@ -45,7 +45,7 @@ class Settings:
         self.base_dir = Path(__file__).parent.parent.parent.parent
         data_dir_value = paths_config.get('data_dir')
         self.data_dir = self.base_dir / 'data' if data_dir_value is None else Path(data_dir_value)
-        self.content_dir = self.base_dir / 'content' / 'posts'
+        self.content_dir = self.base_dir / 'content'
         # make sure directories exist
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.content_dir.mkdir(parents=True, exist_ok=True)

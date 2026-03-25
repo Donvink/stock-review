@@ -49,33 +49,75 @@ class MarketAnalyzer:
     def _build_prompt(self, market_summary: str) -> str:
         """Build prompt for AI analysis"""
         return f"""
-        角色设定：你是一位拥有 20 年经验的 A 股资深策略分析师，擅长从成交量能、板块轮动和连板梯队中洞察市场情绪。
+            角色设定：你是一位拥有 20 年经验的 A 股资深策略分析师，擅长从成交量能、板块轮动和连板梯队中洞察市场情绪。
 
-        任务描述：请基于下方提供的【当日复盘数据】，进行多维度复盘：
+            任务描述：请基于下方提供的【当日复盘数据】，进行多维度复盘：
 
-        1. 🚩 市场情绪诊断
-        - 结合涨跌比、涨跌停对比、炸板率及全市场成交额，定义当前市场阶段（如：放量普涨、缩量整理、高位分歧、冰点重启等）。
-        - 评价当前赚钱效应与亏钱效应的分布情况。
+            1. 🚩 市场情绪诊断
+            - 结合涨跌比、涨跌停对比、炸板率及全市场成交额，定义当前市场阶段（如：放量普涨、缩量整理、高位分歧、冰点重启等）。
+            - 评价当前赚钱效应与亏钱效应的分布情况。
 
-        2. 💰 核心主线与资金流向
-        - 分析【成交额前二十】和【行业涨幅榜】，识别出目前资金主要锁定的“热点板块”和“大容错板块”。
-        - 判断市场风格：是偏向“题材炒作”还是“权重护盘”？
+            2. 💰 核心主线与资金流向
+            - 分析【成交额前二十】和【行业涨幅榜】，识别出目前资金主要锁定的“热点板块”和“大容错板块”。
+            - 判断市场风格：是偏向“题材炒作”还是“权重护盘”？
 
-        3. 🪜 连板梯度与空间博弈
-        - 识别【涨停池】中的最高板（空间板）及其带动的属性。
-        - 重点解读【炸板池】中的个股信号：是高位减速、还是分歧后的良性分歧？
+            3. 🪜 连板梯度与空间博弈
+            - 识别【涨停池】中的最高板（空间板）及其带动的属性。
+            - 重点解读【炸板池】中的个股信号：是高位减速、还是分歧后的良性分歧？
 
-        4. ⚡ 重点异动个股分析
-        - 请从【重点个股 Watchlist】中挑选 3-4 只最具代表性的个股（如大成交涨停、高低位切换的典型），推测其背后的逻辑（资产注入、政策利好、超跌反弹还是技术突破）。
+            4. ⚡ 重点异动个股分析
+            - 请从【重点个股 Watchlist】中挑选 3-4 只最具代表性的个股（如大成交涨停、高低位切换的典型），推测其背后的逻辑（资产注入、政策利好、超跌反弹还是技术突破）。
 
-        5. 🧭 次日交易策略建议
-        - 给出明日关注的观察点：哪些板块具备“反包”潜力？哪些高位品种需防范“补跌”？
-        - 明确操作基调（如：积极参与、逢高止盈、或者多看少动）。
-        - 给出重点个股的操作建议（如：建仓、继续持有、部分止盈、或者观望）。
+            5. 🧭 次日交易策略建议
+            - 给出明日关注的观察点：哪些板块具备“反包”潜力？哪些高位品种需防范“补跌”？
+            - 明确操作基调（如：积极参与、逢高止盈、或者多看少动）。
+            - 给出重点个股的操作建议（如：建仓、继续持有、部分止盈、或者观望）。
 
+            ---
+            **📊 当日复盘数据内容如下**:
+            {market_summary}
+
+            要求：专业、客观、语言简练，避免模棱两可。输出格式使用 Markdown 标题和列表，增强可读性。
+
+            最后，请为本文起一个极具吸引力且专业性强的标题，反映今日市场核心矛盾; 并提取 3-5 个反映今日盘面热点、情绪阶段或核心板块的标签（Tags）。
+
+            请严格按下方的 JSON 格式输出，不要包含任何其他解释文字或 Markdown 代码块标签, 标题不要带任何包裹引号：
+            {{
+                "title": "一个极具投研深度的专业标题，反映今日核心矛盾",
+                "tags": ["标签1", "标签2", "标签3"],
+                "content": "此处为详细的 Markdown 格式分析正文"
+            }}
+        """
+
+    def translate(self, text: str, target_lang: str = "English") -> Optional[str]:
+        """Translate text to target language using AI"""
+        if not self.client: return None
+        
+        prompt = f"""
+        [Strict Task: Translation Only]
+        
+        Role: You are a professional, high-precision financial translator. 
+        Task: Translate the provided Chinese A-share market report into {target_lang}.
+
+        ## Rules:
+        1. Output ONLY the translated text. 
+        2. DO NOT include any introductory remarks, explanations, or concluding sentences (e.g., avoid "Here is the translation" or "I hope this helps").
+        3. Maintain all Markdown formatting (headers, bullet points, bold text).
+        4. Use professional financial terminology (e.g., Limit-up, Limit-down, Turnover rate).
+
+        ## Content to Translate:
         ---
-        **📊 当日复盘数据内容如下**:
-        {market_summary}
-
-        要求：专业、客观、语言简练，避免模棱两可。输出格式使用 Markdown 标题和列表，增强可读性。
-    """
+        {text}
+        ---
+        
+        [Final Reminder: Just provide the translated content directly, no other words.]
+        """
+            
+        try:
+            response = self.client.models.generate_content(
+                model=self.config.model_name, contents=prompt
+            )
+            return response.text
+        except Exception as e:
+            self.logger.error(f"Translation failed: {e}")
+            return None

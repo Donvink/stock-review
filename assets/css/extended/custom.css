@@ -1,12 +1,12 @@
 /* --- 1. 变量与全局优化 --- */
 :root {
-    --stock-up: #ff4d4f;    /* 涨红 */
-    --stock-down: #52c41a;  /* 跌绿 */
-    --stock-warn: #eab308;  /* 炸板黄 */
-    --brand-blue: #1d4ed8;  /* 研报主蓝色 */
+    --stock-up: #ff4d4f;      /* 涨红 */
+    --stock-down: #52c41a;    /* 跌绿 */
+    --stock-warn: #eab308;    /* 炸板黄 */
+    --brand-blue: #1d4ed8;    /* 研报主蓝色 */
     --bg-light: #f8fafc;
     --border-color: #e2e8f0;
-    --nav-height: 0px;      /* 由 JS 动态计算 */
+    --nav-height: 0px;        /* 由 JS 动态计算 */
 }
 
 /* --- 2. 标题美化 --- */
@@ -26,13 +26,12 @@
     overflow: auto;    /* 必须开启，否则 sticky 失效 */
     -webkit-overflow-scrolling: touch;
     border: 1px solid var(--border-color);
-    border-radius: 8px 8px 0 0; /* 底部圆角留给按钮 */
+    border-radius: 8px 8px 0 0; 
     position: relative;
     transition: max-height 0.3s ease;
     background: #fff;
 }
 
-/* 当表格被展开时的样式 */
 .table-wrapper.expanded {
     max-height: none;
     border-radius: 8px;
@@ -47,10 +46,10 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --- 4. 表头吸顶 (核心修复) --- */
+/* --- 4. 表头吸顶 --- */
 .post-content th {
     position: sticky;
-    top: 0; /* 在容器内部吸顶 */
+    top: 0;
     z-index: 20;
     background-color: var(--bg-light) !important;
     color: #475569;
@@ -69,12 +68,10 @@
     color: #334155;
 }
 
-/* 移除最后一列的右边框 */
 .post-content th:last-child, .post-content td:last-child {
     border-right: none;
 }
 
-/* 隔行换色与高亮 */
 .post-content tr:nth-child(even) { background-color: #fbfcfd; }
 .post-content tr:hover td { background-color: #f1f5f9 !important; }
 
@@ -94,8 +91,10 @@
 }
 .show-more-btn:hover { background: #f1f5f9; }
 
-/* --- 6. 列表卡片化 --- */
-.market-grid-auto {
+/* --- 6. 列表卡片化 (精准修复：仅针对第一个 H2 后的列表) --- */
+
+/* 只匹配文章中第一个出现的 h2 标题后的第一个 ul */
+.post-content h2:first-of-type + ul {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
     gap: 15px !important;
@@ -103,17 +102,56 @@
     padding: 0 !important;
     margin: 20px 0 !important;
 }
-.market-grid-auto li {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    text-align: center;
-    font-weight: 600;
+
+.post-content h2:first-of-type + ul li {
+    background: #ffffff !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 15px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 60px !important;
+    margin: 0 !important;
 }
 
-/* --- 7. 对齐逻辑 --- */
+/* 隐藏卡片列表的默认圆点 */
+.post-content h2:first-of-type + ul li::before {
+    content: none !important;
+}
+
+/* 适配深色模式 */
+.dark .post-content h2:first-of-type + ul li {
+    background: #2d2d2d !important;
+    border-color: #3f3f46 !important;
+}
+
+/* --- 7. 普通列表样式恢复 (防止误伤后续内容) --- */
+/* 明确后续列表保持标准排版 */
+.post-content h2 ~ h2 + ul, 
+.post-content ul {
+    display: block; /* 恢复块级布局 */
+    list-style: disc; 
+    padding-left: 1.8rem;
+    margin: 1.2rem 0;
+}
+
+.post-content h2 ~ h2 + ul li,
+.post-content ul li {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.4rem 0 !important;
+    text-align: left !important;
+    display: list-item !important; /* 恢复圆点显示 */
+    font-weight: normal !important;
+    min-height: 0 !important;
+}
+
+/* --- 8. 对齐逻辑 --- */
 .post-content td:nth-child(2), .post-content td:nth-child(3) { text-align: left; padding-left: 15px; }
 .post-content td:nth-child(n+4) { text-align: right; padding-right: 15px; }
 
@@ -121,19 +159,19 @@
     .post-content table { min-width: 600px; }
 }
 
-/* 缩减首页 HomeInfo 区域的上下间距 */
+/* --- 9. 首页布局微调 --- */
 .first-entry {
-    margin-top: 10px !important; /* 减少第一篇文章与标题的间距 */
+    margin-top: 10px !important;
 }
 
 .home-info {
-    margin-bottom: 1px !important; /* 减少标题下方的留白 */
-    padding-top: 1px !important;    /* 减少标题上方的留白 */
+    margin-bottom: 1px !important;
+    padding-top: 1px !important;
 }
 
 .home-info .title {
-    margin-bottom: 8px !important; /* 减小“每日股市 AI 分析”与描述文字的距离 */
-    font-size: 1.5rem; /* 如果觉得标题太大也可以微调 */
+    margin-bottom: 8px !important;
+    font-size: 1.5rem;
 }
 
 .home-info .description {
