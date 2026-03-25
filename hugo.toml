@@ -30,7 +30,7 @@ enableRobotsTXT = true
     [[languages.zh.menu.main]]
         identifier = "posts"
         name = "资讯档案"
-        url = "/posts/"
+        url = "posts/"
         weight = 10
 
 # ----------------- 英文配置 -----------------
@@ -45,7 +45,7 @@ enableRobotsTXT = true
     [[languages.en.menu.main]]
         identifier = "posts"
         name = "Archive"
-        url = "/posts/"
+        url = "posts/"
         weight = 10
 
 [markup.goldmark.renderer]
