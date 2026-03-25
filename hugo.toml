@@ -5,6 +5,7 @@ googleAnalytics = "G-DBWSC03BX5"
 
 # 默认语言设置
 defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = true
 enableRobotsTXT = true
 
 [params]
