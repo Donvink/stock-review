@@ -120,3 +120,23 @@
 @media screen and (max-width: 768px) {
     .post-content table { min-width: 600px; }
 }
+
+/* 缩减首页 HomeInfo 区域的上下间距 */
+.first-entry {
+    margin-top: 10px !important; /* 减少第一篇文章与标题的间距 */
+}
+
+.home-info {
+    margin-bottom: 1px !important; /* 减少标题下方的留白 */
+    padding-top: 1px !important;    /* 减少标题上方的留白 */
+}
+
+.home-info .title {
+    margin-bottom: 8px !important; /* 减小“每日股市 AI 分析”与描述文字的距离 */
+    font-size: 1.5rem; /* 如果觉得标题太大也可以微调 */
+}
+
+.home-info .description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
