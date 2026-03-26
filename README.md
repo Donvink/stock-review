@@ -57,10 +57,11 @@ If you want to run the analysis engine manually or contribute to the code:
    ```
 
 2. **Configure Secrets**
+
    Set your `GEMINI_API_KEY` in a `.env` file.
 
 
-3. **Run Analysis**
+4. **Run Analysis**
    ```bash
    python skills/stock_review/scripts/main.py
    ```
