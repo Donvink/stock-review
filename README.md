@@ -2,35 +2,72 @@
 
 🤖 **OpenClaw Ready** | 🇬🇧 English | 🇨🇳 [中文](./README.zh.md)
 
-👉 **[Live AI Stock Review Blog](https://donvink.github.io/stock-review/)**
+👉 **[Live AI Stock Review Blog](https://donvink.github.io/stock-review/)** 
+
+📖 **[Developer Quick Start for OpenClaw](./skills/stock_review/SKILL.md)**
 
 An automated stock market analysis system powered by **Gemini**, with native **OpenClaw** support. This project leverages Linux-driven automation to fetch global market data, generate deep A-股 (A-share) daily reviews, and sync them seamlessly to both a **[Hugo blog](https://donvink.github.io/stock-review/)** and **WeChat Official Account**.
 
+---
 
 ## Prerequisites
 
 - Node.js environment installed
 - Ability to run `npx bun` commands
 
-## Installation for OpenClaw
+---
 
-**Option 1: Quick Install (Recommended)**
+## ⚡ Quick Start
 
-```bash
-npx skills add Donvink/stock-review
-```
+Depending on your use case, choose one of the following methods to get started:
 
-**Option 2: Ask the Agent**
+### 🤖 For OpenClaw Users (Agent Integration)
+This project is a standardized **OpenClaw Skill**. You can install it directly into your AI Agent environment:
 
-Simply tell OpenClaw:
+* **Option 1: Quick Install**
+    ```bash
+    npx skills add Donvink/stock-review
+    ```
 
-> Please install Skills from github.com/Donvink/stock-review
+* **Option 2: Skill Specification**
+  Simply tell OpenClaw:
 
-**Option 3: Install from ClawHub**
+  ```bash
+  Please install Skills from github.com/Donvink/stock-review
+  ```
 
-```bash
-clawhub install stock-review
-```
+  For detailed API schemas and agent-calling conventions, see: 👉 **[OpenClaw Skill Guide & Specification](./skills/stock_review/SKILL.md)**
+
+
+* **Option 3: Install from ClawHub**
+
+  ```bash
+  clawhub install stock-review-ai
+  ```
+
+
+### 💻 For Developers (Standalone Setup)
+If you want to run the analysis engine manually or contribute to the code:
+
+1. **Clone & Setup**
+   ```bash
+   git clone https://github.com/Donvink/stock-review.git
+   cd stock-review
+   pip install -r requirements.txt
+   ```
+
+2. **Configure Secrets**
+   Set your `GEMINI_API_KEY` in a `.env` file.
+
+
+3. **Run Analysis**
+   ```bash
+   python skills/stock_review/scripts/main.py
+   ```
+
+---
+
+## 📸 Project Overview
 
 ### 🖥️ Homepage Overview
 ![Main Dashboard](./imgs/overview.jpg) 
@@ -52,8 +89,6 @@ The system generates multi-dimensional reports based on real-time market data. Y
 
 ![AI Insights](./imgs/report.jpg)
 
-
-## 📸 Project Overview
 
 ### Dashboard Preview
 
@@ -85,7 +120,7 @@ This program is optimized for **WSL (Ubuntu)** or **Linux Servers**, and fully s
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/stock-review.git
+git clone https://github.com/Donvink/stock-review.git
 cd stock-review
 
 ```
@@ -146,14 +181,14 @@ on:
 
 ---
 
-### 💡 Pro Tips
+## 💡 Pro Tips
 
 * **IP Whitelist**: Remember to add your server's IP (or GitHub Actions runner IP) to the WeChat API Whitelist in the developer settings.
 
 
 ---
 
-### 💡 Implementation Note
+## 💡 Implementation Note
 
 * **Timezone Offset**: GitHub Actions uses UTC. Beijing Time (CST) is **UTC+8**.
 * **Cron Syntax**: `'0 8 * * 1-5'` represents:
@@ -162,4 +197,6 @@ on:
 * `* *`: Every day of the month
 * `1-5`: Monday through Friday (trading days)
 
+---
 
+**If you find this project helpful, please give it a Star! ⭐**
