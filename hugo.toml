@@ -1,6 +1,6 @@
 baseURL = 'https://donvink.github.io/stock-review/'
-# canonifyURLs = true  # 核心修复：强制使用绝对路径
-# relativeURLs = false
+canonifyURLs = true  # 核心修复：强制使用绝对路径
+relativeURLs = false
 title = 'AI 股市洞察 | AI Stock Insight'
 theme = "PaperMod"
 googleAnalytics = "G-DBWSC03BX5"
