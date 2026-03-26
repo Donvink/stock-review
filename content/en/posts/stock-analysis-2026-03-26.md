@@ -1,7 +1,7 @@
 ---
-title: "2026-03-26-Intensified High-level Divergence, Blue Chips Under Pressure, Thematic Rotation – An Analysis of Structural Opportunities Amidst a Broad Market Decline"
-date: 2026-03-26T12:15:42+0000
-tags: ["Daily Market Review", "High-level Divergence", "Broad Market Decline", "Thematic Rotation", "Power Sector", "Minor Metals Rebound"]
+title: "2026-03-26 - Market Diverging on Increased Volume: Power Sector Shines Independently, High-Valued Tech Stocks Face Pressure and Retreat"
+date: 2026-03-26T12:27:00+0000
+tags: ["Daily Market Review", "Market Divergence", "Power Sector", "High-Flyer Retreat", "Defensive Assets", "Consecutive Limit-up Streak Halted"]
 categories: ["Daily Update"]
 showToc: true
 draft: false
@@ -11,246 +11,231 @@ draft: false
 
 - **Shanghai Composite Index**: 3889.08 (-1.09%)
 
-- **Total Market Turnover**: 1943.60 billion CNY
+- **Total Market Turnover**: RMB 1943.603 Billion
 
-- **Advance-Decline Ratio**: 916 / 4492
+- **Advancing/Declining Stocks**: 916 / 4492
 
-- **Limit-up / Limit-down / Failed Limit-up Counts**: 39 / 8 / 18
-
+- **Limit-up / Limit-down / Broken Limit-ups**: 39 / 8 / 18
 
 ## 🔍 Top 20 Stocks by Turnover
 
-|   No. | Code       | Name                   |   Last Price | % Change | Turnover (billion CNY) |
-|-----:|:---------|:---------------------|-------------:|:-------|-------------------:|
-|    1 | sz300502 | InnoLight Technology   |       457    | -4.03% | 17.06              |
-|    2 | sz300308 | Zhongji Innolight      |       614.2  | -2.26% | 16.49              |
-|    3 | sz000988 | HGTECH                 |       105.35 | -8.98% | 14.81              |
-|    4 | sz300394 | T&F Communication      |       325    | +2.17% | 13.27              |
-|    5 | sz002475 | Luxshare Precision     |        50.19 | -1.53% | 11.16              |
-|    6 | sz300750 | CATL                   |       402.5  | +1.18% | 10.81              |
-|    7 | sh601899 | Zijin Mining Group     |        32.09 | -3.46% | 9.89               |
-|    8 | sh688525 | Biwin Storage          |       238.98 | -5.67% | 9.71               |
-|    9 | sz300274 | Sungrow Power Supply   |       166    | -0.65% | 9.70               |
-|   10 | sh603986 | GigaDevice Semiconductor |       262    | -5.89% | 9.22               |
-|   11 | sz002594 | BYD                    |       103.14 | -3.25% | 8.66               |
-|   12 | sh601016 | CECEP Wind-power       |         5.31 | -1.67% | 7.92               |
-|   13 | sz300476 | Shenghong Technology   |       268.89 | +0.92% | 7.81               |
-|   14 | sz000547 | Aerospace Development  |        28.15 | +3.99% | 7.21               |
-|   15 | sz002384 | Dongshan Precision     |       104.3  | -3.61% | 7.00               |
-|   16 | sz300136 | Sunway Communication   |        64.29 | +3.00% | 6.90               |
-|   17 | sz002463 | Wus Printed Circuit    |        79.01 | -4.25% | 6.77               |
-|   18 | sh600487 | Hengtong Optic-Electric |        47.88 | -0.60% | 6.75               |
-|   19 | sh600549 | Xiamen Tungsten        |        57.51 | -1.46% | 6.26               |
-|   20 | sz001309 | Demingli               |       378.86 | +0.98% | 6.16               |
+| 序号 | 代码       | 名称   | 最新价 | 涨跌幅    | 成交额(RMB 100 Million) |
+|-----:|:---------|:-----|-------:|:-------|:---------------------|
+|    1 | sz300502 | Xinyisheng | 457    | -4.03% | 170.63               |
+|    2 | sz300308 | Zhongji Xuchuang | 614.2  | -2.26% | 164.91               |
+|    3 | sz000988 | Huagong Tech | 105.35 | -8.98% | 148.14               |
+|    4 | sz300394 | Tianfu Communications | 325    | +2.17% | 132.69               |
+|    5 | sz002475 | Luxshare Precision | 50.19  | -1.53% | 111.64               |
+|    6 | sz300750 | CATL     | 402.5  | +1.18% | 108.11               |
+|    7 | sh601899 | Zijin Mining | 32.09  | -3.46% | 98.86                |
+|    8 | sh688525 | Biwin Storage | 238.98 | -5.67% | 97.13                |
+|    9 | sz300274 | Sungrow Power Supply | 166    | -0.65% | 97.03                |
+|   10 | sh603986 | GigaDevice | 262    | -5.89% | 92.18                |
+|   11 | sz002594 | BYD      | 103.14 | -3.25% | 86.56                |
+|   12 | sh601016 | Jieneng Wind Power | 5.31   | -1.67% | 79.24                |
+|   13 | sz300476 | Shenghong Tech | 268.89 | +0.92% | 78.11                |
+|   14 | sz000547 | Aerospace Development | 28.15  | +3.99% | 72.11                |
+|   15 | sz002384 | Dongshan Precision | 104.3  | -3.61% | 70.01                |
+|   16 | sz300136 | Sunway Communication | 64.29  | +3.00% | 68.96                |
+|   17 | sz002463 | WUS Printed Circuit | 79.01  | -4.25% | 67.74                |
+|   18 | sh600487 | Hengtong Optic-Electric | 47.88  | -0.60% | 67.47                |
+|   19 | sh600549 | Xiamen Tungsten | 57.51  | -1.46% | 62.61                |
+|   20 | sz001309 | Demingli | 378.86 | +0.98% | 61.57                |
 
-### Top Gainers by Sector
-No data available
+### Top Advancing Stocks by Sector
+No Data Available
 
+## 💥 Limit-Up Stocks
 
-## 💥 Limit-up Stocks
+| 序号 | 名称   | 代码   | 连板数 | 涨停统计         | 涨跌幅    | 最新价 | 成交额(RMB 100 Million) | 流通市值(RMB 100 Million) | 总市值(RMB 100 Million) | 换手率   | 封板资金(RMB) | 首次封板时间 | 最后封板时间 | 炸板次数 | 所属行业   |
+|-----:|:-----|-------:|------:|:---------------|:-------|------:|:---------------------|:-------------------|:------------------|:-------|--------------:|---------:|---------:|-------:|:-------|
+|    1 | Xinneng Taishan | 720    |     3 | 3 limit-ups in 3 days  | +10.11% |  5.01 | 1.06                 | 62.95              | 62.95             | 1.68%  | 237765221     |    92500 |    92500 |      0 | Power Grid Equipment |
+|    2 | Menovo   | 603538 |     3 | 5 limit-ups in 10 days | +10.01% | 35.62 | 10.14                | 77.01              | 78.52             | 13.31% | 139466334     |    93342 |    94318 |      7 | Chemical Pharma |
+|    3 | Hunan Development | 722    |     3 | 3 limit-ups in 3 days  | +9.99%  | 18.28 | 20.21                | 84.85              | 84.85             | 24.00% | 71769016      |    93018 |   105418 |     13 | Power    |
+|    4 | Rongjie股份 | 2192   |     3 | 3 limit-ups in 3 days  | +10.01% | 70.91 | 28.40                | 183.74             | 184.12            | 15.69% | 23520847      |    94833 |   141042 |      9 | Energy Metals |
+|    5 | Bohai Chemical | 600800 |     2 | 2 limit-ups in 2 days  | +9.92%  |  5.21 | 3.08                 | 57.82              | 57.83             | 5.35%  | 34701726      |    93105 |    93347 |      2 | Refining & Trade |
+|    6 | Zaisheng Technology | 603601 |     2 | 2 limit-ups in 2 days  | +9.98%  | 13.44 | 56.16                | 153.53             | 153.53            | 36.99% | 192672574     |    93004 |   140225 |      5 | Professional Engineering |
+|    7 | Zhongmin Energy | 600163 |     2 | 2 limit-ups in 2 days  | +9.95%  |  8.29 | 6.41                 | 157.76             | 157.76            | 4.07%  | 170917383     |    92502 |   101238 |      1 | Power    |
+|    8 | China Railway Material | 927    |     2 | 2 limit-ups in 2 days  | +9.87%  |  3.34 | 18.63                | 202.08             | 202.08            | 9.30%  | 7951538       |    93203 |   145336 |     12 | Rail Transit Equipment |
+|    9 | Mingpu Opto Magnetic | 2902   |     2 | 3 limit-ups in 6 days  | +10.02% | 28.55 | 7.87                 | 50.71              | 67.10             | 15.66% | 163227487     |    93024 |    93103 |      1 | Communication Equipment |
+|   10 | Huadian Energy | 600726 |     2 | 8 limit-ups in 13 days | +10.08% |  6.77 | 37.60                | 506.08             | 535.33            | 7.98%  | 12801684      |   145559 |   145559 |      0 | Power    |
+|   11 | Zhongchao Holding | 2471   |     1 | First limit-up         | +10.05% |  8.76 | 11.52                | 117.61             | 119.90            | 9.80%  | 330617537     |    92500 |    92500 |      0 | Power Grid Equipment |
+|   12 | Haisen Pharma | 1367   |     1 | First limit-up         | +9.99%  | 24.12 | 1.59                 | 9.60               | 36.75             | 16.58% | 35083866      |    93012 |    93545 |      1 | Chemical Pharma |
+|   13 | Xinbao股份 | 2705   |     1 | First limit-up         | +9.98%  | 14.77 | 7.43                 | 119.36             | 119.91            | 6.27%  | 37214492      |    93003 |   144648 |      3 | Small Home Appliances |
+|   14 | Tianbao Infrastructure | 965    |     1 | First limit-up         | +10.00% |  4.18 | 3.19                 | 46.39              | 46.39             | 6.88%  | 30367031      |    92500 |   101133 |      2 | Real Estate Development |
+|   15 | Jinfu Technology | 3018   |     1 | First limit-up         | +10.02% | 28.22 | 2.31                 | 27.65              | 73.37             | 8.49%  | 75121640      |    93418 |    93418 |      0 | Packaging & Printing |
+|   16 | Quzhou Dongfeng | 601515 |     1 | First limit-up         | +9.98%  |  4.41 | 1.49                 | 84.87              | 84.87             | 1.78%  | 20895462      |    93521 |    93521 |      0 | Packaging & Printing |
+|   17 | Lidao New Materials | 603937 |     1 | 2 limit-ups in 3 days  | +9.98%  | 14.32 | 2.22                 | 29.91              | 29.91             | 7.60%  | 28764584      |    93905 |    93905 |      0 | Industrial Metals |
+|   18 | Dasouth East | 2263   |     1 | First limit-up         | +10.12% |  3.7  | 2.76                 | 69.50              | 69.50             | 4.04%  | 77871310      |    94018 |    94018 |      0 | Plastics |
+|   19 | Yuancheng股份 | 2692   |     1 | First limit-up         | +9.93%  |  5.98 | 1.88                 | 42.92              | 42.95             | 4.46%  | 101739534     |    93909 |    93909 |      0 | Power Grid Equipment |
+|   20 | Stair Pharma | 603520 |     1 | First limit-up         | +10.04% | 10.3  | 3.89                 | 45.16              | 45.16             | 8.76%  | 23185300      |    94325 |    95855 |      1 | Chemical Pharma |
+|   21 | Huitian Thermal Power | 692    |     1 | First limit-up         | +10.11% |  4.9  | 1.48                 | 26.11              | 26.11             | 5.86%  | 55081037      |    94436 |    94436 |      0 | Power    |
+|   22 | Nanjing Xinjie | 600682 |     1 | First limit-up         | +9.97%  |  7.06 | 2.21                 | 82.18              | 94.97             | 2.76%  | 100472497     |    94511 |    94511 |      0 | Comprehensive II |
+|   23 | Jinkong Electric Power | 767    |     1 | First limit-up         | +9.98%  |  4.63 | 9.62                 | 134.84             | 142.46            | 7.22%  | 160492560     |    93054 |    93524 |      2 | Power    |
+|   24 | Yuanli Technology | 603217 |     1 | First limit-up         | +9.98%  | 24.68 | 0.939899             | 51.36              | 51.36             | 1.86%  | 99626545      |    94658 |    94658 |      0 | Chemical Products |
+|   25 | Shida Shenghua | 603026 |     1 | First limit-up         | +10.01% | 85.32 | 20.06                | 198.54             | 198.54            | 10.34% | 103451865     |    95239 |   132451 |      2 | Batteries |
+|   26 | Ancai Hi-Tech | 600207 |     1 | First limit-up         | +10.03% |  6.58 | 5.80                 | 71.68              | 71.68             | 8.46%  | 44996790      |   100449 |   100449 |      0 | Photovoltaic Equipment |
+|   27 | Xinghua股份 | 2109   |     1 | First limit-up         | +10.02% |  4.94 | 5.28                 | 63.05              | 63.05             | 8.65%  | 122102474     |    95824 |    95824 |      0 | Chemical Raw Materials |
+|   28 | Dashengda  | 603687 |     1 | 5 limit-ups in 7 days  | +10.00% | 16.5  | 15.90                | 90.76              | 90.76             | 18.32% | 128378250     |   101944 |   102811 |      1 | Packaging & Printing |
+|   29 | Guangxi Energy | 600310 |     1 | First limit-up         | +10.09% |  6    | 11.19                | 87.94              | 87.94             | 13.62% | 120797076     |   103105 |   103105 |      0 | Power    |
+|   30 | Jingyuntong | 601908 |     1 | First limit-up         | +10.07% |  5.03 | 13.32                | 121.45             | 121.45            | 11.49% | 152601649     |   103924 |   103924 |      0 | Power    |
+|   31 | Lianxiang股份 | 603272 |     1 | 2 limit-ups in 4 days  | +10.00% | 29.38 | 2.17                 | 30.45              | 30.45             | 7.36%  | 10779522      |   101251 |   101251 |      0 | Home Furnishings |
+|   32 | Klic     | 2782   |     1 | First limit-up         | +10.01% | 26.16 | 8.25                 | 127.27             | 129.74            | 6.62%  | 20066995      |   105800 |   142518 |      4 | Other Electronics |
+|   33 | Shenzhen Nanda A | 37     |     1 | First limit-up         | +10.00% | 11.99 | 7.89                 | 40.64              | 72.27             | 20.72% | 86494361      |   111500 |   111500 |      0 | Power    |
+|   34 | Jinmei Technology | 600844 |     1 | 2 limit-ups in 4 days  | +9.93%  |  4.54 | 7.95                 | 37.35              | 46.15             | 22.45% | 143217932     |   134523 |   134523 |      0 | Chemical Raw Materials |
+|   35 | Lanyan Holding | 968    |     1 | First limit-up         | +9.96%  | 10.93 | 10.22                | 105.75             | 105.75            | 10.20% | 134359615     |   131951 |   131951 |      0 | Oil & Gas Extraction |
+|   36 | Dechang股份 | 605555 |     1 | First limit-up         | +10.01% | 16.81 | 2.85                 | 81.37              | 81.37             | 3.61%  | 120440725     |   135527 |   135527 |      0 | Small Home Appliances |
+|   37 | Shenjian股份 | 2361   |     1 | First limit-up         | +10.03% | 12.4  | 18.76                | 100.33             | 117.93            | 19.54% | 169305111     |   140151 |   140151 |      0 | Plastics |
+|   38 | Wanbangde  | 2082   |     1 | 2 limit-ups in 3 days  | +9.99%  | 23.67 | 11.43                | 130.95             | 144.79            | 9.08%  | 2755188       |   143518 |   144345 |      4 | Chemical Pharma |
+|   39 | Western Materials | 2149   |     1 | First limit-up         | +10.00% | 46.74 | 42.53                | 228.16             | 228.19            | 19.40% | 304461181     |   143606 |   143606 |      0 | Minor Metals |
 
-|   No. | Name                   | Code   | Consecutive Limit-ups | Limit-up Statistics | % Change | Last Price | Turnover (billion CNY) | Circulating Market Cap (billion CNY) | Total Market Cap (billion CNY) | Turnover Rate | Locked-in Capital (CNY) | First Limit-up Time | Last Limit-up Time | Failed Limit-up Counts | Sector                 |
-|-----:|:---------------------|:-------|----------------------:|:--------------------|:--------|-----------:|-----------------------:|-------------------------------------:|------------------------------:|--------------:|------------------------:|--------------------:|--------------------:|-----------------------:|:-----------------------|
-|    1 | Xinneng Taishan      | 720    |                     3 | 3-day 3-limit-up    | +10.11% |       5.01 | 0.11                   | 6.30                                 | 6.30                          | 1.68%         | 237,765,221             | 92500               | 92500               |                      0 | Power Grid Equipment   |
-|    2 | Mino Pharma            | 603538 |                     3 | 10-day 5-limit-up   | +10.01% |      35.62 | 1.01                   | 7.70                                 | 7.85                          | 13.31%        | 139,466,334             | 93342               | 94318               |                      7 | Chemical Pharmaceuticals |
-|    3 | Hunan Development      | 722    |                     3 | 3-day 3-limit-up    | +9.99%  |      18.28 | 2.02                   | 8.49                                 | 8.49                          | 24.00%        | 71,769,016              | 93018               | 105418              |                     13 | Power                  |
-|    4 | Yongjie Lithium        | 2192   |                     3 | 3-day 3-limit-up    | +10.01% |      70.91 | 2.84                   | 18.37                                | 18.41                         | 15.69%        | 23,520,847              | 94833               | 141042              |                      9 | Energy Metals          |
-|    5 | Bohai Chemical Industry | 600800 |                     2 | 2-day 2-limit-up    | +9.92%  |       5.21 | 0.31                   | 5.78                                 | 5.78                          | 5.35%         | 34,701,726              | 93105               | 93347               |                      2 | Refining & Trading     |
-|    6 | Raise Technology       | 603601 |                     2 | 2-day 2-limit-up    | +9.98%  |      13.44 | 5.62                   | 15.35                                | 15.35                         | 36.99%        | 192,672,574             | 93004               | 140225              |                      5 | Professional Engineering |
-|    7 | Fujian Zhongmin Energy | 600163 |                     2 | 2-day 2-limit-up    | +9.95%  |       8.29 | 0.64                   | 15.78                                | 15.78                         | 4.07%         | 170,917,383             | 92502               | 101238              |                      1 | Power                  |
-|    8 | China Railway Materials | 927    |                     2 | 2-day 2-limit-up    | +9.87%  |       3.34 | 1.86                   | 20.21                                | 20.21                         | 9.30%         | 7,951,538               | 93203               | 145336              |                     12 | Rail Transit Equipment |
-|    9 | Minpu Opto-Magnetic    | 2902   |                     2 | 6-day 3-limit-up    | +10.02% |      28.55 | 0.79                   | 5.07                                 | 6.71                          | 15.66%        | 163,227,487             | 93024               | 93103               |                      1 | Communication Equipment |
-|   10 | Huadian Energy         | 600726 |                     2 | 13-day 8-limit-up   | +10.08% |       6.77 | 3.76                   | 50.61                                | 53.53                         | 7.98%         | 12,801,684              | 145559              | 145559              |                      0 | Power                  |
-|   11 | Zhongchao Holding      | 2471   |                     1 | First Limit-up      | +10.05% |       8.76 | 1.15                   | 11.76                                | 11.99                         | 9.80%         | 330,617,537             | 92500               | 92500               |                      0 | Power Grid Equipment   |
-|   12 | Haisen Pharma          | 1367   |                     1 | First Limit-up      | +9.99%  |      24.12 | 0.16                   | 0.96                                 | 3.68                          | 16.58%        | 35,083,866              | 93012               | 93545               |                      1 | Chemical Pharmaceuticals |
-|   13 | Donlim Group           | 2705   |                     1 | First Limit-up      | +9.98%  |      14.77 | 0.74                   | 11.94                                | 11.99                         | 6.27%         | 37,214,492              | 93003               | 144648              |                      3 | Small Home Appliances  |
-|   14 | Tianjin Port Free Trade Zone Investment | 965    |                     1 | First Limit-up      | +10.00% |       4.18 | 0.32                   | 4.64                                 | 4.64                          | 6.88%         | 30,367,031              | 92500               | 101133              |                      2 | Real Estate Development |
-|   15 | Jinfu Technology       | 3018   |                     1 | First Limit-up      | +10.02% |      28.22 | 0.23                   | 2.77                                 | 7.34                          | 8.49%         | 75,121,640              | 93418               | 93418               |                      0 | Packaging & Printing   |
-|   16 | Quzhou Dongfeng        | 601515 |                     1 | First Limit-up      | +9.98%  |       4.41 | 0.15                   | 8.49                                 | 8.49                          | 1.78%         | 20,895,462              | 93521               | 93521               |                      0 | Packaging & Printing   |
-|   17 | Lidao New Material     | 603937 |                     1 | 3-day 2-limit-up    | +9.98%  |      14.32 | 0.22                   | 2.99                                 | 2.99                          | 7.60%         | 28,764,584              | 93905               | 93905               |                      0 | Industrial Metals      |
-|   18 | Dasouthland            | 2263   |                     1 | First Limit-up      | +10.12% |       3.7  | 0.28                   | 6.95                                 | 6.95                          | 4.04%         | 77,871,310              | 94018               | 94018               |                      0 | Plastics               |
-|   19 | Yuancheng Co.          | 2692   |                     1 | First Limit-up      | +9.93%  |       5.98 | 0.19                   | 4.29                                 | 4.30                          | 4.46%         | 101,739,534             | 93909               | 93909               |                      0 | Power Grid Equipment   |
-|   20 | CTL Pharmaceutical     | 603520 |                     1 | First Limit-up      | +10.04% |      10.3  | 0.39                   | 4.52                                 | 4.52                          | 8.76%         | 23,185,300              | 94325               | 95855               |                      1 | Chemical Pharmaceuticals |
-|   21 | Huitian Thermal Power  | 692    |                     1 | First Limit-up      | +10.11% |       4.9  | 0.15                   | 2.61                                 | 2.61                          | 5.86%         | 55,081,037              | 94436               | 94436               |                      0 | Power                  |
-|   22 | Nanjing Xinjiekou Department Store | 600682 |                     1 | First Limit-up      | +9.97%  |       7.06 | 0.22                   | 8.22                                 | 9.50                          | 2.76%         | 100,472,497             | 94511               | 94511               |                      0 | Conglomerates II       |
-|   23 | Jinkong Electric Power | 767    |                     1 | First Limit-up      | +9.98%  |       4.63 | 0.96                   | 13.48                                | 14.25                         | 7.22%         | 160,492,560             | 93054               | 93524               |                      2 | Power                  |
-|   24 | Yuanli Science And Technology | 603217 |                     1 | First Limit-up      | +9.98%  |      24.68 | 0.09                   | 5.14                                 | 5.14                          | 1.86%         | 99,626,545              | 94658               | 94658               |                      0 | Chemical Products      |
-|   25 | Shida Shenghua        | 603026 |                     1 | First Limit-up      | +10.01% |      85.32 | 2.01                   | 19.85                                | 19.85                         | 10.34%        | 103,451,865             | 95239               | 132451              |                      2 | Battery                |
-|   26 | Ancai Hi-tech          | 600207 |                     1 | First Limit-up      | +10.03% |       6.58 | 0.58                   | 7.17                                 | 7.17                          | 8.46%         | 44,996,790              | 100449              | 100449              |                      0 | Photovoltaic Equipment |
-|   27 | Xinghua Chemical       | 2109   |                     1 | First Limit-up      | +10.02% |       4.94 | 0.53                   | 6.31                                 | 6.31                          | 8.65%         | 122,102,474             | 95824               | 95824               |                      0 | Chemical Raw Materials |
-|   28 | Dashengda Packaging    | 603687 |                     1 | 7-day 5-limit-up    | +10.00% |      16.5  | 1.59                   | 9.08                                 | 9.08                          | 18.32%        | 128,378,250             | 101944              | 102811              |                      1 | Packaging & Printing   |
-|   29 | Guangxi Energy         | 600310 |                     1 | First Limit-up      | +10.09% |       6    | 1.12                   | 8.79                                 | 8.79                          | 13.62%        | 120,797,076             | 103105              | 103105              |                      0 | Power                  |
-|   30 | Jingyuntong            | 601908 |                     1 | First Limit-up      | +10.07% |       5.03 | 1.33                   | 12.15                                | 12.15                         | 11.49%        | 152,601,649             | 103924              | 103924              |                      0 | Power                  |
-|   31 | Lianxiang Co.          | 603272 |                     1 | 4-day 2-limit-up    | +10.00% |      29.38 | 0.22                   | 3.05                                 | 3.05                          | 7.36%         | 10,779,522              | 101251              | 101251              |                      0 | Home Furnishings       |
-|   32 | Klik Technology        | 2782   |                     1 | First Limit-up      | +10.01% |      26.16 | 0.83                   | 12.73                                | 12.97                         | 6.62%         | 20,066,995              | 105800              | 142518              |                      4 | Other Electronics      |
-|   33 | Shennan Power A        | 37     |                     1 | First Limit-up      | +10.00% |      11.99 | 0.79                   | 4.06                                 | 7.23                          | 20.72%        | 86,494,361              | 111500              | 111500              |                      0 | Power                  |
-|   34 | Jinmei Technology      | 600844 |                     1 | 4-day 2-limit-up    | +9.93%  |       4.54 | 0.80                   | 3.74                                 | 4.62                          | 22.45%        | 143,217,932             | 134523              | 134523              |                      0 | Chemical Raw Materials |
-|   35 | Blue Flame Holding     | 968    |                     1 | First Limit-up      | +9.96%  |      10.93 | 1.02                   | 10.58                                | 10.58                         | 10.20%        | 134,359,615             | 131951              | 131951              |                      0 | Oil & Gas Extraction   |
-|   36 | Dechang Electric       | 605555 |                     1 | First Limit-up      | +10.01% |      16.81 | 0.28                   | 8.14                                 | 8.14                          | 3.61%         | 120,440,725             | 135527              | 135527              |                      0 | Small Home Appliances  |
-|   37 | Shenjian Co.           | 2361   |                     1 | First Limit-up      | +10.03% |      12.4  | 1.88                   | 10.03                                | 11.79                         | 19.54%        | 169,305,111             | 140151              | 140151              |                      0 | Plastics               |
-|   38 | Wanbangde Pharmaceutical | 2082   |                     1 | 3-day 2-limit-up    | +9.99%  |      23.67 | 1.14                   | 13.10                                | 14.48                         | 9.08%         | 2,755,188               | 143518              | 144345              |                      4 | Chemical Pharmaceuticals |
-|   39 | Western Materials      | 2149   |                     1 | First Limit-up      | +10.00% |      46.74 | 4.25                   | 22.82                                | 22.82                         | 19.40%        | 304,461,181             | 143606              | 143606              |                      0 | Minor Metals           |
+## 💔 Broken Limit-Up Stocks
 
-## 💔 Failed Limit-up Stocks
-
-|   No. | Name                   | Code   | Limit-up Statistics | % Change | Last Price | Limit-up Price | Turnover (billion CNY) | Circulating Market Cap (billion CNY) | Total Market Cap (billion CNY) | Turnover Rate | Price Velocity | First Limit-up Time | Failed Limit-up Counts | Amplitude | Sector                   |
-|-----:|:---------------------|:-------|:--------------------|:--------|-----------:|---------------:|-----------------------:|-------------------------------------:|------------------------------:|--------------:|---------------:|--------------------:|-----------------------:|----------:|:-------------------------|
-|    1 | OVD                    | 600666 | 7-day 4-limit-up    | +4.73%  |       5.53 |           5.81 | 5.89                   | 13.38                                | 15.22                         | 42.90%        | -0.539568      | 92502               |                      3 | 8.33333   | Optical Optoelectronics  |
-|    2 | Xiamen Engineering Machinery | 600815 | 2-day 1-limit-up    | -2.10%  |       4.2  |           4.72 | 1.40                   | 7.45                                 | 7.45                          | 17.85%        | -0.70922       | 93052               |                      1 | 13.5198   | Construction Machinery   |
-|    3 | Shuhua Sports          | 605299 | 5-day 3-limit-up    | -1.35%  |      17.5  |          19.51 | 1.35                   | 7.16                                 | 7.16                          | 18.15%        | -0.398406      | 93126               |                      1 | 14.1488   | Cultural & Entertainment Products |
-|    4 | Huasoplast             | 600935 | 0-day 0-limit-up    | +7.09%  |       3.02 |           3.1  | 0.61                   | 10.59                                | 10.86                         | 5.74%         | -0.330033      | 93950               |                      2 | 9.92908   | Chemical Raw Materials   |
-|    5 | Haixing Co.            | 603115 | 0-day 0-limit-up    | +8.67%  |      39.48 |          39.96 | 0.92                   | 9.55                                 | 9.55                          | 9.64%         | 0.152207       | 94018               |                      5 | 6.46848   | Components               |
-|    6 | New Journey            | 2219   | 0-day 0-limit-up    | +7.30%  |       2.5  |           2.56 | 0.94                   | 8.18                                 | 8.47                          | 11.48%        | 0              | 94109               |                      1 | 9.44206   | Healthcare Services      |
-|    7 | Mindong Electric Power | 993    | 2-day 1-limit-up    | +1.91%  |      16    |          17.27 | 1.81                   | 7.04                                 | 7.33                          | 24.77%        | 0              | 94254               |                      1 | 8.34395   | Power                    |
-|    8 | Cangzhou Mingzhu       | 2108   | 0-day 0-limit-up    | +6.58%  |       4.86 |           5.02 | 0.82                   | 8.01                                 | 8.01                          | 10.08%        | -0.409836      | 94539               |                      2 | 10.5263   | Plastics                 |
-|    9 | Foshan Plastics Group  | 973    | 0-day 0-limit-up    | +8.40%  |      18.46 |          18.73 | 1.61                   | 17.86                                | 45.38                         | 9.10%         | 0              | 95521               |                      1 | 10.687    | Plastics                 |
-|   10 | Tianji Lithium         | 2759   | 0-day 0-limit-up    | +7.07%  |      35.57 |          36.54 | 3.51                   | 17.82                                | 17.83                         | 19.67%        | 0.0281215      | 95530               |                      1 | 9.75316   | Battery                  |
-|   11 | Haike Xinyuan          | 301292 | 0-day 0-limit-up    | +16.27% |      80.24 |          82.81 | 2.55                   | 6.83                                 | 17.88                         | 38.50%        | 0              | 95951               |                      1 | 20.0116   | Battery                  |
-|   12 | Guanghe Technology     | 1389   | 0-day 0-limit-up    | +7.95%  |     114.93 |         117.12 | 2.16                   | 17.46                                | 54.30                         | 12.36%        | 0              | 100027              |                      4 | 9.72105   | Components               |
-|   13 | Ganneng Co.            | 899    | 0-day 0-limit-up    | +6.91%  |      15.17 |          15.61 | 1.74                   | 14.80                                | 14.80                         | 11.91%        | -0.0658762     | 110915              |                      1 | 13.6716   | Power                    |
-|   14 | Huadian Liaoning Energy | 600396 | 15-day 9-limit-up   | +6.47%  |       8.88 |           9.17 | 3.09                   | 13.08                                | 13.08                         | 23.43%        | -3.16249       | 111548              |                      8 | 9.23261   | Power                    |
-|   15 | Liaoning Energy        | 600758 | 4-day 3-limit-up    | +7.34%  |       6.14 |           6.29 | 2.54                   | 8.11                                 | 8.12                          | 33.06%        | 0.163132       | 131447              |                      1 | 18.7063   | Coal Mining              |
-|   16 | J&A Design             | 300668 | 0-day 0-limit-up    | +18.47% |      42.65 |          43.2  | 0.65                   | 4.25                                 | 5.13                          | 16.32%        | 0              | 132812              |                      1 | 21.4167   | Engineering Consulting   |
-|   17 | Tongbao Energy         | 600780 | 2-day 1-limit-up    | +9.77%  |       8.43 |           8.45 | 1.41                   | 9.67                                 | 9.67                          | 15.34%        | 0.357143       | 134854              |                      4 | 13.151    | Power                    |
-|   18 | Xice Testing           | 301306 | 0-day 0-limit-up    | +16.28% |     154.32 |         159.25 | 2.11                   | 9.00                                 | 13.03                         | 25.13%        | 0              | 140757              |                      2 | 19.78     | Military Electronics     |
+| 序号 | 名称   | 代码   | 涨停统计         | 涨跌幅    | 最新价 | 涨停价 | 成交额(RMB 100 Million) | 流通市值(RMB 100 Million) | 总市值(RMB 100 Million) | 换手率   | 涨速      | 首次封板时间 | 炸板次数 | 振幅    | 所属行业   |
+|-----:|:-----|-------:|:---------------|:-------|-------:|-------:|:---------------------|:-------------------|:------------------|:-------|----------:|---------:|-------:|---------:|:-------|
+|    1 | Aoruidi  | 600666 | 4 limit-ups in 7 days  | +4.73%  |   5.53 |   5.81 | 58.93                | 133.81             | 152.16            | 42.90% | -0.539568 |    92502 |      3 |  8.33333 | Optical-Electronic |
+|    2 | Xiamen Gong | 600815 | 1 limit-up in 2 days  | -2.10%  |   4.2  |   4.72 | 14.03                | 74.51              | 74.51             | 17.85% | -0.70922  |    93052 |      1 | 13.5198  | Construction Machinery |
+|    3 | Shu Hua Sports | 605299 | 3 limit-ups in 5 days  | -1.35%  |  17.5  |  19.51 | 13.54                | 71.61              | 71.61             | 18.15% | -0.398406 |    93126 |      1 | 14.1488  | Culture & Entertainment Supplies |
+|    4 | Huasu股份 | 600935 | No current streak      | +7.09%  |   3.02 |   3.1  | 6.11                 | 105.92             | 108.56            | 5.74%  | -0.330033 |    93950 |      2 |  9.92908 | Chemical Raw Materials |
+|    5 | Haixing股份 | 603115 | No current streak      | +8.67%  |  39.48 |  39.96 | 9.19                 | 95.50              | 95.50             | 9.64%  | 0.152207  |    94018 |      5 |  6.46848 | Components |
+|    6 | New Milestone | 2219   | No current streak      | +7.30%  |   2.5  |   2.56 | 9.44                 | 81.80              | 84.68             | 11.48% | 0         |    94109 |      1 |  9.44206 | Healthcare Services |
+|    7 | Mindong Electric Power | 993    | 1 limit-up in 2 days  | +1.91%  |  16    |  17.27 | 18.07                | 70.36              | 73.27             | 24.77% | 0         |    94254 |      1 |  8.34395 | Power    |
+|    8 | Cangzhou Mingzhu | 2108   | No current streak      | +6.58%  |   4.86 |   5.02 | 8.16                 | 80.07              | 80.12             | 10.08% | -0.409836 |    94539 |      2 | 10.5263  | Plastics |
+|    9 | Foshan Plastics Tech | 973    | No current streak      | +8.40%  |  18.46 |  18.73 | 16.08                | 178.59             | 453.79            | 9.10%  | 0         |    95521 |      1 | 10.687   | Plastics |
+|   10 | Tianji股份 | 2759   | No current streak      | +7.07%  |  35.57 |  36.54 | 35.05                | 178.19             | 178.34            | 19.67% | 0.0281215 |    95530 |      1 |  9.75316 | Batteries |
+|   11 | Haike Xinyuan | 301292 | No current streak      | +16.27% |  80.24 |  82.81 | 25.53                | 68.26              | 178.77            | 38.50% | 0         |    95951 |      1 | 20.0116  | Batteries |
+|   12 | Guanghe Tech | 1389   | No current streak      | +7.95%  | 114.93 | 117.12 | 21.59                | 174.60             | 542.98            | 12.36% | 0         |   100027 |      4 |  9.72105 | Components |
+|   13 | Ganneng股份 | 899    | No current streak      | +6.91%  |  15.17 |  15.61 | 17.39                | 148.01             | 148.01            | 11.91% | -0.0658762 |   110915 |      1 | 13.6716  | Power    |
+|   14 | Huadian Liaoning Energy | 600396 | 9 limit-ups in 15 days | +6.47%  |   8.88 |   9.17 | 30.90                | 130.78             | 130.78            | 23.43% | -3.16249  |   111548 |      8 |  9.23261 | Power    |
+|   15 | Liaoning Energy | 600758 | 3 limit-ups in 4 days  | +7.34%  |   6.14 |   6.29 | 25.43                | 81.09              | 81.17             | 33.06% | 0.163132  |   131447 |      1 | 18.7063  | Coal Mining |
+|   16 | J.C. Design | 300668 | No current streak      | +18.47% |  42.65 |  43.2  | 6.52                 | 42.52              | 51.34             | 16.32% | 0         |   132812 |      1 | 21.4167  | Engineering Consulting |
+|   17 | Tongbao Energy | 600780 | 1 limit-up in 2 days  | +9.77%  |   8.43 |   8.45 | 14.06                | 96.65              | 96.65             | 15.34% | 0.357143  |   134854 |      4 | 13.151   | Power    |
+|   18 | Xice Testing | 301306 | No current streak      | +16.28% | 154.32 | 159.25 | 21.12                | 89.97              | 130.25            | 25.13% | 0         |   140757 |      2 | 19.78    | Military Electronics |
 
 ## 🚀 Dragon-Tiger List
 
-|   No. | Stock Code | Stock Name                     | Closing Price | Corresponding Value | Volume (thousand shares) | Turnover (thousand CNY) | Indicator                                              |
-|-----:|-----------:|:-----------------------------|--------------:|--------------------:|-------------------------:|------------------------:|:-------------------------------------------------------|
-|    1 | 000533     | Shunna Co.                     |         15.53 |               -8.54 | 13890.3                  | 221754                  | Securities with a deviation of 7% from the decline limit |
-|    2 | 000890     | Fasten                         |         12.25 |               -8.54 | 8612.58                  | 109142                  | Securities with a deviation of 7% from the decline limit |
-|    3 | 002730     | DianGuang Science & Technology |         23.27 |               -8.54 | 5590.92                  | 137085                  | Securities with a deviation of 7% from the decline limit |
-|    4 | 002796     | Sega Technology                |         45.61 |               -8.54 | 2152.53                  | 100661                  | Securities with a deviation of 7% from the decline limit |
-|    5 | 002859     | Jie Mei Technology             |         39.76 |               -8.54 | 1504.94                  | 61775.7                 | Securities with a deviation of 7% from the decline limit |
-|    6 | 601330     | Green Power                    |          9.61 |               -8.93 | 11545.4                  | 114301                  | Securities with a deviation of 7% from the decline limit |
-|    7 | 601615     | Mingyang Smart Energy          |         17.34 |               -8.83 | 16863.1                  | 303969                  | Securities with a deviation of 7% from the decline limit |
-|    8 | 603358     | Huada Technology               |         29.39 |               -8.87 | 4643.1                   | 140000                  | Securities with a deviation of 7% from the decline limit |
-|    9 | 603778     | Guosheng Technology            |         22.09 |               -8.9  | 10634.4                  | 241854                  | Securities with a deviation of 7% from the decline limit |
-|   10 | 603817     | Haixia Environmental Protection |          8.11 |               -8.9  | 4112.09                  | 34185.3                 | Securities with a deviation of 7% from the decline limit |
-|   11 | 000539     | Guangdong Electric Power A     |          7.49 |               19.18 | 38028.8                  | 282396                  | Securities with an amplitude of 15%                      |
-|   12 | 600032     | Zhejiang New Energy            |         12.61 |               20.31 | 21918.2                  | 274821                  | Securities with an amplitude of 15%                      |
-|   13 | 600135     | Lucky Film                     |         10.38 |               22.11 | 6727.05                  | 77063.1                 | Securities with an amplitude of 15%                      |
-|   14 | 600758     | Liaoning Energy                |          6.14 |               20.5  | 43663.6                  | 254278                  | Securities with an amplitude of 15%                      |
-|   15 | 600982     | Ningbo Energy                  |          6.68 |               18.97 | 24316.5                  | 161056                  | Securities with an amplitude of 15%                      |
-|   16 | 603757     | Dayuan Pumps                   |         44.6  |               17.93 | 2160.24                  | 94881.1                 | Securities with an amplitude of 15%                      |
-|   17 | 000601     | Shaoneng Co.                   |          8.07 |               33.23 | 34876.1                  | 293326                  | Securities with a turnover rate of 20%                   |
-|   18 | 000690     | Baoneng New Energy             |          5.76 |               25.15 | 54689.7                  | 316015                  | Securities with a turnover rate of 20%                   |
-|   19 | 002309     | Zhongli Group                  |          4.74 |               37.39 | 89957.6                  | 445158                  | Securities with a turnover rate of 20%                   |
-|   20 | 002455     | Baichuan Co.                   |         13.1  |               27.99 | 17640.9                  | 226988                  | Securities with a turnover rate of 20%                   |
-|   21 | 002580     | Sacred Sun Power Sources       |         15.8  |               26.4  | 11930.9                  | 189659                  | Securities with a turnover rate of 20%                   |
-|   22 | 600666     | OVD                            |          5.53 |               42.9  | 103797                   | 589285                  | Securities with a turnover rate of 20%                   |
-|   23 | 600821     | Jinkai New Energy              |         10.44 |               28.11 | 56143.2                  | 615682                  | Securities with a turnover rate of 20%                   |
-|   24 | 601133     | Baicheng Co.                   |         18.28 |               31.34 | 4682.19                  | 86765.2                 | Securities with a turnover rate of 20%                   |
-|   25 | 603601     | Raise Technology               |         13.44 |               36.99 | 42250.5                  | 561586                  | Securities with a turnover rate of 20%                   |
-|   26 | 920028     | Xinhengtai                     |         17.79 |               26.92 | 1145.63                  | 20732.3                 | Securities with a turnover rate of 20%                   |
-|   27 | 920078     | Zuxing New Materials           |         24.62 |               28.21 | 583.949                  | 14722                   | Securities with a turnover rate of 20%                   |
-|   28 | 920088     | Keli Co.                       |         65.66 |               28.14 | 902.415                  | 58934.7                 | Securities with a turnover rate of 20%                   |
-|   29 | 000692     | Huitian Thermal Power          |          4.9  |               22.03 | 8506.42                  | 37854.6                 | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   30 | 000720     | Xinneng Taishan                |          5.01 |               20.54 | 3912.95                  | 18777.8                 | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   31 | 000722     | Hunan Development              |         18.28 |               20.51 | 11757.1                  | 212284                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   32 | 000767     | Jinkong Electric Power         |          4.63 |               24.89 | 85514.2                  | 354302                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   33 | 000927     | China Railway Materials        |          3.34 |               20.54 | 65463                    | 213017                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   34 | 002082     | Wanbangde Pharmaceutical       |         23.67 |               28.92 | 11707.5                  | 251087                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   35 | 002902     | Minpu Opto-Magnetic            |         28.55 |               20.55 | 3498.75                  | 97317.9                 | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   36 | 600163     | Fujian Zhongmin Energy         |          8.29 |               20.82 | 16809.5                  | 130359                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   37 | 600396     | Huadian Liaoning Energy        |          8.88 |               26.89 | 68172                    | 565725                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   38 | 600527     | Jiangnan High Fiber            |          2.58 |               20.86 | 55974.3                  | 136980                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   39 | 600698     | Hunan Tianyan                  |          8.31 |               20.94 | 16342                    | 134322                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   40 | 600726     | Huadian Energy                 |          6.77 |               20.91 | 105872                   | 649542                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   41 | 600780     | Tongbao Energy                 |          8.43 |               20.57 | 28540.3                  | 222494                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   42 | 600800     | Bohai Chemical Industry        |          5.21 |               20.68 | 10754.9                  | 52854.8                 | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   43 | 601869     | Yangtze Optical Fibre and Cable |        268.88 |               24.78 | 6281.21                  | 1.5527e+06              | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   44 | 603115     | Haixing Co.                    |         39.48 |               21.34 | 4526.65                  | 170015                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   45 | 603538     | Mino Pharma                    |         35.62 |               20.79 | 5795.34                  | 195261                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   46 | 603808     | Ellassay                       |         10.8  |               23.44 | 6311.02                  | 65500.1                 | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   47 | 603937     | Lidao New Material             |         14.32 |               25.98 | 4144.21                  | 55051                   | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   48 | 605366     | Hongbai New Materials          |         11.37 |               20.79 | 17491.4                  | 187431                  | Securities with a cumulative deviation of 20% from the rise limit within three consecutive trading days |
-|   49 | 002149     | Western Materials              |         46.74 |               11.46 | 9469.32                  | 425337                  | Securities with a deviation of 7% from the rise limit    |
-|   50 | 002192     | Yongjie Lithium                |         70.91 |               11.46 | 4066.72                  | 283952                  | Securities with a deviation of 7% from the rise limit    |
-|   51 | 002361     | Shenjian Co.                   |         12.4  |               11.46 | 15813.7                  | 187588                  | Securities with a deviation of 7% from the rise limit    |
-|   52 | 600207     | Ancai Hi-tech                  |          6.58 |               11.12 | 9210.17                  | 58019.2                 | Securities with a deviation of 7% from the rise limit    |
-|   53 | 600310     | Guangxi Energy                 |          6    |               11.18 | 19957.8                  | 111852                  | Securities with a deviation of 7% from the rise limit    |
-|   54 | 601908     | Jingyuntong                    |          5.03 |               11.15 | 27752.8                  | 133166                  | Securities with a deviation of 7% from the rise limit    |
-|   55 | 603520     | CTL Pharmaceutical             |         10.3  |               11.13 | 3842.04                  | 38939.9                 | Securities with a deviation of 7% from the rise limit    |
-|   56 | 300040     | Jiuzhou Group                  |          9.33 |               36.17 | 18821.6                  | 166047                  | nan                                                    |
-|   57 | 300335     | Daisen Environmental Protection |          9.09 |               36.59 | 14056.5                  | 120123                  | nan                                                    |
-|   58 | 301292     | Haike Xinyuan                  |         80.24 |               38.45 | 3275.26                  | 255279                  | nan                                                    |
-|   59 | 301658     | Shouhang New Energy            |         55.3  |               37.47 | 1545.05                  | 87761.4                 | nan                                                    |
-|   60 | 301667     | Nabaichuan                     |         92.21 |               35.28 | 793.543                  | 74236.8                 | nan                                                    |
-|   61 | 300391     | Changyao Delisting             |          0.39 |                0    | 3368.72                  | 1323.08                 | Securities in Delisting Process                        |
-|   62 | 300668     | J&A Design                     |         42.65 |               18.47 | 1627.39                  | 65189.5                 | nan                                                    |
-|   63 | 301306     | Xice Testing                   |        154.32 |               16.28 | 1464.88                  | 211202                  | nan                                                    |
-|   64 | 301196     | Weike Technology               |        114.25 |               31.85 | 3064.65                  | 318639                  | nan                                                    |
+| 序号 | 股票代码 | 股票名称   | 收盘价 | 对应值 | 成交量(10k shares) | 成交额(RMB 10k) | 指标                                 |
+|-----:|-------:|:-------|-------:|------:|--------------------:|------------------:|:-------------------------------------|
+|    1 |    533 | Shunna股份 |  15.53 | -8.54 |         13890.3     | 221754            | Securities with a % change deviation exceeding -7% |
+|    2 |    890 | Faersheng |  12.25 | -8.54 |          8612.58    | 109142            | Securities with a % change deviation exceeding -7% |
+|    3 |   2730 | Dianguang Tech |  23.27 | -8.54 |          5590.92    | 137085            | Securities with a % change deviation exceeding -7% |
+|    4 |   2796 | Shijia Tech |  45.61 | -8.54 |          2152.53    | 100661            | Securities with a % change deviation exceeding -7% |
+|    5 |   2859 | Jiemei Tech |  39.76 | -8.54 |          1504.94    | 61775.7           | Securities with a % change deviation exceeding -7% |
+|    6 | 601330 | Green Power |   9.61 | -8.93 |         11545.4     | 114301            | Securities with a % change deviation exceeding -7% |
+|    7 | 601615 | Mingyang Smart Energy |  17.34 | -8.83 |         16863.1     | 303969            | Securities with a % change deviation exceeding -7% |
+|    8 | 603358 | Huada Tech |  29.39 | -8.87 |          4643.1     | 140000            | Securities with a % change deviation exceeding -7% |
+|    9 | 603778 | Guosheng Tech |  22.09 | -8.9  |         10634.4     | 241854            | Securities with a % change deviation exceeding -7% |
+|   10 | 603817 | Haixia Environmental Protection |   8.11 | -8.9  |          4112.09    | 34185.3           | Securities with a % change deviation exceeding -7% |
+|   11 |    539 | Guangdong Electric Power A |   7.49 | 19.18 |         38028.8     | 282396            | Securities with an amplitude exceeding 15% |
+|   12 | 600032 | Zhejiang Xinneng |  12.61 | 20.31 |         21918.2     | 274821            | Securities with an amplitude exceeding 15% |
+|   13 | 600135 | Lekai Film |  10.38 | 22.11 |          6727.05    | 77063.1           | Securities with an amplitude exceeding 15% |
+|   14 | 600758 | Liaoning Energy |   6.14 | 20.5  |         43663.6     | 254278            | Securities with an amplitude exceeding 15% |
+|   15 | 600982 | Ningbo Energy |   6.68 | 18.97 |         24316.5     | 161056            | Securities with an amplitude exceeding 15% |
+|   16 | 603757 | Dayuan Pump Industry |  44.6  | 17.93 |          2160.24    | 94881.1           | Securities with an amplitude exceeding 15% |
+|   17 |    601 | Shaoneng股份 |   8.07 | 33.23 |         34876.1     | 293326            | Securities with a turnover rate exceeding 20% |
+|   18 |    690 | Baonengyuan |   5.76 | 25.15 |         54689.7     | 316015            | Securities with a turnover rate exceeding 20% |
+|   19 |   2309 | Zhongli Group |   4.74 | 37.39 |         89957.6     | 445158            | Securities with a turnover rate exceeding 20% |
+|   20 |   2455 | Baichuan股份 |  13.1  | 27.99 |         17640.9     | 226988            | Securities with a turnover rate exceeding 20% |
+|   21 |   2580 | Shengyang股份 |  15.8  | 26.4  |         11930.9     | 189659            | Securities with a turnover rate exceeding 20% |
+|   22 | 600666 | Aoruidi  |   5.53 | 42.9  |        103797       | 589285            | Securities with a turnover rate exceeding 20% |
+|   23 | 600821 | Jinkai Xinneng |  10.44 | 28.11 |         56143.2     | 615682            | Securities with a turnover rate exceeding 20% |
+|   24 | 601133 | Baicheng股份 |  18.28 | 31.34 |          4682.19    | 86765.2           | Securities with a turnover rate exceeding 20% |
+|   25 | 603601 | Zaisheng Technology |  13.44 | 36.99 |         42250.5     | 561586            | Securities with a turnover rate exceeding 20% |
+|   26 | 920028 | Xinhengtai |  17.79 | 26.92 |          1145.63    | 20732.3           | Securities with a turnover rate exceeding 20% |
+|   27 | 920078 | Zuxing New Materials |  24.62 | 28.21 |           583.949   | 14722             | Securities with a turnover rate exceeding 20% |
+|   28 | 920088 | Keli股份 |  65.66 | 28.14 |           902.415   | 58934.7           | Securities with a turnover rate exceeding 20% |
+|   29 |    692 | Huitian Thermal Power |   4.9  | 22.03 |          8506.42    | 37854.6           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   30 |    720 | Xinneng Taishan |   5.01 | 20.54 |          3912.95    | 18777.8           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   31 |    722 | Hunan Development |  18.28 | 20.51 |         11757.1     | 212284            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   32 |    767 | Jinkong Electric Power |   4.63 | 24.89 |         85514.2     | 354302            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   33 |    927 | China Railway Material |   3.34 | 20.54 |         65463       | 213017            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   34 |   2082 | Wanbangde  |  23.67 | 28.92 |         11707.5     | 251087            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   35 |   2902 | Mingpu Opto Magnetic |  28.55 | 20.55 |          3498.75    | 97317.9           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   36 | 600163 | Zhongmin Energy |   8.29 | 20.82 |         16809.5     | 130359            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   37 | 600396 | Huadian Liaoning Energy |   8.88 | 26.89 |         68172       | 565725            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   38 | 600527 | Jiangnan Gaoxian |   2.58 | 20.86 |         55974.3     | 136980            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   39 | 600698 | Hunan Tianyan |   8.31 | 20.94 |         16342       | 134322            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   40 | 600726 | Huadian Energy |   6.77 | 20.91 |        105872       | 649542            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   41 | 600780 | Tongbao Energy |   8.43 | 20.57 |         28540.3     | 222494            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   42 | 600800 | Bohai Chemical |   5.21 | 20.68 |         10754.9     | 52854.8           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   43 | 601869 | YOFC     | 268.88 | 24.78 |          6281.21    | 1552700           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   44 | 603115 | Haixing股份 |  39.48 | 21.34 |          4526.65    | 170015            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   45 | 603538 | Menovo   |  35.62 | 20.79 |          5795.34    | 195261            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   46 | 603808 | Goerli   |  10.8  | 23.44 |          6311.02    | 65500.1           | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   47 | 603937 | Lidao New Materials |  14.32 | 25.98 |          4144.21    | 55051             | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   48 | 605366 | Hongbai New Materials |  11.37 | 20.79 |         17491.4     | 187431            | Securities with cumulative % change deviation exceeding 20% within 3 trading days |
+|   49 |   2149 | Western Materials |  46.74 | 11.46 |          9469.32    | 425337            | Securities with a % change deviation exceeding 7% |
+|   50 |   2192 | Rongjie股份 |  70.91 | 11.46 |          4066.72    | 283952            | Securities with a % change deviation exceeding 7% |
+|   51 |   2361 | Shenjian股份 |  12.4  | 11.46 |         15813.7     | 187588            | Securities with a % change deviation exceeding 7% |
+|   52 | 600207 | Ancai Hi-Tech |   6.58 | 11.12 |          9210.17    | 58019.2           | Securities with a % change deviation exceeding 7% |
+|   53 | 600310 | Guangxi Energy |   6    | 11.18 |         19957.8     | 111852            | Securities with a % change deviation exceeding 7% |
+|   54 | 601908 | Jingyuntong |   5.03 | 11.15 |         27752.8     | 133166            | Securities with a % change deviation exceeding 7% |
+|   55 | 603520 | Stair Pharma |  10.3  | 11.13 |          3842.04    | 38939.9           | Securities with a % change deviation exceeding 7% |
+|   56 | 300040 | Jiuzhou Group |   9.33 | 36.17 |         18821.6     | 166047            | N/A                                  |
+|   57 | 300335 | Disen股份 |   9.09 | 36.59 |         14056.5     | 120123            | N/A                                  |
+|   58 | 301292 | Haike Xinyuan |  80.24 | 38.45 |          3275.26    | 255279            | N/A                                  |
+|   59 | 301658 | Shouhang Xinneng |  55.3  | 37.47 |          1545.05    | 87761.4           | N/A                                  |
+|   60 | 301667 | NabaiChuan |  92.21 | 35.28 |           793.543   | 74236.8           | N/A                                  |
+|   61 | 300391 | Changyao Delisted |   0.39 | 0     |          3368.72    | 1323.08           | Securities in Delisting Rectification Period |
+|   62 | 300668 | J.C. Design |  42.65 | 18.47 |          1627.39    | 65189.5           | N/A                                  |
+|   63 | 301306 | Xice Testing | 154.32 | 16.28 |          1464.88    | 211202            | N/A                                  |
+|   64 | 301196 | Weike Tech | 114.25 | 31.85 |          3064.65    | 318639            | N/A                                  |
 
+## 🤖 AI In-depth Analysis & Insights
 
-## 🤖 AI Deep Analysis and Insights
+# Multi-Dimensional Market Review Report
 
-## 🚩 Market Sentiment Diagnosis
+## 1. 🚩 Market Sentiment Diagnosis
 
-On the day, the Shanghai Composite Index fell by 1.09%, with total market turnover reaching 1.94 trillion CNY. Market liquidity remained active but did not see further volume expansion. The advance-decline ratio was 916:4492, indicating a clear broad market decline. There were 39 limit-up stocks, 8 limit-down stocks, and 18 failed limit-ups. The failed limit-up rate was approximately 31.5% (18 / (39 + 18)), which is at a moderately high level.
+The current market stage can be defined as a **stage of accelerated adjustment with increased volume and divergence**. The Shanghai Composite Index fell by 1.09%, with total market turnover reaching RMB 1.94 trillion. However, the advancing/declining stock ratio was 916:4492, indicating a clear widespread decline and a severe lack of profit-making opportunities. With 39 Limit-up stocks, 8 Limit-down stocks, and a broken limit-up rate of approximately 31.5% (18 broken limit-ups), it shows low willingness of funds to chase highs, insufficient holding confidence in consecutive limit-up stocks, and significant selling pressure at high levels. Overall, the **loss-making effect has significantly amplified**, and market sentiment is in a rapid retreat, with most investors facing losses; profit-making opportunities are highly concentrated in a few defensive or specific theme stocks that defied the trend, but their sustainability faces challenges.
 
-**The current market stage is defined as: consolidation and adjustment following high-level divergence.** The index is generally under pressure, but the low number of limit-down stocks suggests that there was no panic selling in the market, and fund activity is still acceptable. However, the large number of declining stocks and the moderately high failed limit-up rate indicate significant risks for chasing highs. Market sentiment is characterized by a cautious wait-and-see approach coexisting with localized activity.
+## 2. 💰 Core Themes and Capital Flows
 
-**Distribution of Profit-making and Loss-making Effects:** Profit-making opportunities are highly concentrated in a few consecutive limit-up stocks and specific themes such as Power, Chemical Pharmaceuticals, Minor Metals, and Packaging & Printing. The vast majority of stocks showed loss-making effects in the broad market decline, especially high-flying stocks that were popular earlier. Their weakening after failed limit-ups further exacerbated losses for short-term speculators, indicating clear characteristics of a structural market.
+From the **Top 20 Stocks by Turnover**, previously hot technology growth stocks such as AI/Optical Modules/Chips (e.g., Xinyisheng, Zhongji Xuchuang, Huagong Tech, Biwin Storage, GigaDevice, WUS Printed Circuit, Dongshan Precision) experienced a collective sharp decline, with obvious capital outflow. This indicates that the market's **high tolerance for high-flying themes has significantly decreased**. A few stocks that rose against the trend, such as Tianfu Communications, Aerospace Development, and Sunway Communication, still belong to the technology sector, but their number and strength are insufficient to reverse the overall downturn.
 
-## 💰 Core Themes and Fund Flows
+Based on the sector distribution of **Limit-Up Stocks**, the "hot sectors" primarily targeted by capital are:
+*   **Power Sector**: Including Xinneng Taishan, Hunan Development, Zhongmin Energy, Huadian Energy, and 5 other limit-up stocks, demonstrating strong counter-trend cohesion and becoming the biggest highlight and safe haven for capital in the market today.
+*   **Chemical Pharmaceuticals**: Menovo, Haisen Pharma, Stair Pharma, Wanbangde, with multiple stocks hitting limit-up, showing that pharmaceutical stocks gain attention when market sentiment is low.
+*   **Power Grid Equipment, Packaging & Printing, Plastics, Energy Metals, Minor Metals** also saw scattered limit-ups.
 
-**Analysis of Top 20 Stocks by Turnover:** The top 20 stocks by turnover were mainly concentrated in TMT (Optical Modules, Semiconductors, Consumer Electronics) and New Energy (Lithium Batteries, Photovoltaics). Notably, most of these high-turnover stocks saw declines, particularly optical module concept stocks like InnoLight Technology, Zhongji Innolight, and HGTECH, which experienced significant drops, indicating signs of profit-taking from previously popular sectors. T&F Communication rose against the trend, and CATL posted slight gains, showing that funds are still engaged in localized speculation. Zijin Mining Group (nonferrous metals) also declined. Aerospace Development and Sunway Communication rose against the trend, potentially signaling resilience in military, Xinchuang (IT Application Innovation), and certain consumer electronics sub-sectors.
+Market Style Assessment: Today's market style significantly leaned towards **"defensive" and "low-valuation rebound"**. Blue-chip stocks showed insufficient support, previous high-flying theme stocks experienced a collective sell-off, while defensive sectors like power and pharmaceuticals, along with some cyclical categories (such as energy metals, minor metals), were favored by capital. This indicates that funds are seeking safety margins and undervalued opportunities, rather than aggressive theme speculation.
 
-**Sector Gainers and Hot Sectors (Based on Limit-up Stocks):** Despite the overall broad market decline, funds clearly flowed into the following hot sectors:
-*   **Power Sector**: Including Power Grid Equipment (Xinneng Taishan, Zhongchao Holding, Yuancheng Co.) and Power (Hunan Development, Fujian Zhongmin Energy, Huadian Energy, Huitian Thermal Power, Jinkong Electric Power, Guangxi Energy, Jingyuntong, Shennan Power A), with a large number of limit-up stocks forming consecutive limit-up sequences, becoming the strongest main theme of the day.
-*   **Chemical Pharmaceuticals/Chemical Raw Materials**: Mino Pharma, Haisen Pharma, CTL Pharmaceutical, Wanbangde Pharmaceutical, as well as Yuanli Science And Technology, Xinghua Chemical, Jinmei Technology, etc., performed actively, potentially benefiting from industry policies or expectations of product price increases.
-*   **Energy Metals/Minor Metals**: Yongjie Lithium (lithium mining) and Western Materials (rare metals) showed strong performance, and the rotation effect in nonferrous metals became apparent.
-*   **Packaging & Printing/Plastics**: Jinfu Technology, Quzhou Dongfeng, Dashengda Packaging, Dasouthland, Shenjian Co., etc., showed relatively prominent performance.
+## 3. 🪜 Consecutive Limit-Up Ladder and Space Dynamics
 
-**Market Style Judgment:** Overall, large-cap stocks in the top 20 by turnover were generally under pressure, while limit-up stocks were concentrated in small and mid-cap thematic stocks, especially in niche areas of traditional industries like Power, Chemicals, and Nonferrous Metals. This indicates a market style clearly favoring "**thematic speculation**" rather than blue-chip support. Fund risk appetite decreased, but funds are still actively seeking thematic opportunities for low-valuation catch-up or news-driven catalysts.
+*   **Highest Limit-up Streak (Market Ceiling)**:
+    *   Based on today's consecutive limit-ups, the highest streak was 3 consecutive limit-ups (Xinneng Taishan, Menovo, Hunan Development, Rongjie股份).
+    *   However, from the actual consecutive limit-up height in the limit-up statistics, **Huadian Energy (Power, 8 limit-ups in 13 days)** was the actual highest consecutive limit-up stock in the market. Its continued high-level streak in an extremely weak market showed that funds have an extreme pursuit for the power sector as a defensive asset, boosting the activity of the entire power sector. This was followed by Menovo (Chemical Pharmaceuticals, 5 limit-ups in 10 days) and Dashengda (Packaging & Printing, 5 limit-ups in 7 days). This indicates that during a retreat, high recognition for core leaders still exists, but enthusiasm for following suit in speculative stocks has decreased.
+*   **Interpretation of Broken Limit-up Pool**:
+    *   18 broken limit-up stocks, including high-flying consecutive limit-up stocks like Aoruidi (4 limit-ups in 7 days, broke limit-up) and Huadian Liaoning Energy (9 limit-ups in 15 days, broke limit-up), as well as power/energy sector stocks like Mindong Electric Power and Liaoning Energy.
+    *   Signal Interpretation: The limit-up failure rate is moderately high, and some high-flying consecutive limit-up stocks (e.g., Huadian Liaoning Energy) broke their limit-ups, meaning short-term funds have a strong willingness to take profits at high levels, and the market's follow-up sentiment clearly cooled down. This is not a healthy divergence, but **signs of deceleration at high levels and intensifying divergence**, indicating increased short-term trading risk and that chasing rallies requires extreme caution.
 
-## 🪜 Consecutive Limit-up Ladder and Spatial Dynamics
+## 4. ⚡ Analysis of Key Volatile Stocks
 
-**Highest Consecutive Limit-up (Space Board) and Its Driving Attributes:**
-*   The highest consecutive limit-up of the day was 3 consecutive limit-ups, mainly including **Xinneng Taishan (Power Grid Equipment), Hunan Development (Power), and Yongjie Lithium (Energy Metals)**. Although Mino Pharma recorded 5 limit-ups in 10 days, its actual consecutive limit-up height was also 3. Huadian Energy (Power) with 8 limit-ups in 13 days showed extremely strong breakthrough attributes, but only 2 consecutive limit-ups on the day.
-*   The height of the space board was not high, indicating that market sentiment for consecutive limit-ups remains cautious. The Power sector became the core of the current consecutive limit-up ladder, driving the activity of related themes.
+1.  **Huadian Energy (600726)**: 8 limit-ups in 13 days, belongs to the Power sector. Against the backdrop of a sharp index decline and receding market sentiment, Huadian Energy, as a leader in the power sector, continued its strong performance, breaking the market's consecutive limit-up height. This demonstrates the extreme pursuit by funds of the power sector as a defensive asset. The underlying logic may be the intensification of risk aversion sentiment, with funds flowing into stable, low-valuation power utilities, possibly also catalyzed by green energy policies and expectations of power system reforms. It is a counter-trend indicator of current market sentiment.
 
-**Interpretation of Signals from Failed Limit-up Stocks:** There were 18 failed limit-up stocks, with complex signals, including high-level deceleration and healthy divergence after initial disagreement.
-*   **High-level Deceleration Signal**: OVD (7 limit-ups in 4 days, +4.73% after failed limit-up, massive turnover rate of 42.9%), Huadian Liaoning Energy (9 limit-ups in 15 days, +6.47% after failed limit-up, turnover rate of 23.43%), etc., had huge prior gains. Massive failed limit-ups at high levels indicate loosening of holdings and concentrated profit-taking, posing extremely high risks for chasing highs, and vigilance against correctional declines is needed.
-*   **Opening High and Falling / Weakening Sentiment**: Xiamen Engineering Machinery (1 limit-up in 2 days, -2.10% after failed limit-up), Shuhua Sports (3 limit-ups in 5 days, -1.35% after failed limit-up). These stocks opened high, then quickly fell back or even turned negative, indicating insufficient follow-up funds and short-term sentiment under pressure.
-*   **Healthy Divergence After Initial Disagreement**: Haike Xinyuan, J&A Design, Xice Testing, etc., whose final gains after failing limit-up were still above 16%, with sufficient turnover. This may indicate that after opening high, some profit-taking occurred, but subsequently, funds actively stepped in to absorb the selling, finally closing with gains. This suggests a higher market recognition and a certain degree of resilience for these stocks. However, further observation is needed on the next trading day.
+2.  **Xinyisheng (sz300502) / Zhongji Xuchuang (sz300308)**: Both ranked high in turnover but fell by 4.03% and 2.26% respectively. As core targets in the optical module/AI concept, their collective decline is a clear signal of market style rotation. The logic is that they had significant prior gains, and their valuations were already at high levels. When overall market sentiment weakened, funds chose to take profits, leading to high-valued stocks facing pressure. This is a typical performance of **profit-taking in high-flying themes and technical correction**.
 
-## ⚡ Key Volatile Stock Analysis
+3.  **Zaisheng Technology (603601)**: 2 consecutive limit-ups in 2 days, with a turnover of RMB 5.616 billion and a turnover rate of 36.99%. This stock achieved two consecutive limit-ups with large turnover in the professional engineering sector, indicating active participation of large institutional funds. A high turnover rate may suggest a sufficient exchange of shares, which is conducive to subsequent market trends. The underlying logic is speculated to be new business progress or order catalysts in new energy, environmental protection, or other related fields, attracting market attention and forming **theme speculation after a technical breakout**.
 
-Based on the [daily market review data] and overall market performance, I will analyze the following 4 stocks:
+4.  **Western Materials (2149)**: Initial limit-up, with a turnover of RMB 4.253 billion, belongs to the Minor Metals sector. Resource-based stocks showed resilience amidst a widespread market decline. Western Materials' initial limit-up with large turnover may benefit from expectations of rising prices for non-ferrous metals or specific minor metals, or the market's re-evaluation of its scarce resource attributes. This reflects funds looking for **oversold rebound or safe-haven allocation opportunities in cyclical stocks**.
 
-1.  **Huadian Energy (600726) - Power**: Limit-up on the day (8 limit-ups in 13 days), with turnover of 3.76 billion CNY and a turnover rate of 7.98%.
-    *   **Logical Inference**: As a high-flying leader in the power sector, Huadian Energy demonstrated strong market appeal and sentiment premium. Its continuous rise reflects the market's strong expectations for power sector reforms (such as electricity price marketization and the construction of new power systems). This stock already possesses "demon stock" attributes, attracting a large amount of short-term speculative capital. Its consecutive limit-ups against the trend in a broad market decline highlight funds' recognition and strong pursuit of it as a core theme.
+## 5. 🧭 Next-Day Trading Strategy Recommendations
 
-2.  **Western Materials (002149) - Minor Metals**: Limit-up on the day (first limit-up), with turnover of 4.25 billion CNY and a turnover rate of 19.40%.
-    *   **Logical Inference**: This first limit-up with high turnover reflects the rotation effect within the nonferrous metals sector. After continuous strength in precious metals and industrial metals, funds began to explore the "minor metals" concept, which possesses scarcity and high-tech attributes. It may potentially benefit from increased national strategic material demand, expanded high-tech industrial applications, or expectations of rising rare metal prices. The massive turnover indicates strong fund interest in intervention.
+*   **Key Observation Points for Tomorrow**:
+    *   **Sustainability of the Power sector**: Observe whether the power sector can continue to maintain strong momentum, especially whether today's limit-up stocks can continue to command a premium, and if there are opportunities for low-valued stocks within the sector to catch up. Guard against sector divergence caused by high-level fluctuations of leading stocks.
+    *   **Stop-loss signals for high-flying tech stocks**: Observe whether the decline in previously high-valued stocks like AI/Optical Modules slows down, and whether trading volume can shrink and stabilize. If they continue to decline on increased volume, they face further correction risk; if they stabilize on reduced volume, they may enter a consolidation phase.
+    *   **Market sentiment indicators**: Pay attention to changes in the limit-up/limit-down ratio, limit-up failure rate, and total market turnover to judge whether market sentiment further deteriorates or shows signs of stabilization.
 
-3.  **Yongjie Lithium (002192) - Energy Metals**: Limit-up on the day (3 consecutive limit-ups), with turnover of 2.84 billion CNY and a turnover rate of 15.69%.
-    *   **Logical Inference**: As a lithium mining concept stock, its 3 consecutive limit-ups may stem from market expectations of a rebound in lithium prices, or optimistic sentiment about improved industry prosperity driven by a recovery in new energy vehicle sales. In a market style favoring thematic speculation, sub-sector leaders experiencing oversold rebounds or improved prosperity are easily sought after by funds. Its sustained performance also validates the strength of the nonferrous metals sector.
+*   **Operational Tone**: Given the current market index decline, widespread decline pattern, and significant amplification of loss-making effects, it is recommended to maintain a stance of **observing more and acting less, controlling positions, and cautious participation**. Prioritize sectors and stocks with low valuations and logical support, and avoid blindly chasing highs.
 
-4.  **OVD (600666) - Optical Optoelectronics**: Failed limit-up on the day (4 limit-ups in 7 days), closed up +4.73%, with turnover of 5.89 billion CNY and a turnover rate of 42.90%.
-    *   **Logical Inference**: This stock had huge prior gains. Its massive failed limit-up on the day and inability to re-seal the limit-up indicate strong profit-taking pressure from high-position holders. Although it eventually closed with gains, such high turnover and a failed limit-up indicate significant loosening of holdings in the short term, with fierce divergence between buyers and sellers. This is usually a signal of high-level deceleration and adjustment, and its future trend faces significant uncertainty, likely requiring sufficient adjustment before any renewed upward movement.
-
-## 🧭 Next Day Trading Strategy Recommendations
-
-**Observation Points for Tomorrow:**
-*   **Sectors with Rebound Potential**: Focus on the **Power sector** (including power grid equipment and regional power companies) that performed strongly today. If market sentiment stabilizes, low-position first-limit-up or second-limit-up stocks in these sectors are expected to continue their strong performance, and may even see a "reversal limit-up". Additionally, **Minor Metals/Energy Metals** and some **Chemical Pharmaceuticals** sectors can also be watched. If they can maintain increasing volume, they may show further performance.
-*   **Guard Against Catch-up Declines in High-Position Stocks**: Pay close attention to previously popular large-cap stocks in TMT (optical modules, semiconductors) and New Energy (lithium batteries, photovoltaics) that saw significant declines today. If market sentiment remains sluggish, these high-position stocks face risks of catch-up declines. Simultaneously, for OVD, Huadian Liaoning Energy, and other high-position failed limit-up stocks today, if they open lower and continue to fall tomorrow, vigilance against accelerated declines is needed.
-*   **Market Volume and Sentiment Restoration**: Observe whether the total market turnover can stay above 1.8 trillion CNY, and whether indicators like the limit-up/limit-down ratio and failed limit-up rate show improvement. If volume shrinks or sentiment indicators further deteriorate, trading difficulty will increase.
-
-**Operational Stance:**
-The current market is in a consolidation and adjustment period following high-level divergence. Structural opportunities coexist within a broad market decline, but overall risk appetite has decreased. It is recommended to maintain an operational stance of: **remaining cautious, watching more and acting less, and strictly controlling positions.** Avoid blindly chasing highs, prioritize strong thematic stocks that start from low positions with clear catalysts, and set strict stop-losses.
-
-**Key Stock Trading Recommendations:**
-*   **Xinneng Taishan (000720), Yongjie Lithium (002192)**: As strong stocks with 3 consecutive limit-ups, if they can continue to rise with increasing volume and hit limit-up again tomorrow, existing holders can observe, but chasing highs is not recommended. If they open high and fall, or open directly lower, consider partial profit-taking to secure gains.
-*   **Western Materials (002149)**: First limit-up with high turnover. If it continues to increase volume tomorrow and the sector effect persists, aggressive short-term investors may consider buying on dips, but need to enter and exit quickly, and set a stop-loss.
-*   **Huadian Energy (600726)**: A high-flying "demon stock" with huge volatility; not recommended for ordinary investors. Existing holders should closely monitor intraday volume-price performance. Once there is heavy volume without price increase or if the limit-up breaks and fails to re-seal, profit-taking should be decisive.
-*   **OVD (600666)**: High-level failed limit-up with huge turnover, short-term risk is high. It is recommended to **remain on the sidelines**, avoid blindly bottom-fishing, and wait for sufficient adjustment or new catalysts to emerge.
+*   **Key Stock Trading Recommendations**:
+    *   **High-flying consecutive limit-up stocks like Huadian Energy and Menovo**: Given the overall weak market sentiment and concentrated high-level risks, it is not recommended to chase highs. Holders may consider **partial profit-taking or taking profits on rallies** to secure gains and avoid pullback risks.
+    *   **High-flying tech stocks like Xinyisheng and Zhongji Xuchuang**: **Observe** primarily, waiting for clear stop-loss signals and improved market sentiment. It is not advisable to blindly bottom-fish at this stage.
+    *   **Large-turnover initial limit-up stocks like Zaisheng Technology and Western Materials**: If they open strong tomorrow, observe whether they can embark on an independent rally. However, strictly control positions and set stop-loss levels, and be wary of **risks of rallying then falling back**.
+    *   For low-valued stocks in the power sector that have not yet started to rally, on the premise of ensuring fundamental and logical support, one can appropriately **build positions opportunistically** for defensive allocation, but still need to pay attention to position management.
 
 ---
 Note:
 1. Data Source: AKShare.
-2. This article is AI-assisted and aims to provide market insights and data analysis, not investment advice.
-3. Disclaimer: Investment involves risks, and market entry requires caution. The content of this article is for reference only and does not constitute any investment advice or recommendation. Please make independent judgments based on your own circumstances.
+2. This article is AI-assisted, aiming to provide market insights and data analysis, not investment advice.
+3. Disclaimer: Investing involves risks, caution is advised when entering the market. The content of this article is for reference only and does not constitute any investment advice or recommendation. Please make independent judgments based on your own circumstances.
