@@ -71,10 +71,10 @@ If you want to run the analysis engine manually or contribute to the code:
 ## 📸 Project Overview
 
 ### 🖥️ Homepage Overview
-![Main Dashboard](./imgs/overview.jpg) 
+![Main Dashboard](./imgs/overview-en.png) 
 
 ### 📂 Report Directory
-![Table of Contents](./imgs/contents.jpg)
+![Table of Contents](./imgs/content-en.png)
 
 ### 📈 AI Analysis Example
 The system generates multi-dimensional reports based on real-time market data. You can view a full sample report generated on March 4, 2026, here:
@@ -88,7 +88,7 @@ The system generates multi-dimensional reports based on real-time market data. Y
 * **Price Action Analysis**: Tracks key stocks and their limit-up performance.
 * **Trading Strategy**: Offers specific entry and exit suggestions for the following trading session.
 
-![AI Insights](./imgs/report.jpg)
+![AI Insights](./imgs/report-en.png)
 
 
 ### Dashboard Preview
