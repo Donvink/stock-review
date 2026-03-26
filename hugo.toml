@@ -1,4 +1,6 @@
 baseURL = 'https://donvink.github.io/stock-review/'
+# canonifyURLs = true  # 核心修复：强制使用绝对路径
+# relativeURLs = false
 title = 'AI 股市洞察 | AI Stock Insight'
 theme = "PaperMod"
 googleAnalytics = "G-DBWSC03BX5"
@@ -23,7 +25,7 @@ enableRobotsTXT = true
 [languages.zh]
     languageName = "中文"
     contentDir = "content/zh"
-    weight = 1
+    weight = 2
     [languages.zh.params.homeInfoParams]
         Title = "📈 每日股市 AI 分析"
         Content = "💡 **Smart Market Insight, Powered by AI.**\n\n自动化驱动，AI 深度复盘。利用技术力量，捕捉每一份全球市场机遇。"
@@ -38,7 +40,7 @@ enableRobotsTXT = true
 [languages.en]
     languageName = "English"
     contentDir = "content/en"
-    weight = 2
+    weight = 1
     [languages.en.params.homeInfoParams]
         Title = "📈 Daily AI Stock Analysis"
         Content = "💡 **Smart Market Insight, Powered by AI.**\n\nAutomated workflows for deep AI-driven market review. Capturing every global opportunity with technology."
