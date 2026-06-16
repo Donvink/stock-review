@@ -1,3 +1,5 @@
+import json
+import re
 from google import genai
 from typing import Optional
 
@@ -89,9 +91,51 @@ class MarketAnalyzer:
             }}
         """
 
+    def translate_analysis(self, title: str, content: str,
+                           target_lang: str = "English") -> tuple[Optional[str], Optional[str]]:
+        """
+        Translate AI title and analysis body together in a single API call.
+
+        Returns (translated_title, translated_content). Token cost is roughly
+        that of the AI analysis alone — the market-summary tables are NOT sent.
+        """
+        if not self.client:
+            return None, None
+
+        prompt = f"""
+[Strict Task: Translation Only]
+
+Role: You are a professional financial translator specialising in A-share (Chinese stock market) reports.
+Task: Translate the TITLE and CONTENT below from Chinese into {target_lang}.
+
+Rules:
+1. Output ONLY a JSON object with exactly two keys: "title" and "content". No other text.
+2. Preserve all Markdown formatting (## headers, - bullet points, **bold**).
+3. Use standard financial terminology (Limit-up, Limit-down, Dragon-Tiger Board, Turnover rate, etc.).
+
+TITLE: {title}
+
+CONTENT:
+{content}
+
+Output (strict JSON, no markdown code fences):
+{{"title": "...", "content": "..."}}
+"""
+        try:
+            response = self.client.models.generate_content(
+                model=self.config.model_name, contents=prompt
+            )
+            json_str = re.search(r'\{.*\}', response.text, re.DOTALL).group()
+            data = json.loads(json_str)
+            return data.get("title"), data.get("content")
+        except Exception as e:
+            self.logger.error(f"Analysis translation failed: {e}")
+            return None, None
+
     def translate(self, text: str, target_lang: str = "English") -> Optional[str]:
         """Translate text to target language using AI"""
-        if not self.client: return None
+        if not self.client:
+            return None
         
         prompt = f"""
         [Strict Task: Translation Only]

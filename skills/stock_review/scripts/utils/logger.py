@@ -49,7 +49,10 @@ def setup_logger(
 
 
 def get_logger(name: str) -> logging.Logger:
-    """Get a logger by name"""
+    """Get or create a logger, initialising handlers if none exist yet"""
+    logger = logging.getLogger(name)
+    if not logger.handlers and not logging.root.handlers:
+        setup_logger(name)
     return logging.getLogger(name)
 
 

@@ -1,11 +1,11 @@
 import pandas as pd
-import numpy as np
 from pathlib import Path
 from typing import Optional, Union, List, Dict, Any, Callable
 import re
 import os
 import time
 import json
+import logging
 from datetime import datetime, timedelta
 import requests
 from functools import wraps
@@ -24,7 +24,7 @@ def format_value(value) -> str:
             return f"{num / 1e4:.2f}万"
         else:
             return f"{num:.2f}"
-    except:
+    except (ValueError, TypeError):
         return str(value)
 
 def format_volume(value) -> str:
@@ -107,30 +107,28 @@ def df_to_markdown(df: pd.DataFrame, max_col_width: int = 30) -> str:
     return display_df.to_markdown(index=False, tablefmt="pipe")
 
 def reorder_dataframe(df: pd.DataFrame, priority_cols: List[str]) -> pd.DataFrame:
-    """重新排序DataFrame列"""
+    """重新排序DataFrame列，并在首列插入序号"""
     df = df.copy()
-    # 移除序号列
     df = df.drop(columns=['序号', 'index', 'level_0'], errors='ignore')
-    
-    # 获取现有列
     existing_priority = [c for c in priority_cols if c in df.columns]
     other_cols = [c for c in df.columns if c not in existing_priority]
-    
-    # 重新排序
-    new_order = existing_priority + other_cols
-    return df[new_order]
+    result = df[existing_priority + other_cols].copy()
+    result.insert(0, '序号', range(1, len(result) + 1))
+    return result
 
 def rename_zt_values(df: pd.DataFrame) -> pd.DataFrame:
-    """重命名涨停相关值"""
-    if '涨停统计' in df.columns:
-        for idx, row in df.iterrows():
-            val = row['涨停统计']
-            if pd.notna(val) and isinstance(val, str) and '/' in val:
-                cal_day, cont_day = val.split('/')
-                if cal_day == '1':
-                    df.loc[idx, '涨停统计'] = "首板"
-                else:
-                    df.loc[idx, '涨停统计'] = f"{cal_day}天{cont_day}板"
+    """重命名涨停相关值（向量化处理）"""
+    if '涨停统计' not in df.columns:
+        return df
+
+    def _transform(val):
+        if not isinstance(val, str) or '/' not in val:
+            return val
+        cal_day, cont_day = val.split('/', 1)
+        return "首板" if cal_day == '1' else f"{cal_day}天{cont_day}板"
+
+    df = df.copy()
+    df['涨停统计'] = df['涨停统计'].apply(_transform)
     return df
 
 # ========== 日期处理 ==========
@@ -279,20 +277,17 @@ def log_execution(logger=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            nonlocal logger
-            if logger is None:
-                logger = get_default_logger()
-            
-            logger.debug(f"Executing {func.__name__}")
+            _logger = logger or logging.getLogger(func.__module__)
+            _logger.debug(f"Executing {func.__name__}")
             start = time.time()
             try:
                 result = func(*args, **kwargs)
                 elapsed = time.time() - start
-                logger.debug(f"Completed {func.__name__} in {elapsed:.2f}s")
+                _logger.debug(f"Completed {func.__name__} in {elapsed:.2f}s")
                 return result
             except Exception as e:
                 elapsed = time.time() - start
-                logger.error(f"Failed {func.__name__} after {elapsed:.2f}s: {e}")
+                _logger.error(f"Failed {func.__name__} after {elapsed:.2f}s: {e}")
                 raise
         return wrapper
     return decorator

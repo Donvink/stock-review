@@ -1,10 +1,9 @@
 import os
 import sys
 from pathlib import Path
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional
 from datetime import datetime
 import json
-from dotenv import load_dotenv
 import yaml
 import re
 
@@ -22,18 +21,16 @@ from config import Settings
 class StockReview:
     """A-share market review and analysis skill main class"""
     
-    def __init__(self, 
+    def __init__(self,
                  config_path: Optional[str] = None,
-                #  env_file: Optional[str] = None,
                  config: Optional[Dict[str, Any]] = None):
         """
         Initialize the stock review with flexible configuration options
-        
+
         Args:
             config_path: path to YAML/JSON configuration file
-            env_file: path to .env file (default: auto-discover)
             config: direct dictionary config (highest priority)
-        
+
         Configuration priority (higher overrides lower):
             1. Direct `config` dict argument
             2. Environment variables
@@ -41,15 +38,7 @@ class StockReview:
             4. Default values
         """
         self.logger = setup_logger(__name__)
-        # Load environment variables from .env file if specified
-        # if env_file:
-        #     load_dotenv(env_file)
-        #     self.logger.info(f"Loaded environment variables from: {env_file}")
-        # else:
-        #     # Auto-discover .env file in current directory or parent directories
-        #     load_dotenv()
-        #     self.logger.info("Auto-discovered and loaded .env file")
-        
+
         # Initialize with empty config
         self.config = {}
 
@@ -82,24 +71,24 @@ class StockReview:
 
     def _find_config_file(self) -> str:
         """Find configuration file in common locations"""
-        current_dir = Path(__file__).parent
-        project_root = current_dir.parent.parent
-        
+        scripts_dir = Path(__file__).parent       # skills/stock_review/scripts
+        skill_dir = scripts_dir.parent            # skills/stock_review
+        project_root = skill_dir.parent.parent    # repo root
+
         possible_paths = [
-            project_root / "config.yaml",
-            current_dir / "../config.yaml",
-            current_dir / "../../config.yaml",
+            skill_dir / "config.yaml",            # primary: skills/stock_review/config.yaml
+            project_root / "config.yaml",         # fallback: repo root
             Path.cwd() / "config.yaml",
             Path.home() / ".stock-review" / "config.yaml",
         ]
-        
+
         for path in possible_paths:
             if path.exists():
                 self.logger.info(f"Found config at: {path}")
                 return str(path)
-        
-        # if not found, create default config at project root
-        default_path = project_root / "config.yaml"
+
+        # if not found, create default at skill root
+        default_path = skill_dir / "config.yaml"
         self._create_default_config(default_path)
         return str(default_path)
 
@@ -113,7 +102,6 @@ class StockReview:
             with open(path, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f)
         elif path.suffix == '.json':
-            import json
             with open(path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         else:
@@ -187,21 +175,19 @@ class StockReview:
             # 5. AI analysis (optional)
             ai_title, ai_content, ai_tags = None, None, None
             if not skip_ai_analysis and self.config.gemini_api_key:
-                # ai_analysis = self.analyzer.analyze(market_summary)
-                # self.logger.info("AI analysis completed")
                 raw_output = self.analyzer.analyze(market_summary)
-                try:
-                    # Use regex to extract the JSON object from the raw AI output, which may contain extra text
-                    json_str = re.search(r'\{.*\}', raw_output, re.DOTALL).group()
-                    data = json.loads(json_str)
-                    ai_title = data.get("title", f"A股复盘：{date}")
-                    ai_tags = data.get("tags", ["每日复盘", "市场分析"])
-                    ai_content = data.get("content", raw_output)
-                except Exception as e:
-                    self.logger.error(f"JSON parsing failed, using fallback solution: {e}")
-                    ai_title = f"A股全市场复盘：{date} 深度解析"
-                    ai_tags = ["每日复盘", "市场分析"]
-                    ai_content = raw_output
+                if raw_output:
+                    try:
+                        json_match = re.search(r'\{.*\}', raw_output, re.DOTALL)
+                        data = json.loads(json_match.group())
+                        ai_title = data.get("title", f"A股复盘：{date}")
+                        ai_tags = data.get("tags", ["每日复盘", "市场分析"])
+                        ai_content = data.get("content", raw_output)
+                    except Exception as e:
+                        self.logger.error(f"JSON parsing failed, using raw output: {e}")
+                        ai_title = f"A股全市场复盘：{date} 深度解析"
+                        ai_tags = ["每日复盘", "市场分析"]
+                        ai_content = raw_output
             
             # 6. generate reports
             reports = self.report_generator.generate_all(
@@ -210,16 +196,14 @@ class StockReview:
             
             # 7. post to platforms
             results = {
+                "success": True,
                 "date": date,
-                "market_summary": market_summary[:500] + "...",  # 摘要
+                "market_summary": market_summary[:500] + "...",
                 "reports": list(reports.keys()),
                 "published": []
             }
             
             if 'hugo' in platforms:
-                # post_path_zh = self.blog_poster.create_post(
-                #     market_summary, ai_title, ai_content, date, lang="zh"
-                # )
                 date_filename, content_zh = self.blog_poster.build_content(
                     market_summary, ai_title, ai_tags, ai_content
                 )
@@ -229,40 +213,27 @@ class StockReview:
                     "language": "zh",
                     "path": post_path_zh
                 })
-                # Publish English version (in BlogPoster internal translation)
-                self.logger.info("Translating full report to English...")
-                content_en = self.analyzer.translate(content_zh, target_lang="English")
-                # Clean up the translated content to ensure proper formatting in Hugo
-                if content_en:
-                    clean_lines = []
-                    for line in content_en.splitlines():
-                        # 1. 排除 Hugo 的 Front Matter 分隔符 (---)
-                        # 如果这一行全是横线且长度大于等于 3，原样保留
-                        if re.match(r'^\s*-{3,}\s*$', line):
-                            clean_lines.append(line.strip()) # 确保是干净的 ---
-                            continue
 
-                        # 2. 精准匹配列表引导符
-                        # ^\s*-\s+ : 匹配行首减号后已经有空格的（规范化空格）
-                        # ^\s*-[^-\d\s] : 匹配行首减号后紧跟文字但没空格的（补空格）
-                        # 且确保不是数字（防止误伤负数）
-                        if re.match(r'^\s*-\s*(?!\d)[^-\s]', line):
-                            # 强制规范化为 "- 内容"
-                            content_part = re.sub(r'^\s*-\s*', '', line)
-                            clean_lines.append(f"- {content_part}")
-                        else:
-                            # 3. 其他情况（标题、正文、负数、空行等）原样保留
-                            clean_lines.append(line)
-                    
-                    clean_content_en = "\n".join(clean_lines)
-                    post_path_en = self.blog_poster.save_post(
-                        date_filename, clean_content_en, lang="en"
+                # English version:
+                #   - market summary → static string replacement (zero API cost)
+                #   - AI title + analysis → single translate_analysis() call
+                # This avoids sending the large market-data tables to the API.
+                self.logger.info("Translating AI analysis to English...")
+                market_summary_en = self.blog_poster.localize_summary(market_summary)
+                ai_title_en, ai_content_en = (None, None)
+                if ai_title and ai_content:
+                    ai_title_en, ai_content_en = self.analyzer.translate_analysis(
+                        ai_title, ai_content
                     )
-                    results["published"].append({
-                        "platform": "hugo_en",
-                        "language": "en",
-                        "path": post_path_en
-                    })
+                _, content_en = self.blog_poster.build_content(
+                    market_summary_en, ai_title_en, ai_tags, ai_content_en
+                )
+                post_path_en = self.blog_poster.save_post(date_filename, content_en, lang="en")
+                results["published"].append({
+                    "platform": "hugo_en",
+                    "language": "en",
+                    "path": post_path_en
+                })
             
             if 'wechat' in platforms and self.wechat_poster:
                 draft_id = self.wechat_poster.create_draft(
@@ -273,9 +244,8 @@ class StockReview:
                     "draft_id": draft_id
                 })
             
-            self.logger.info(f"Stock review completed successfully for {date},\
-                                summary: {market_summary[:100]}..., \
-                                    published to: {[p['platform'] for p in results['published']]}")
+            platforms_published = [p['platform'] for p in results['published']]
+            self.logger.info(f"Stock review completed for {date}, published to: {platforms_published}")
             return results
             
         except Exception as e:
@@ -294,14 +264,8 @@ class StockReview:
             Configuration is valid
         """
         try:
-            # Check necessary configuration
             if not self.config.gemini_api_key:
                 self.logger.warning("GEMINI_API_KEY not set")
-            
-            # # Try to connect to data source
-            # test_date = datetime.now().strftime("%Y%m%d")
-            # self.data_fetcher.fetch_all(test_date, force_refresh=True)
-            
             return True
         except Exception as e:
             self.logger.error(f"Validation failed: {str(e)}")

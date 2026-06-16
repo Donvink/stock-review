@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Optional, Tuple, Dict, Any
 
 from utils.logger import get_logger
+from utils.helpers import format_value, rename_zt_values, reorder_dataframe
 from config import Settings
 
 warnings.filterwarnings('ignore')
@@ -56,14 +57,7 @@ class DataFetcher:
         
         save_dir = self.config.data_dir / date
         save_dir.mkdir(parents=True, exist_ok=True)
-        
-        # check cache
-        # if not force_refresh:
-        #     cached_data = self._load_cached_data(date, save_dir)
-        #     if cached_data is not None:
-        #         self.logger.info(f"Using cached data for {date}")
-        #         return cached_data
-        
+
         # get data
         data = {}
         
@@ -94,24 +88,6 @@ class DataFetcher:
         self.logger.info(f"Data fetching completed for {date}")
         return data
     
-    def _load_cached_data(self, date: str, save_dir: Path) -> Optional[Dict]:
-        """Load cached data if all key files exist, otherwise return None"""
-        required_files = [
-            f"index_{date}.csv",
-            f"A_stock_{date}.csv",
-            f"zt_pool_{date}.csv",
-            f"dt_pool_{date}.csv",
-            f"zb_pool_{date}.csv",
-            f"lhb_{date}.csv",
-            f"top_amount_stocks_{date}.csv"
-        ]
-        
-        for file in required_files:
-            if not (save_dir / file).exists():
-                return None
-        
-        return {'cached': True, 'date': date}
-    
     def _fetch_index(self, date: str, save_dir: Path) -> pd.DataFrame:
         """Get index data"""
         file_path = save_dir / f"index_{date}.csv"
@@ -138,7 +114,7 @@ class DataFetcher:
             }
             
             result = pd.concat([result, pd.DataFrame([summary_row])], ignore_index=True)
-            result['成交额(亿元)'] = result['成交额'].apply(self._format_value)
+            result['成交额(亿元)'] = result['成交额'].apply(format_value)
             result.insert(0, '序号', range(1, len(result) + 1))
             
             result.to_csv(file_path, index=False, encoding="utf-8-sig")
@@ -148,39 +124,6 @@ class DataFetcher:
             self.logger.error(f"Failed to fetch index data: {e}")
             return pd.DataFrame()
         
-    def _reorder_columns(self, df, priority_cols):
-        """
-        Reorder columns in the dataframe based on priority_cols list,
-        while keeping other columns in original order after the priority columns.
-        Also adds a '序号' column at the beginning.
-        priority_cols: list of column names in desired order,
-        e.g. ['名称', '代码', '连板数', '涨停统计']
-        """
-        df = df.drop(columns=['序号', 'index', 'level_0'], errors='ignore')
-        existing_priority = [c for c in priority_cols if c in df.columns]
-        other_cols = [c for c in df.columns if c not in existing_priority]
-        new_column_order = existing_priority + other_cols
-        df_reorder = df[existing_priority + other_cols].copy()
-        df_reorder.insert(0, '序号', range(1, len(df_reorder) + 1))
-        return df_reorder
-
-    def _rename_zt_cal_value(self, df):
-        """
-        Replace specific values in '涨停统计' and '连板数' columns with new values
-        """
-        if '涨停统计' in df.columns:
-            for index, row in df.iterrows():
-                ori_value = row['涨停统计']
-                cal_day = ori_value.split('/')[0] if isinstance(ori_value, str) else ori_value
-                continue_day = ori_value.split('/')[1] if isinstance(ori_value, str) else ori_value
-                if cal_day == '1':
-                    df.loc[index, '涨停统计'] = "首板"
-                else:
-                    df.loc[index, '涨停统计'] = f"{cal_day}天{continue_day}板" if pd.notna(ori_value) else ori_value
-        # if '连板数' in df.columns:
-        #     df['连板数'] = df['连板数'].replace(1, '首板')
-        return df
-    
     def _fetch_zt_dt(self, date: str, save_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Get limit up/down and special treatment stocks"""
         zt_path = save_dir / f"zt_pool_{date}.csv"
@@ -210,19 +153,15 @@ class DataFetcher:
             # format values
             for df in [zt_df, dt_df, zb_df]:
                 if '成交额' in df.columns:
-                    df['成交额'] = df['成交额'].apply(self._format_value)
+                    df['成交额'] = df['成交额'].apply(format_value)
                 if '流通市值' in df.columns:
-                    df['流通市值'] = df['流通市值'].apply(self._format_value)
+                    df['流通市值'] = df['流通市值'].apply(format_value)
                 if '总市值' in df.columns:
-                    df['总市值'] = df['总市值'].apply(self._format_value)
-
-            # rename specific values in '涨停统计' and '连板数' columns
-            self._rename_zt_cal_value(zt_df)
-            self._rename_zt_cal_value(zb_df)
+                    df['总市值'] = df['总市值'].apply(format_value)
 
             priority_cols = ['名称', '代码', '连板数', '涨停统计']
-            zt_df = self._reorder_columns(zt_df, priority_cols)
-            zb_df = self._reorder_columns(zb_df, priority_cols)
+            zt_df = rename_zt_values(reorder_dataframe(zt_df, priority_cols))
+            zb_df = rename_zt_values(reorder_dataframe(zb_df, priority_cols))
             
             # save
             zt_df.to_csv(zt_path, index=False, encoding="utf-8-sig")
@@ -278,7 +217,7 @@ class DataFetcher:
         
         try:
             top_df = all_stocks_df.sort_values(by='成交额', ascending=False).head(20).copy()
-            top_df['成交额(亿元)'] = top_df['成交额'].apply(self._format_value)
+            top_df['成交额(亿元)'] = top_df['成交额'].apply(format_value)
             top_df = top_df[['代码', '名称', '最新价', '涨跌幅', '成交额(亿元)']]
             top_df.insert(0, '序号', range(1, len(top_df) + 1))
             
@@ -298,7 +237,7 @@ class DataFetcher:
         
         try:
             concept_df = ak.stock_board_concept_name_em()
-            concept_df['总市值'] = concept_df['总市值'].apply(self._format_value)
+            concept_df['总市值'] = concept_df['总市值'].apply(format_value)
             concept_df = concept_df.head(top_n).copy()
             
             concept_df.to_csv(file_path, index=False, encoding="utf-8-sig")
@@ -314,8 +253,8 @@ class DataFetcher:
             return []
         
         cons_list = []
-        for idx, row in concept_df.iterrows():
-            file_path = save_dir / f"concept_cons_{idx}_{date}.csv"
+        for enum_idx, (_, row) in enumerate(concept_df.iterrows()):
+            file_path = save_dir / f"concept_cons_{enum_idx}_{date}.csv"
             
             if file_path.exists():
                 cons_df = pd.read_csv(file_path)
@@ -323,7 +262,7 @@ class DataFetcher:
                 try:
                     cons_df = ak.stock_board_concept_cons_em(symbol=row['板块名称'])
                     cons_df.sort_values(by='涨跌幅', ascending=False, inplace=True)
-                    cons_df['成交额'] = cons_df['成交额'].apply(self._format_value)
+                    cons_df['成交额'] = cons_df['成交额'].apply(format_value)
                     cons_df['所属板块'] = row['板块名称']
                     cons_df = cons_df.head(15).copy()
                     
@@ -425,17 +364,3 @@ class DataFetcher:
         
         return w1_df, w2_df
     
-    def _format_value(self, value) -> str:
-        """Format value to string with unit"""
-        if pd.isna(value):
-            return value
-        try:
-            num = float(value)
-            if num >= 1e8:
-                return f"{num / 1e8:.2f} 亿"
-            elif num >= 1e4:
-                return f"{num / 1e4:.2f} 万"
-            else:
-                return f"{num:.2f}"
-        except:
-            return str(value)

@@ -1,11 +1,12 @@
 import os
+import logging
 from pathlib import Path
 from typing import Optional, Dict, Any
-from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
+logger = logging.getLogger(__name__)
 
-@dataclass
+
 class Settings:
     """Configuration settings for Stock Review Skill"""
 
@@ -68,41 +69,41 @@ class Settings:
     
     def _load_env_files(self):
         """
-        Load .env files in order of priority:
-        
-        # search order:
-        # 1. project root (.env)
-        # 2. skill root (.env)
-        # 3. user config directory (~/.openclaw/skills/stock_review/.env)
-        # 4. XDG config directory (~/.config/stock_review/.env)
+        Load .env files from lowest to highest priority so that each
+        subsequent file can override previous values (override=True).
+
+        Priority (highest → lowest):
+        1. project root (.env)          — loaded last, wins
+        2. skill root (.env)
+        3. user config directory (~/.openclaw/skills/stock_review/.env)
+        4. XDG config directory (~/.config/stock_review/.env)  — loaded first
         """
-        
         search_paths = [
-            Path.cwd() / '.env',                                            # project root
-            Path(__file__).parent.parent / '.env',                          # skill root
-            Path.home() / '.openclaw' / 'skills' / 'stock_review' / '.env', # user config directory
-            Path(os.getenv('XDG_CONFIG_HOME', Path.home() / '.config')) / 
-                'stock_review' / '.env',                                    # XDG config directory
+            Path(os.getenv('XDG_CONFIG_HOME', Path.home() / '.config')) /
+                'stock_review' / '.env',                                     # lowest priority
+            Path.home() / '.openclaw' / 'skills' / 'stock_review' / '.env',
+            Path(__file__).parent.parent / '.env',                           # skill root
+            Path.cwd() / '.env',                                             # highest priority
         ]
-        
+
         loaded_files = []
         for env_path in search_paths:
             if env_path.exists():
                 load_dotenv(env_path, override=True)
                 loaded_files.append(str(env_path))
-        
+
         if loaded_files:
-            print(f"📁 load .env files: {', '.join(loaded_files)}")
+            logger.info(f"Loaded .env files: {', '.join(loaded_files)}")
         else:
-            print("ℹ️ .env not found, using system environment variables")
+            logger.info(".env not found, using system environment variables")
     
     def _validate(self):
         """Validate necessary configurations"""
         if not self.gemini_api_key:
-            print(" ⚠️ Warning: GEMINI_API_KEY not set, AI analysis will be unavailable")
-        
+            logger.warning("GEMINI_API_KEY not set, AI analysis will be unavailable")
+
         if not self.has_wechat:
-            print(" ⚠️ Warning: WeChat configuration not set, WeChat functionality will be unavailable")
+            logger.warning("WeChat configuration not set, WeChat functionality will be unavailable")
     
     @property
     def has_wechat(self) -> bool:

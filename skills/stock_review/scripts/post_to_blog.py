@@ -1,10 +1,52 @@
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 import json
 
 from utils.logger import get_logger
 from config import Settings
+
+# Static Chinese → English mapping for market-summary structural text.
+# Only covers section headers, bullet labels, and table column names —
+# numeric data and stock names are left untouched.
+# Keys are sorted longest-first at runtime to avoid partial-match collisions.
+_ZH_EN_MAP: dict[str, str] = {
+    # ── Section headers ───────────────────────────────────────────────
+    "## 📊 市场核心快照":         "## 📊 Market Snapshot",
+    "- **上证指数**":             "- **Shanghai Composite (SSE)**",
+    "- **深证指数**":             "- **Shenzhen Component (SZSE)**",
+    "- **全市场成交总额**":        "- **Total Market Turnover**",
+    "- **涨跌比**":               "- **Advance / Decline**",
+    "- **涨停/跌停/炸板数**":      "- **Limit-Up / Limit-Down / Failed Board**",
+    "## 🔍 成交额前二十个股":      "## 🔍 Top 20 Stocks by Turnover",
+    "## 🏆 概念板块分析":          "## 🏆 Concept Sector Analysis",
+    "**前五概念板块**（按涨幅排序）": "**Top 5 Concept Sectors** (by % gain)",
+    "### 各板块涨幅靠前个股":       "### Top Gainers Within Each Sector",
+    "## 💥 涨停个股":             "## 💥 Limit-Up Stocks",
+    "## 💔 炸板个股":             "## 💔 Failed Limit-Up Stocks",
+    "## 🚀 龙虎榜":               "## 🚀 Dragon-Tiger Board",
+    "## ⭐ 重点个股 Watchlist":    "## ⭐ Key Stock Watchlist",
+    "### 大额异动池":              "### High-Volume Momentum Pool",
+    "### 风口涨停池":              "### Hot Limit-Up Pool",
+    "暂无数据":                    "No data available",
+    # ── Table column headers ──────────────────────────────────────────
+    "成交额(亿元)":  "Turnover(100M¥)",  # longer first — must precede "成交额"
+    "板块名称":      "Sector Name",
+    "流通市值":      "Float Cap",
+    "涨停统计":      "Limit-Up Record",
+    "上涨家数":      "Advancing",
+    "下跌家数":      "Declining",
+    "换手率":        "Turnover Rate",
+    "总市值":        "Mkt Cap",
+    "连板数":        "Boards",
+    "涨跌幅":        "Change%",
+    "成交额":        "Turnover",
+    "最新价":        "Price",
+    "所属板块":      "Sector",
+    "名称":          "Name",
+    "代码":          "Code",
+    "序号":          "No.",
+}
 
 class BlogPoster:
     """Hugo Blog Poster"""
@@ -13,7 +55,20 @@ class BlogPoster:
         self.config = config
         self.logger = get_logger(__name__)
 
-    def build_content(self, market_summary: str, ai_title: str, ai_tags: list, ai_content: str) -> Tuple[str, str]:
+    @staticmethod
+    def localize_summary(market_summary: str) -> str:
+        """Replace Chinese structural strings with English equivalents.
+
+        Only section headers, bullet labels, and table column names are
+        translated. Numeric data and stock names are left as-is.
+        Longer keys are replaced before shorter ones to avoid partial matches.
+        """
+        result = market_summary
+        for zh, en in sorted(_ZH_EN_MAP.items(), key=lambda kv: -len(kv[0])):
+            result = result.replace(zh, en)
+        return result
+
+    def build_content(self, market_summary: str, ai_title: Optional[str], ai_tags: Optional[List[str]], ai_content: Optional[str]) -> Tuple[str, str]:
         """
         Create a Hugo blog post with market summary and AI analysis
 
@@ -27,7 +82,7 @@ class BlogPoster:
             display_title: title for the blog post
             markdown_content: full Markdown content for the post
         """
-        ai_title = ai_title.strip().strip('"').strip("'").strip('“').strip('”')
+        ai_title = (ai_title or "A股市场复盘").strip(' \'“”"')
         final_tags = ["每日复盘"] + (ai_tags if ai_tags else [])
         final_tags = list(dict.fromkeys(final_tags))[:6]
         ai_header = "## 🤖 AI 深度分析与洞察"
@@ -39,16 +94,12 @@ class BlogPoster:
 3. 声明：投资有风险，入市需谨慎。本文内容仅供参考，不构成任何投资建议或推荐。请根据自身情况做出独立判断。
 """
         # Concatenate market summary and AI content with proper formatting
-        # use local timezone
+        # use local timezone; isoformat(timespec='seconds') always produces RFC3339-compliant +HH:MM
         now = datetime.now().astimezone()
         safe_now = now - timedelta(minutes=10)
 
         date_filename = safe_now.strftime("%Y-%m-%d")
-        formatted_date = safe_now.strftime("%Y-%m-%dT%H:%M:%S%z")
-
-        # RFC3339 format requires a colon in the timezone offset, e.g. +08:00 instead of +0800
-        if len(formatted_date) > 5 and formatted_date[-5:-4] not in '+-':
-            formatted_date = formatted_date[:-2] + ':' + formatted_date[-2:]
+        formatted_date = safe_now.isoformat(timespec='seconds')
 
         display_title = f"{date_filename}-{ai_title}"
         safe_title = json.dumps(display_title, ensure_ascii=False)
@@ -92,63 +143,3 @@ draft: false
         self.logger.info(f"Post saved to: {filename}")
         return filename
     
-    def create_post(self, market_summary: str, ai_title: str, ai_content: str, date: str) -> Path:
-        """
-        Create a Hugo blog post with market summary and AI analysis
-        
-        Args:
-            market_summary: market summary Markdown
-            ai_analysis: AI analysis Markdown
-            date: date
-            
-        Returns:
-            post path
-        """
-        # use local timezone
-        now = datetime.now().astimezone()
-        safe_now = now - timedelta(minutes=10)
-
-        date_filename = safe_now.strftime("%Y-%m-%d")
-        formatted_date = safe_now.strftime("%Y-%m-%dT%H:%M:%S%z")
-
-        # RFC3339 format requires a colon in the timezone offset, e.g. +08:00 instead of +0800
-        if len(formatted_date) > 5 and formatted_date[-5:-4] not in '+-':
-            formatted_date = formatted_date[:-2] + ':' + formatted_date[-2:]
-
-        # print(f"time: {formatted_date}")
-        
-        filename = self.config.content_dir / f"stock-analysis-{date_filename}.md"
-        
-        content = f"""---
-title: "{date_filename}-{ai_title}"
-date: {formatted_date}
-tags: ["每日复盘", "重点个股", "行业板块", "市场分析"]
-categories: ["每日更新"]
-showToc: true
-draft: false
----
-
-{market_summary}
-
-"""
-
-        if ai_content:
-            content += f"""
-## 🤖 AI 深度分析与洞察
-
-{ai_content}
-"""
-
-        content += """
----
-注：
-1. 数据来源：AKShare。
-2. 本文由AI辅助生成，旨在提供市场洞察和数据分析，非投资建议。
-3. 声明：投资有风险，入市需谨慎。本文内容仅供参考，不构成任何投资建议或推荐。请根据自身情况做出独立判断。
-"""
-        
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(content)
-        
-        self.logger.info(f"Hugo post created: {filename}")
-        return filename

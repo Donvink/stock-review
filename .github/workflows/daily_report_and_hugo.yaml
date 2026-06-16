@@ -47,7 +47,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add data/ content/
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 更新复盘数据 $(date)" && git push)
 
       # --- 第二阶段：构建 Hugo 网页 ---
