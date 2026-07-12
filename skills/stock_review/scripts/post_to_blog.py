@@ -68,7 +68,7 @@ class BlogPoster:
             result = result.replace(zh, en)
         return result
 
-    def build_content(self, market_summary: str, ai_title: Optional[str], ai_tags: Optional[List[str]], ai_content: Optional[str]) -> Tuple[str, str]:
+    def build_content(self, market_summary: str, ai_title: Optional[str], ai_tags: Optional[List[str]], ai_content: Optional[str], lang: str = "zh") -> Tuple[str, str]:
         """
         Create a Hugo blog post with market summary and AI analysis
 
@@ -76,16 +76,18 @@ class BlogPoster:
             market_summary: market summary Markdown
             ai_title: title for the AI analysis section
             ai_content: AI analysis Markdown
-            lang: language code ("zh" or "en")
+            lang: language code ("zh" or "en"), used for the fallback title
+                  and section header when ai_title/ai_content are unavailable
 
         Returns:
             display_title: title for the blog post
             markdown_content: full Markdown content for the post
         """
-        ai_title = (ai_title or "A股市场复盘").strip(' \'“”"')
+        default_title = "A股市场复盘" if lang == "zh" else "A-Share Market Review"
+        ai_title = (ai_title or default_title).strip(' \'“”"')
         final_tags = ["每日复盘"] + (ai_tags if ai_tags else [])
         final_tags = list(dict.fromkeys(final_tags))[:6]
-        ai_header = "## 🤖 AI 深度分析与洞察"
+        ai_header = "## 🤖 AI 深度分析与洞察" if lang == "zh" else "## 🤖 AI Deep Analysis & Insights"
         footer = """
 ---
 注：

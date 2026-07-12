@@ -57,7 +57,7 @@ class Settings:
         self.backtrack_days = int(params_config.get('backtrack_days', 0))
 
         # set values from models block
-        self.model_name = models_config.get('model_name', 'gemini-2.5-flash')
+        self.model_name = models_config.get('model_name', 'gemini-flash-latest')
 
         # step 5. set api keys from environment variables or config
         self.gemini_api_key = config.get('gemini_api_key')

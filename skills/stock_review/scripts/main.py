@@ -128,7 +128,7 @@ class StockReview:
             },
             'models': {
                 'type': 'gemini',
-                'model_name': 'gemini-2.5-flash'
+                'model_name': 'gemini-flash-latest'
             }
         }
         
@@ -179,7 +179,10 @@ class StockReview:
                 if raw_output:
                     try:
                         json_match = re.search(r'\{.*\}', raw_output, re.DOTALL)
-                        data = json.loads(json_match.group())
+                        # strict=False: Gemini sometimes emits literal newlines inside
+                        # the "content" string instead of escaping them as \n, which
+                        # strict JSON parsing rejects as an invalid control character.
+                        data = json.loads(json_match.group(), strict=False)
                         ai_title = data.get("title", f"A股复盘：{date}")
                         ai_tags = data.get("tags", ["每日复盘", "市场分析"])
                         ai_content = data.get("content", raw_output)
@@ -205,7 +208,7 @@ class StockReview:
             
             if 'hugo' in platforms:
                 date_filename, content_zh = self.blog_poster.build_content(
-                    market_summary, ai_title, ai_tags, ai_content
+                    market_summary, ai_title, ai_tags, ai_content, lang="zh"
                 )
                 post_path_zh = self.blog_poster.save_post(date_filename, content_zh, lang="zh")
                 results["published"].append({
@@ -226,7 +229,7 @@ class StockReview:
                         ai_title, ai_content
                     )
                 _, content_en = self.blog_poster.build_content(
-                    market_summary_en, ai_title_en, ai_tags, ai_content_en
+                    market_summary_en, ai_title_en, ai_tags, ai_content_en, lang="en"
                 )
                 post_path_en = self.blog_poster.save_post(date_filename, content_en, lang="en")
                 results["published"].append({

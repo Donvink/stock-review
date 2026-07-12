@@ -126,7 +126,9 @@ Output (strict JSON, no markdown code fences):
                 model=self.config.model_name, contents=prompt
             )
             json_str = re.search(r'\{.*\}', response.text, re.DOTALL).group()
-            data = json.loads(json_str)
+            # strict=False: tolerate literal newlines inside string values,
+            # same issue as the main analysis JSON (see main.py).
+            data = json.loads(json_str, strict=False)
             return data.get("title"), data.get("content")
         except Exception as e:
             self.logger.error(f"Analysis translation failed: {e}")
