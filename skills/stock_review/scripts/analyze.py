@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from google import genai
 from typing import Optional
 
@@ -10,40 +11,67 @@ from config import Settings
 
 class MarketAnalyzer:
     """AI Market Analyzer"""
-    
+
     def __init__(self, config: Settings):
         self.config = config
         self.logger = get_logger(__name__)
         self.client = None
-        
+
         if config.gemini_api_key:
             self.client = genai.Client(api_key=config.gemini_api_key)
-    
+
+    def _generate_with_retry(self, prompt: str):
+        """
+        Call Gemini with retry + exponential backoff.
+
+        Gemini intermittently returns transient 503 "model overloaded" errors.
+        Without a retry, a single transient error drops the whole AI section
+        for that language (this previously caused the English post to lose
+        its AI analysis far more often than Chinese, since English requires
+        one extra, later API call to translate the Chinese result).
+        """
+        max_retries = max(1, self.config.max_retries)
+        delay = max(0.5, self.config.request_delay)
+        last_exc = None
+        for attempt in range(1, max_retries + 1):
+            try:
+                return self.client.models.generate_content(
+                    model=self.config.model_name,
+                    contents=prompt
+                )
+            except Exception as e:
+                last_exc = e
+                if attempt < max_retries:
+                    self.logger.warning(
+                        f"Gemini call failed (attempt {attempt}/{max_retries}): {e}. "
+                        f"Retrying in {delay:.1f}s..."
+                    )
+                    time.sleep(delay)
+                    delay *= 2
+        raise last_exc
+
     def analyze(self, market_summary: str) -> Optional[str]:
         """
         Analyze market data using AI
-        
+
         Args:
             market_summary: market summary in Markdown format
-            
+
         Returns:
             AI analysis result in Markdown format
         """
         if not self.client:
             self.logger.warning("Gemini API key not set, skipping AI analysis")
             return None
-        
+
         prompt = self._build_prompt(market_summary)
-        
+
         try:
-            response = self.client.models.generate_content(
-                model=self.config.model_name,
-                contents=prompt
-            )
-            
+            response = self._generate_with_retry(prompt)
+
             self.logger.info("AI analysis completed successfully")
             return response.text
-            
+
         except Exception as e:
             self.logger.error(f"AI analysis failed: {e}")
             return None
@@ -122,9 +150,7 @@ Output (strict JSON, no markdown code fences):
 {{"title": "...", "content": "..."}}
 """
         try:
-            response = self.client.models.generate_content(
-                model=self.config.model_name, contents=prompt
-            )
+            response = self._generate_with_retry(prompt)
             json_str = re.search(r'\{.*\}', response.text, re.DOTALL).group()
             # strict=False: tolerate literal newlines inside string values,
             # same issue as the main analysis JSON (see main.py).
@@ -160,9 +186,7 @@ Output (strict JSON, no markdown code fences):
         """
             
         try:
-            response = self.client.models.generate_content(
-                model=self.config.model_name, contents=prompt
-            )
+            response = self._generate_with_retry(prompt)
             return response.text
         except Exception as e:
             self.logger.error(f"Translation failed: {e}")
