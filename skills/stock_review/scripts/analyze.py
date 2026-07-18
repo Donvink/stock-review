@@ -31,7 +31,7 @@ class MarketAnalyzer:
         one extra, later API call to translate the Chinese result).
         """
         max_retries = max(1, self.config.max_retries)
-        delay = max(0.5, self.config.request_delay)
+        delay = max(1.0, self.config.ai_retry_delay)
         last_exc = None
         for attempt in range(1, max_retries + 1):
             try:

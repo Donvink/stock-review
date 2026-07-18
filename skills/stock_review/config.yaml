@@ -16,6 +16,7 @@ paths:
 parameters:
   max_retries: 3
   request_delay: 0.5
+  ai_retry_delay: 20.0          # backoff base delay (seconds) for retrying a failed Gemini call
   backtrack_days: 0
   
 models:

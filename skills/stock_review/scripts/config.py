@@ -55,6 +55,10 @@ class Settings:
         self.max_retries = int(params_config.get('max_retries', 3))
         self.request_delay = float(params_config.get('request_delay', 0.5))
         self.backtrack_days = int(params_config.get('backtrack_days', 0))
+        # backoff base delay (seconds) for retrying a failed Gemini call
+        # (503 "model overloaded" tends to clear after tens of seconds; kept
+        # separate from request_delay, which throttles AKShare data fetches)
+        self.ai_retry_delay = float(params_config.get('ai_retry_delay', 20.0))
 
         # set values from models block
         self.model_name = models_config.get('model_name', 'gemini-flash-latest')

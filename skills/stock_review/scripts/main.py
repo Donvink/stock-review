@@ -124,6 +124,7 @@ class StockReview:
             'parameters': {
                 'max_retries': 3,
                 'request_delay': 0.5,
+                'ai_retry_delay': 20.0,
                 'backtrack_days': 0
             },
             'models': {
