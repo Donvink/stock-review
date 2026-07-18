@@ -13,6 +13,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -48,7 +52,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ content/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 更新复盘数据 $(date)" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 更新复盘数据 $(date)" && git pull --rebase origin main && git push)
 
       # --- 第二阶段：构建 Hugo 网页 ---
       - name: Setup Hugo
